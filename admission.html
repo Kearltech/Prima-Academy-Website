@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admissions Application | Prima Academy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a4b8c;
+            --secondary: #f9a826;
+            --accent: #2e7d32;
+            --light: #f5f5f5;
+            --dark: #333;
+            --text: #444;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #fff;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #e89a1f;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #0d3a6e;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(26, 75, 140, 0.1);
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+            margin: 15px auto;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-left: 30px;
+        }
+
+        .nav-menu a {
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--secondary);
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 75, 140, 0.8), rgba(26, 75, 140, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 180px 0 100px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        /* Application Form Styles */
+        .application-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .form-progress:before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-number {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            color: #777;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 8px;
+            transition: var(--transition);
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            color: #777;
+            text-align: center;
+        }
+
+        .progress-step.active .step-number {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .progress-step.completed .step-number {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .progress-step.active .step-label,
+        .progress-step.completed .step-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group .required:after {
+            content: ' *';
+            color: #e74c3c;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.1);
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input {
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+
+        .file-upload {
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+        }
+
+        .file-upload i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .form-navigation {
+            display: flex;
+            gap: 15px;
+        }
+
+        .confirmation {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .confirmation i {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            color: white;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                flex-direction: column;
+                background-color: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: var(--shadow);
+                padding: 20px 0;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-menu li {
+                margin: 15px 0;
+            }
+            
+            .hero {
+                padding: 150px 0 80px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .application-container {
+                padding: 25px 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .form-navigation {
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .form-progress {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+            
+            .form-progress:before {
+                display: none;
+            }
+            
+            .progress-step {
+                flex-direction: row;
+                gap: 15px;
+            }
+            
+            .step-label {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon" style="width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; margin-right: 10px;">PA</div>
+                <div class="logo-text">Prima Academy</div>
+            </div>
+            
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About Us</a></li>
+                <li><a href="index.html#academics">Academics</a></li>
+                <li><a href="index.html#news">News & Events</a></li>
+                <li><a href="index.html#admissions">Admissions</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Admissions Application</h1>
+            <p>Begin your journey to academic excellence at Prima Academy. Complete the form below to apply for admission.</p>
+        </div>
+    </section>
+
+    <!-- Application Form -->
+    <section class="section">
+        <div class="container">
+            <div class="application-container">
+                <!-- Progress Indicator -->
+                <div class="form-progress">
+                    <div class="progress-step active" id="step1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Student Info</div>
+                    </div>
+                    <div class="progress-step" id="step2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Parent/Guardian</div>
+                    </div>
+                    <div class="progress-step" id="step3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Academic History</div>
+                    </div>
+                    <div class="progress-step" id="step4">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Documents</div>
+                    </div>
+                    <div class="progress-step" id="step5">
+                        <div class="step-number">5</div>
+                        <div class="step-label">Review & Submit</div>
+                    </div>
+                </div>
+
+                <!-- Student Information Section -->
+                <div class="form-section active" id="section1">
+                    <div class="form-header">
+                        <h2>Student Information</h2>
+                        <p>Please provide the student's personal details</p>
+                    </div>
+
+                    <form id="admissionForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName" class="required">First Name</label>
+                                <input type="text" id="firstName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName" class="required">Last Name</label>
+                                <input type="text" id="lastName" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="middleName">Middle Name</label>
+                                <input type="text" id="middleName" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="dateOfBirth" class="required">Date of Birth</label>
+                                <input type="date" id="dateOfBirth" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="gender" class="required">Gender</label>
+                                <select id="gender" class="form-control" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                    <option value="prefer-not-to-say">Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="nationality" class="required">Nationality</label>
+                                <input type="text" id="nationality" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="homeAddress" class="required">Home Address</label>
+                            <textarea id="homeAddress" class="form-control" rows="3" required></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city" class="required">City</label>
+                                <input type="text" id="city" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="postalCode" class="required">Postal Code</label>
+                                <input type="text" id="postalCode" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="applyingFor" class="required">Applying For Grade Level</label>
+                            <select id="applyingFor" class="form-control" required>
+                                <option value="">Select Grade Level</option>
+                                <option value="pre-k">Pre-Kindergarten</option>
+                                <option value="k">Kindergarten</option>
+                                <option value="1">Grade 1</option>
+                                <option value="2">Grade 2</option>
+                                <option value="3">Grade 3</option>
+                                <option value="4">Grade 4</option>
+                                <option value="5">Grade 5</option>
+                                <option value="6">Grade 6</option>
+                                <option value="7">Grade 7</option>
+                                <option value="8">Grade 8</option>
+                                <option value="9">Grade 9</option>
+                                <option value="10">Grade 10</option>
+                                <option value="11">Grade 11</option>
+                                <option value="12">Grade 12</option>
+                            </select>
+                        </div>
+
+                        <div class="form-actions">
+                            <div></div> <!-- Empty div for spacing -->
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline" onclick="nextSection(2)">Next <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Parent/Guardian Information Section -->
+                    <div class="form-section" id="section2">
+                        <div class="form-header">
+                            <h2>Parent/Guardian Information</h2>
+                            <p>Please provide details of the parent or legal guardian</p>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="parentFirstName" class="required">Parent/Guardian First Name</label>
+                                <input type="text" id="parentFirstName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="parentLastName" class="required">Parent/Guardian Last Name</label>
+                                <input type="text" id="parentLastName" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="relationship" class="required">Relationship to Student</label>
+                                <select id="relationship" class="form-control" required>
+                                    <option value="">Select Relationship</option>
+                                    <option value="mother">Mother</option>
+                                    <option value="father">Father</option>
+                                    <option value="guardian">Legal Guardian</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="parentEmail" class="required">Email Address</label>
+                                <input type="email" id="parentEmail" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="parentPhone" class="required">Phone Number</label>
+                                <input type="tel" id="parentPhone" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="parentOccupation">Occupation</label>
+                                <input type="text" id="parentOccupation" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="parentAddress">Parent/Guardian Address (if different from student)</label>
+                            <textarea id="parentAddress" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <h3 style="margin-top: 30px;">Emergency Contact (Other than Parent/Guardian)</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="emergencyName" class="required">Full Name</label>
+                                <input type="text" id="emergencyName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergencyRelationship" class="required">Relationship</label>
+                                <input type="text" id="emergencyRelationship" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="emergencyPhone" class="required">Phone Number</label>
+                                <input type="tel" id="emergencyPhone" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergencyEmail">Email Address</label>
+                                <input type="email" id="emergencyEmail" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline" onclick="prevSection(1)"><i class="fas fa-arrow-left"></i> Previous</button>
+                            </div>
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline" onclick="nextSection(3)">Next <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Academic History Section -->
+                    <div class="form-section" id="section3">
+                        <div class="form-header">
+                            <h2>Academic History</h2>
+                            <p>Please provide information about the student's previous schooling</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="currentSchool" class="required">Current/Previous School</label>
+                            <input type="text" id="currentSchool" class="form-control" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="schoolAddress">School Address</label>
+                                <input type="text" id="schoolAddress" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="schoolPhone">School Phone</label>
+                                <input type="tel" id="schoolPhone" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="gradeCompleted" class="required">Grade Recently Completed</label>
+                                <select id="gradeCompleted" class="form-control" required>
+                                    <option value="">Select Grade</option>
+                                    <option value="pre-k">Pre-Kindergarten</option>
+                                    <option value="k">Kindergarten</option>
+                                    <option value="1">Grade 1</option>
+                                    <option value="2">Grade 2</option>
+                                    <option value="3">Grade 3</option>
+                                    <option value="4">Grade 4</option>
+                                    <option value="5">Grade 5</option>
+                                    <option value="6">Grade 6</option>
+                                    <option value="7">Grade 7</option>
+                                    <option value="8">Grade 8</option>
+                                    <option value="9">Grade 9</option>
+                                    <option value="10">Grade 10</option>
+                                    <option value="11">Grade 11</option>
+                                    <option value="12">Grade 12</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="yearsAttended" class="required">Years Attended</label>
+                                <input type="text" id="yearsAttended" class="form-control" required placeholder="e.g., 2018-2023">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reasonForLeaving">Reason for Leaving Previous School</label>
+                            <textarea id="reasonForLeaving" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="specialNeeds">Does the student have any special educational needs, allergies, or medical conditions we should be aware of?</label>
+                            <textarea id="specialNeeds" class="form-control" rows="3"></textarea>
+                            <div class="form-text">This information will help us provide appropriate support for the student.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="extracurricular">Extracurricular Activities & Interests</label>
+                            <textarea id="extracurricular" class="form-control" rows="3" placeholder="e.g., sports, music, arts, clubs"></textarea>
+                            <div class="form-text">Please list any activities the student is interested in or has participated in.</div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline" onclick="prevSection(2)"><i class="fas fa-arrow-left"></i> Previous</button>
+                            </div>
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline" onclick="nextSection(4)">Next <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Documents Section -->
+                    <div class="form-section" id="section4">
+                        <div class="form-header">
+                            <h2>Required Documents</h2>
+                            <p>Please upload the following documents to complete your application</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">Birth Certificate</label>
+                            <div class="file-upload" onclick="document.getElementById('birthCertificate').click()">
+                                <i class="fas fa-file-upload"></i>
+                                <p>Click to upload Birth Certificate</p>
+                                <p class="form-text">File types: PDF, JPG, PNG (Max: 5MB)</p>
+                                <input type="file" id="birthCertificate" class="file-input" accept=".pdf,.jpg,.jpeg,.png">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">Previous School Report Cards/Transcripts</label>
+                            <div class="file-upload" onclick="document.getElementById('reportCards').click()">
+                                <i class="fas fa-file-upload"></i>
+                                <p>Click to upload Report Cards/Transcripts</p>
+                                <p class="form-text">File types: PDF, JPG, PNG (Max: 10MB)</p>
+                                <input type="file" id="reportCards" class="file-input" accept=".pdf,.jpg,.jpeg,.png" multiple>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Immunization Records</label>
+                            <div class="file-upload" onclick="document.getElementById('immunization').click()">
+                                <i class="fas fa-file-upload"></i>
+                                <p>Click to upload Immunization Records</p>
+                                <p class="form-text">File types: PDF, JPG, PNG (Max: 5MB)</p>
+                                <input type="file" id="immunization" class="file-input" accept=".pdf,.jpg,.jpeg,.png">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Passport-sized Photograph</label>
+                            <div class="file-upload" onclick="document.getElementById('photograph').click()">
+                                <i class="fas fa-file-upload"></i>
+                                <p>Click to upload Student Photograph</p>
+                                <p class="form-text">File types: JPG, PNG (Max: 2MB)</p>
+                                <input type="file" id="photograph" class="file-input" accept=".jpg,.jpeg,.png">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Other Supporting Documents (if any)</label>
+                            <div class="file-upload" onclick="document.getElementById('otherDocs').click()">
+                                <i class="fas fa-file-upload"></i>
+                                <p>Click to upload Other Documents</p>
+                                <p class="form-text">File types: PDF, JPG, PNG (Max: 10MB)</p>
+                                <input type="file" id="otherDocs" class="file-input" accept=".pdf,.jpg,.jpeg,.png" multiple>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline" onclick="prevSection(3)"><i class="fas fa-arrow-left"></i> Previous</button>
+                            </div>
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline" onclick="nextSection(5)">Next <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review & Submit Section -->
+                    <div class="form-section" id="section5">
+                        <div class="form-header">
+                            <h2>Review & Submit</h2>
+                            <p>Please review your information before submitting the application</p>
+                        </div>
+
+                        <div class="form-group">
+                            <h3>Application Summary</h3>
+                            <div id="applicationSummary" style="background: var(--light); padding: 20px; border-radius: 4px;">
+                                <!-- Application summary will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms" class="required">I certify that the information provided in this application is true and accurate to the best of my knowledge.</label>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="privacy" required>
+                            <label for="privacy" class="required">I have read and agree to the <a href="#" style="color: var(--primary);">Privacy Policy</a> and understand how my data will be used.</label>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline" onclick="prevSection(4)"><i class="fas fa-arrow-left"></i> Previous</button>
+                            </div>
+                            <div class="form-navigation">
+                                <button type="submit" class="btn btn-primary">Submit Application</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confirmation Section -->
+                    <div class="form-section" id="section6">
+                        <div class="confirmation">
+                            <i class="fas fa-check-circle"></i>
+                            <h2>Application Submitted Successfully!</h2>
+                            <p>Thank you for applying to Prima Academy. We have received your application and will review it carefully.</p>
+                            <p>You will receive a confirmation email shortly with your application reference number and next steps in the admissions process.</p>
+                            <div style="margin-top: 30px;">
+                                <a href="index.html" class="btn btn-primary">Return to Homepage</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Prima Academy</h3>
+                    <p>Committed to excellence in education, holistic development, and strong community values since 2000.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#academics">Academics</a></li>
+                        <li><a href="index.html#news">News & Events</a></li>
+                        <li><a href="index.html#admissions">Admissions</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Education Avenue, Tabora</li>
+                        <li><i class="fas fa-phone"></i> +1 (234) 567-8900</li>
+                        <li><i class="fas fa-envelope"></i> admissions@primaacademy.edu</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 Prima Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+        
+        // Form Navigation Functions
+        function nextSection(next) {
+            const currentSection = document.querySelector('.form-section.active');
+            const nextSection = document.getElementById('section' + next);
+            
+            // Update progress steps
+            document.getElementById('step' + (next-1)).classList.add('completed');
+            document.getElementById('step' + next).classList.add('active');
+            
+            // Switch sections
+            currentSection.classList.remove('active');
+            nextSection.classList.add('active');
+            
+            // Update summary on the last step
+            if(next === 5) {
+                updateApplicationSummary();
+            }
+        }
+        
+        function prevSection(prev) {
+            const currentSection = document.querySelector('.form-section.active');
+            const prevSection = document.getElementById('section' + prev);
+            
+            // Update progress steps
+            const currentStep = Array.from(document.querySelectorAll('.form-section')).indexOf(currentSection) + 1;
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.getElementById('step' + (currentStep-1)).classList.remove('completed');
+            
+            // Switch sections
+            currentSection.classList.remove('active');
+            prevSection.classList.add('active');
+        }
+        
+        // Update application summary
+        function updateApplicationSummary() {
+            const summary = document.getElementById('applicationSummary');
+            
+            // Collect form data
+            const studentName = document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value;
+            const dob = document.getElementById('dateOfBirth').value;
+            const grade = document.getElementById('applyingFor').options[document.getElementById('applyingFor').selectedIndex].text;
+            const parentName = document.getElementById('parentFirstName').value + ' ' + document.getElementById('parentLastName').value;
+            const parentEmail = document.getElementById('parentEmail').value;
+            const currentSchool = document.getElementById('currentSchool').value;
+            
+            // Create summary HTML
+            summary.innerHTML = `
+                <p><strong>Student Name:</strong> ${studentName}</p>
+                <p><strong>Date of Birth:</strong> ${dob}</p>
+                <p><strong>Applying for:</strong> ${grade}</p>
+                <p><strong>Parent/Guardian:</strong> ${parentName}</p>
+                <p><strong>Parent Email:</strong> ${parentEmail}</p>
+                <p><strong>Current School:</strong> ${currentSchool}</p>
+            `;
+        }
+        
+        // Form submission
+        document.getElementById('admissionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // In a real application, you would send the data to a server here
+            // For this demo, we'll just show the confirmation
+            
+            const currentSection = document.querySelector('.form-section.active');
+            const confirmationSection = document.getElementById('section6');
+            
+            currentSection.classList.remove('active');
+            confirmationSection.classList.add('active');
+            
+            // Update progress steps to show completion
+            document.querySelectorAll('.progress-step').forEach(step => {
+                step.classList.add('completed');
+            });
+        });
+        
+        // File upload interaction
+        document.querySelectorAll('.file-input').forEach(input => {
+            input.addEventListener('change', function() {
+                if(this.files.length > 0) {
+                    const fileName = this.files[0].name;
+                    const uploadArea = this.parentElement;
+                    uploadArea.innerHTML = `<i class="fas fa-file-check"></i><p>${fileName}</p><p class="form-text">Click to change file</p>`;
+                    uploadArea.style.borderColor = 'var(--accent)';
+                    uploadArea.style.backgroundColor = 'rgba(46, 125, 50, 0.05)';
+                    
+                    // Re-add the click event
+                    uploadArea.addEventListener('click', function() {
+                        this.querySelector('input[type="file"]').click();
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
