@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extracurricular Activities | Prima Academy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --primary: #1a4b8c;
+            --secondary: #f9a826;
+            --accent: #2e7d32;
+            --light: #f5f5f5;
+            --dark: #333;
+            --text: #444;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #fff;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #e89a1f;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #0d3a6e;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+            margin: 15px auto;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-left: 30px;
+        }
+
+        .nav-menu a {
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-menu a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            bottom: -5px;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover:after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Program Navigation - Fixed positioning */
+        .program-nav {
+            background-color: var(--light);
+            padding: 20px 0;
+            margin-top: 80px; /* Account for fixed header */
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+        }
+
+        .program-nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .program-nav-btn {
+            padding: 10px 25px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .program-nav-btn.active,
+        .program-nav-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Academic Program Hero */
+        .program-hero {
+            background: linear-gradient(rgba(26, 75, 140, 0.8), rgba(26, 75, 140, 0.9)), url('https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 180px 0 100px;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .program-hero h1 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .program-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        /* Program Overview */
+        .program-overview {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .program-text {
+            flex: 1;
+        }
+
+        .program-image {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .program-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Curriculum Section */
+        .curriculum {
+            background-color: var(--light);
+        }
+
+        .curriculum-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .curriculum-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .curriculum-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .curriculum-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* Activities Section */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .activity-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .activity-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .activity-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .activity-card:hover .activity-img img {
+            transform: scale(1.1);
+        }
+
+        .activity-content {
+            padding: 25px;
+        }
+
+        /* Program Tabs */
+        .program-tabs {
+            margin-top: 50px;
+        }
+
+        .tabs-header {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Faculty Grid */
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .faculty-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .faculty-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .faculty-img {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .faculty-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .faculty-card:hover .faculty-img img {
+            transform: scale(1.05);
+        }
+
+        .faculty-info {
+            padding: 20px;
+        }
+
+        /* Schedule Table */
+        .schedule-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .schedule-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+        }
+
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-item strong {
+            min-width: 150px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            color: white;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        /* Hero Buttons */
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* Activity Categories */
+        .category-title {
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .program-overview {
+                flex-direction: column;
+            }
+            
+            .program-hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                flex-direction: column;
+                background-color: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: var(--shadow);
+                padding: 20px 0;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-menu li {
+                margin: 15px 0;
+            }
+            
+            .program-hero {
+                padding: 150px 0 80px;
+            }
+            
+            .program-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .program-nav {
+                margin-top: 80px;
+                top: 80px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .tabs-header {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .schedule-item {
+                flex-direction: column;
+            }
+
+            .schedule-item strong {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+            
+            .program-nav-container {
+                gap: 10px;
+            }
+            
+            .program-nav-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="media/logo.jpeg" alt="Prima Academy Logo">
+                <div class="logo-text">Prima Academy</div>
+            </div>
+            
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About Us</a></li>
+                <li><a href="index.html#academics">Academics</a></li>
+                <li><a href="index.html#faculty">Faculty</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
+                <li><a href="index.html#news">News & Events</a></li>
+                <li><a href="index.html#admissions">Admissions</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Program Navigation - Fixed positioning -->
+    <section class="program-nav">
+        <div class="container program-nav-container">
+            <a href="primary.html" class="program-nav-btn">Primary School</a>
+            <a href="middle.html" class="program-nav-btn">Middle School</a>
+            <a href="high.html" class="program-nav-btn">High School</a>
+            <a href="extracurricular.html" class="program-nav-btn active">Extracurricular</a>
+        </div>
+    </section>
+
+    <!-- Extracurricular Hero -->
+    <section class="program-hero">
+        <div class="container">
+            <h1>Extracurricular Activities</h1>
+            <p>Developing talents, building character, and creating community through diverse activities beyond the classroom.</p>
+            <a href="#join" class="btn">Join a Program</a>
+        </div>
+    </section>
+
+    <!-- Extracurricular Overview -->
+    <section class="section">
+        <div class="container">
+            <div class="program-overview">
+                <div class="program-text">
+                    <h2>Education Beyond the Classroom</h2>
+                    <p>At Prima Academy, we believe that education extends far beyond academic subjects. Our comprehensive extracurricular program offers students opportunities to explore interests, develop talents, and build character through sports, arts, clubs, and community service.</p>
+                    <p>Participation in extracurricular activities helps students develop teamwork, leadership, time management, and communication skills. These experiences complement classroom learning and contribute to the holistic development of each child.</p>
+                    <p>With over 40 different clubs and activities across all grade levels, there is something for every student to discover their passions and connect with like-minded peers.</p>
+                </div>
+                <div class="program-image">
+                    <img src="https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Student Activities">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="section curriculum">
+        <div class="container">
+            <h2 class="section-title">Program Categories</h2>
+            <div class="curriculum-grid">
+                <div class="curriculum-card">
+                    <div class="curriculum-icon">
+                        <i class="fas fa-running"></i>
+                    </div>
+                    <h3>Athletics</h3>
+                    <p>Competitive and recreational sports programs that promote physical fitness, teamwork, and sportsmanship across all grade levels.</p>
+                </div>
+                
+                <div class="curriculum-card">
+                    <div class="curriculum-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Visual & Performing Arts</h3>
+                    <p>Creative expression through visual arts, music, theater, and dance with opportunities for performances and exhibitions.</p>
+                </div>
+                
+                <div class="curriculum-card">
+                    <div class="curriculum-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Clubs & Organizations</h3>
+                    <p>Academic, special interest, and service clubs that allow students to pursue passions and develop leadership skills.</p>
+                </div>
+                
+                <div class="curriculum-card">
+                    <div class="curriculum-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Community Service</h3>
+                    <p>Meaningful service opportunities that develop civic responsibility and connect students with their community.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program Tabs -->
+    <section class="section">
+        <div class="container">
+            <div class="program-tabs">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="sports">Sports</button>
+                    <button class="tab-btn" data-tab="arts">Arts</button>
+                    <button class="tab-btn" data-tab="clubs">Clubs</button>
+                    <button class="tab-btn" data-tab="service">Community Service</button>
+                </div>
+                
+                <div class="tab-content active" id="sports">
+                    <h3>Athletic Programs</h3>
+                    <p>Our athletic program promotes physical fitness, teamwork, and sportsmanship while providing competitive opportunities at various levels.</p>
+                    
+                    <h4 class="category-title">Fall Sports</h4>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Soccer">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Soccer</h3>
+                                <p>Boys and girls teams compete in regional leagues with experienced coaches focusing on skill development and teamwork.</p>
+                                <p><strong>Season:</strong> August - October</p>
+                                <p><strong>Practice:</strong> Monday, Wednesday, Friday 3:30-5:00 PM</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Volleyball">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Volleyball</h3>
+                                <p>Our competitive volleyball program includes JV and varsity teams with regular practice and match schedules.</p>
+                                <p><strong>Season:</strong> August - November</p>
+                                <p><strong>Practice:</strong> Tuesday, Thursday 3:30-5:30 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="category-title">Winter Sports</h4>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1490&q=80" alt="Basketball">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Basketball</h3>
+                                <p>Boys and girls basketball teams compete in conference play with opportunities for tournament participation.</p>
+                                <p><strong>Season:</strong> November - February</p>
+                                <p><strong>Practice:</strong> Monday-Friday 4:00-6:00 PM</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Swimming">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Swimming</h3>
+                                <p>Our swim team competes in regional meets with training for various strokes and distances.</p>
+                                <p><strong>Season:</strong> November - February</p>
+                                <p><strong>Practice:</strong> Monday, Wednesday, Friday 4:00-6:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="category-title">Spring Sports</h4>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Track & Field">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Track & Field</h3>
+                                <p>Students compete in running and field events with coaching for technique and performance improvement.</p>
+                                <p><strong>Season:</strong> March - May</p>
+                                <p><strong>Practice:</strong> Monday-Friday 3:30-5:30 PM</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1622279457486-62dcc4a4310e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Tennis">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Tennis</h3>
+                                <p>Our tennis program includes instruction and competitive play for beginners through advanced players.</p>
+                                <p><strong>Season:</strong> March - May</p>
+                                <p><strong>Practice:</strong> Tuesday, Thursday 3:30-5:30 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="arts">
+                    <h3>Visual & Performing Arts</h3>
+                    <p>Our comprehensive arts program provides opportunities for creative expression and skill development across multiple disciplines.</p>
+                    
+                    <h4 class="category-title">Visual Arts</h4>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1458&q=80" alt="Studio Art">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Studio Art</h3>
+                                <p>Students explore various media including drawing, painting, sculpture, and mixed media with guidance from professional artists.</p>
+                                <p><strong>Schedule:</strong> Monday & Wednesday 3:30-5:00 PM</p>
+                                <p><strong>Location:</strong> Art Studio, Building C</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Digital Photography">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Digital Photography</h3>
+                                <p>Learn composition, lighting, and editing techniques while building a portfolio of photographic work.</p>
+                                <p><strong>Schedule:</strong> Tuesday & Thursday 3:30-5:00 PM</p>
+                                <p><strong>Location:</strong> Media Lab, Building B</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="category-title">Performing Arts</h4>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Choir">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Choir & Vocal Ensemble</h3>
+                                <p>Multiple choir groups for different experience levels with performances throughout the year.</p>
+                                <p><strong>Schedule:</strong> Monday, Wednesday, Friday 3:30-5:00 PM</p>
+                                <p><strong>Location:</strong> Music Hall, Building A</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Instrumental Music">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Instrumental Music</h3>
+                                <p>Band and orchestra programs with instruction for various instruments and ensemble performance opportunities.</p>
+                                <p><strong>Schedule:</strong> Tuesday & Thursday 3:30-5:30 PM</p>
+                                <p><strong>Location:</strong> Band Room, Building A</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="Theater">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Theater Productions</h3>
+                                <p>Annual fall play and spring musical with opportunities for acting, directing, and technical theater roles.</p>
+                                <p><strong>Schedule:</strong> Monday-Friday 3:30-6:00 PM (during production)</p>
+                                <p><strong>Location:</strong> Auditorium, Main Building</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Dance">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Dance Company</h3>
+                                <p>Students learn various dance styles and choreograph performances for school events and competitions.</p>
+                                <p><strong>Schedule:</strong> Tuesday & Thursday 3:30-5:30 PM</p>
+                                <p><strong>Location:</strong> Dance Studio, Building C</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="clubs">
+                    <h3>Clubs & Organizations</h3>
+                    <p>Our diverse club offerings allow students to explore interests, develop skills, and connect with peers who share similar passions.</p>
+                    
+                    <h4 class="category-title">Academic Clubs</h4>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-content">
+                                <h3>Math Club</h3>
+                                <p>Students explore advanced mathematical concepts and compete in regional and national math competitions.</p>
+                                <p><strong>Schedule:</strong> Wednesday 3:30-4:30 PM</p>
+                                <p><strong>Location:</strong> Room 204, Math Wing</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-content">
+                                <h3>Science Olympiad</h3>
+                                <p>Team-based competitions in various scientific disciplines with preparation for regional and state tournaments.</p>
+                                <p><strong>Schedule:</strong> Thursday 3:30-5:00 PM</p>
+                                <p><strong>Location:</strong> Science Lab 3</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-content">
+                                <h3>Debate Team</h3>
+                                <p>Develop research, critical thinking, and public speaking skills through competitive debate tournaments.</p>
+                                <p><strong>Schedule:</strong> Monday & Wednesday 3:30-5:00 PM</p>
+                                <p><strong>Location:</strong> Room 112, Humanities Wing</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-content">
+                                <h3>Model United Nations</h3>
+                                <p>Students represent countries and debate global issues in simulated UN conferences.</p>
+                                <p><strong>Schedule:</strong> Tuesday 3:30-5:00 PM</p>
+                                <p><strong>Location:</strong> Room 115, Humanities Wing</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="category-title">Special Interest Clubs</h4>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-content">
+                                <h3>Robotics Club</h3>
+                                <p>Design, build, and program robots for competition while learning engineering and programming principles.</p>
+                                <p><strong>Schedule:</strong> Friday 3:30-5:30 PM</p>
+                                <p><strong>Location:</strong> Robotics Lab, Building B</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-content">
+                                <h3>Environmental Club</h3>
+                                <p>Promote sustainability through campus initiatives, community clean-ups, and environmental education.</p>
+                                <p><strong>Schedule:</strong> Monday 3:30-4:30 PM</p>
+                                <p><strong>Location:</strong> Room 208, Science Wing</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-content">
+                                <h3>Creative Writing Club</h3>
+                                <p>Share and workshop original writing in a supportive community of fellow writers.</p>
+                                <p><strong>Schedule:</strong> Thursday 3:30-4:30 PM</p>
+                                <p><strong>Location:</strong> Library Conference Room</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-content">
+                                <h3>Chess Club</h3>
+                                <p>Learn strategy and compete in tournaments while developing critical thinking skills.</p>
+                                <p><strong>Schedule:</strong> Wednesday 3:30-4:30 PM</p>
+                                <p><strong>Location:</strong> Room 105, Main Building</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="service">
+                    <h3>Community Service</h3>
+                    <p>Our community service program connects students with meaningful opportunities to make a difference while developing empathy and civic responsibility.</p>
+                    
+                    <h4 class="category-title">Ongoing Service Projects</h4>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Food Drive">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Food Drive Coordination</h3>
+                                <p>Students organize and manage school-wide food drives to support local food banks and shelters.</p>
+                                <p><strong>Commitment:</strong> 2-4 hours per month</p>
+                                <p><strong>Contact:</strong> Ms. Johnson, Room 205</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Elderly Companion">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Elderly Companion Program</h3>
+                                <p>Regular visits to local senior centers to provide companionship and assistance with activities.</p>
+                                <p><strong>Commitment:</strong> 2 hours per week</p>
+                                <p><strong>Contact:</strong> Mr. Davis, Room 112</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="category-title">Annual Service Events</h4>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1577720643363-28da35c4dcec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="Community Clean-Up">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Community Clean-Up Day</h3>
+                                <p>School-wide event where students clean up local parks, beaches, and community spaces.</p>
+                                <p><strong>Next Event:</strong> April 15, 2024</p>
+                                <p><strong>Sign-up:</strong> Main Office by April 10</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Toy Drive">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Holiday Toy Drive</h3>
+                                <p>Annual collection and distribution of toys for children in need during the holiday season.</p>
+                                <p><strong>Next Event:</strong> November 15 - December 10, 2024</p>
+                                <p><strong>Coordinator:</strong> Student Government</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="category-title">Service Learning Trips</h4>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Domestic Service Trip">
+                            </div>
+                            <div class="activity-content">
+                                <h3>Domestic Service Trip</h3>
+                                <p>Week-long service trip within the country focusing on community development projects.</p>
+                                <p><strong>Next Trip:</strong> June 10-17, 2024</p>
+                                <p><strong>Cost:</strong> $350 (scholarships available)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-img">
+                                <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="International Service Trip">
+                            </div>
+                            <div class="activity-content">
+                                <h3>International Service Trip</h3>
+                                <p>Optional international service experience for upperclassmen focusing on global issues and cultural exchange.</p>
+                                <p><strong>Next Trip:</strong> July 5-20, 2024 (Ghana)</p>
+                                <p><strong>Cost:</strong> $2,500 (fundraising support available)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join CTA -->
+    <section class="section" style="background-color: var(--light);" id="join">
+        <div class="container">
+            <div class="program-overview">
+                <div class="program-text">
+                    <h2>Ready to Get Involved?</h2>
+                    <p>With over 40 different clubs, sports, and activities, there's something for every student at Prima Academy. Participation in extracurricular activities enhances the educational experience and helps students develop important life skills.</p>
+                    <p>Contact our activities director to learn more about specific programs or to start a new club.</p>
+                    <div class="hero-btns">
+                        <a href="index.html#contact" class="btn">Contact Activities Director</a>
+                        <a href="#" class="btn btn-primary">View Activity Calendar</a>
+                    </div>
+                </div>
+                <div class="program-image">
+                    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Students Participating in Activities">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Prima Academy</h3>
+                    <p>Committed to excellence in education, holistic development, and strong community values since 2000.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#academics">Academics</a></li>
+                        <li><a href="index.html#gallery">Gallery</a></li>
+                        <li><a href="index.html#news">News & Events</a></li>
+                        <li><a href="index.html#admissions">Admissions</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Academic Programs</h3>
+                    <ul class="footer-links">
+                        <li><a href="primary.html">Primary School</a></li>
+                        <li><a href="middle.html">Middle School</a></li>
+                        <li><a href="high.html">High School</a></li>
+                        <li><a href="extracurricular.html">Extracurricular</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Education Avenue, Accra</li>
+                        <li><i class="fas fa-phone"></i> +233 123 456 789</li>
+                        <li><i class="fas fa-envelope"></i> info@primaacademy.edu.gh</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Prima Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Program navigation active state
+        const currentPage = window.location.pathname.split('/').pop();
+        const navBtns = document.querySelectorAll('.program-nav-btn');
+        
+        navBtns.forEach(btn => {
+            if (btn.getAttribute('href') === currentPage) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
