@@ -6,6 +6,7 @@
     <title>Admissions Application | Prima Academy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* CSS Variables for consistent theming */
         :root {
             --primary: #1a4b8c;
             --secondary: #f9a826;
@@ -15,8 +16,23 @@
             --text: #444;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
+            --bg-color: #fff;
+            --text-color: #444;
         }
 
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --primary: #3a7bd5;
+            --secondary: #ffb74d;
+            --accent: #4caf50;
+            --light: #2d2d2d;
+            --dark: #f5f5f5;
+            --text: #e0e0e0;
+            --bg-color: #1e1e1e;
+            --text-color: #e0e0e0;
+        }
+
+        /* Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -24,10 +40,15 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             line-height: 1.6;
             color: var(--text);
-            background-color: #fff;
+            background-color: var(--bg-color);
+            transition: var(--transition);
         }
 
         h1, h2, h3, h4 {
@@ -109,12 +130,25 @@
 
         /* Header & Navigation */
         header {
-            background-color: white;
+            background-color: var(--bg-color);
             box-shadow: var(--shadow);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.shrink {
+            padding: 5px 0;
+        }
+
+        header.shrink .logo img {
+            height: 40px;
+        }
+
+        header.shrink .logo-text {
+            font-size: 1.3rem;
         }
 
         .header-container {
@@ -122,6 +156,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 0;
+            transition: var(--transition);
         }
 
         .logo {
@@ -132,12 +167,14 @@
         .logo img {
             height: 50px;
             margin-right: 10px;
+            transition: var(--transition);
         }
 
         .logo-text {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary);
+            transition: var(--transition);
         }
 
         .nav-menu {
@@ -147,6 +184,7 @@
 
         .nav-menu li {
             margin-left: 30px;
+            position: relative;
         }
 
         .nav-menu a {
@@ -155,8 +193,56 @@
             position: relative;
         }
 
-        .nav-menu a:hover {
+        .nav-menu a:hover,
+        .nav-menu a.active {
             color: var(--secondary);
+        }
+
+        .nav-menu a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            bottom: -5px;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover:after,
+        .nav-menu a.active:after {
+            width: 100%;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--bg-color);
+            min-width: 200px;
+            box-shadow: var(--shadow);
+            z-index: 1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: var(--text);
+            padding: 12px 16px;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--light);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
         }
 
         .mobile-toggle {
@@ -165,9 +251,20 @@
             cursor: pointer;
         }
 
+        /* Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 20px;
+            transition: var(--transition);
+        }
+
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(26, 75, 140, 0.8), rgba(26, 75, 140, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
+            background: linear-gradient(rgba(26, 75, 140, 0.8), rgba(26, 75, 140, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
             background-size: cover;
             background-position: center;
             color: white;
@@ -192,7 +289,7 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 40px;
-            background: white;
+            background: var(--bg-color);
             border-radius: 8px;
             box-shadow: var(--shadow);
         }
@@ -308,6 +405,8 @@
             border-radius: 4px;
             font-size: 1rem;
             transition: var(--transition);
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
 
         .form-control:focus {
@@ -457,6 +556,12 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .mobile-toggle {
                 display: block;
@@ -467,7 +572,7 @@
                 top: 80px;
                 left: -100%;
                 flex-direction: column;
-                background-color: white;
+                background-color: var(--bg-color);
                 width: 100%;
                 text-align: center;
                 transition: 0.3s;
@@ -537,6 +642,16 @@
             .step-label {
                 text-align: left;
             }
+            
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
         }
     </style>
 </head>
@@ -545,7 +660,7 @@
     <header>
         <div class="container header-container">
             <div class="logo">
-                <div class="logo-icon" style="width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; margin-right: 10px;">PA</div>
+                <img src="media/logo.png" alt="Prima Academy Logo">
                 <div class="logo-text">Prima Academy</div>
             </div>
             
@@ -556,11 +671,26 @@
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="index.html#about">About Us</a></li>
-                <li><a href="index.html#academics">Academics</a></li>
+                <li class="dropdown">
+                    <a href="index.html#academics">Academics <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="primary.html">Primary School</a>
+                        <a href="middle.html">Middle School</a>
+                        <a href="high.html">High School</a>
+                        <a href="extracurricular.html">Extracurricular</a>
+                    </div>
+                </li>
+                <li><a href="index.html#faculty">Faculty</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
                 <li><a href="index.html#news">News & Events</a></li>
-                <li><a href="index.html#admissions">Admissions</a></li>
+                <li><a href="admission.html" class="active">Admissions</a></li>
+                <li><a href="index.html#testimonials">Testimonials</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
             </ul>
+            
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
     </header>
 
@@ -601,13 +731,13 @@
                 </div>
 
                 <!-- Student Information Section -->
-                <div class="form-section active" id="section1">
-                    <div class="form-header">
-                        <h2>Student Information</h2>
-                        <p>Please provide the student's personal details</p>
-                    </div>
+                <form id="admissionForm">
+                    <div class="form-section active" id="section1">
+                        <div class="form-header">
+                            <h2>Student Information</h2>
+                            <p>Please provide the student's personal details</p>
+                        </div>
 
-                    <form id="admissionForm">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="firstName" class="required">First Name</label>
@@ -993,35 +1123,69 @@
                         <li><a href="index.html#about">About Us</a></li>
                         <li><a href="index.html#academics">Academics</a></li>
                         <li><a href="index.html#news">News & Events</a></li>
-                        <li><a href="index.html#admissions">Admissions</a></li>
+                        <li><a href="admission.html">Admissions</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-col">
                     <h3>Contact Info</h3>
                     <ul class="footer-links">
-                        <li><i class="fas fa-map-marker-alt"></i> 123 Education Avenue, Tabora</li>
-                        <li><i class="fas fa-phone"></i> +1 (234) 567-8900</li>
-                        <li><i class="fas fa-envelope"></i> admissions@primaacademy.edu</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Education Avenue, Accra, Ghana</li>
+                        <li><i class="fas fa-phone"></i> +233 123 456 789</li>
+                        <li><i class="fas fa-envelope"></i> admissions@primaacademy.edu.gh</li>
                     </ul>
                 </div>
             </div>
             
             <div class="copyright">
-                <p>&copy; 2025 Prima Academy. All Rights Reserved.</p>
+                <p>&copy; 2023 Prima Academy. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Mobile Navigation Toggle
-        const mobileToggle = document.querySelector('.mobile-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        
-        mobileToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
+        // DOM Content Loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sticky Shrinking Navbar
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                header.classList.toggle('shrink', window.scrollY > 50);
+            });
+            
+            // Mobile Menu Toggle
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            mobileToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+            });
+            
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navMenu.classList.remove('active');
+                });
+            });
+            
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            themeToggle.addEventListener('click', function() {
+                document.body.setAttribute('data-theme', 
+                    document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+                );
+                
+                if (document.body.getAttribute('data-theme') === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            });
         });
-        
+
         // Form Navigation Functions
         function nextSection(next) {
             const currentSection = document.querySelector('.form-section.active');
@@ -1078,23 +1242,71 @@
             `;
         }
         
-        // Form submission
-        document.getElementById('admissionForm').addEventListener('submit', function(e) {
+        // Form submission -> Firestore
+        document.getElementById('admissionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            // In a real application, you would send the data to a server here
-            // For this demo, we'll just show the confirmation
-            
-            const currentSection = document.querySelector('.form-section.active');
-            const confirmationSection = document.getElementById('section6');
-            
-            currentSection.classList.remove('active');
-            confirmationSection.classList.add('active');
-            
-            // Update progress steps to show completion
-            document.querySelectorAll('.progress-step').forEach(step => {
-                step.classList.add('completed');
-            });
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+            }
+
+            try {
+                // Build payload
+                const data = {
+                    studentName: (document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value).trim(),
+                    middleName: document.getElementById('middleName').value.trim(),
+                    dateOfBirth: document.getElementById('dateOfBirth').value,
+                    gender: document.getElementById('gender').value,
+                    nationality: document.getElementById('nationality').value.trim(),
+                    homeAddress: document.getElementById('homeAddress').value.trim(),
+                    city: document.getElementById('city').value.trim(),
+                    postalCode: document.getElementById('postalCode').value.trim(),
+                    applyingFor: document.getElementById('applyingFor').value,
+                    parentFirstName: document.getElementById('parentFirstName').value.trim(),
+                    parentLastName: document.getElementById('parentLastName').value.trim(),
+                    relationship: document.getElementById('relationship').value,
+                    parentEmail: document.getElementById('parentEmail').value.trim(),
+                    parentPhone: document.getElementById('parentPhone').value.trim(),
+                    parentOccupation: document.getElementById('parentOccupation').value.trim(),
+                    parentAddress: document.getElementById('parentAddress').value.trim(),
+                    emergencyName: document.getElementById('emergencyName').value.trim(),
+                    emergencyRelationship: document.getElementById('emergencyRelationship').value.trim(),
+                    emergencyPhone: document.getElementById('emergencyPhone').value.trim(),
+                    emergencyEmail: document.getElementById('emergencyEmail').value.trim(),
+                    currentSchool: document.getElementById('currentSchool').value.trim(),
+                    schoolAddress: document.getElementById('schoolAddress').value.trim(),
+                    schoolPhone: document.getElementById('schoolPhone').value.trim(),
+                    gradeCompleted: document.getElementById('gradeCompleted').value,
+                    yearsAttended: document.getElementById('yearsAttended').value.trim(),
+                    reasonForLeaving: document.getElementById('reasonForLeaving').value.trim(),
+                    specialNeeds: document.getElementById('specialNeeds').value.trim(),
+                    extracurricular: document.getElementById('extracurricular').value.trim(),
+                    status: 'pending'
+                };
+
+                if (!window.firebaseDBInstance || !window.firebaseDb) {
+                    alert('Database not initialized. Please refresh and try again.');
+                } else {
+                    const res = await window.firebaseDBInstance.submitAdmission(data);
+                    if (res && res.success) {
+                        const currentSection = document.querySelector('.form-section.active');
+                        const confirmationSection = document.getElementById('section6');
+                        currentSection.classList.remove('active');
+                        confirmationSection.classList.add('active');
+                        document.querySelectorAll('.progress-step').forEach(step => step.classList.add('completed'));
+                    } else {
+                        alert(res && res.error ? res.error : 'Submission failed');
+                    }
+                }
+            } catch (err) {
+                alert(err && err.message ? err.message : 'Submission error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Application';
+                }
+            }
         });
         
         // File upload interaction
@@ -1115,5 +1327,17 @@
             });
         });
     </script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="js/firebase-config.js"></script>
+    
+    <!-- Firebase Modules -->
+    <script src="js/firebase-auth.js"></script>
+    <script src="js/firebase-db.js"></script>
 </body>
 </html>

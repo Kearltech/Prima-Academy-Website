@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prima Academy | Excellence in Education</title>
+    <meta name="description" content="Prima Academy offers world-class education focused on academic excellence and holistic development.">
+    <meta name="keywords" content="Prima Academy, school, education, Ghana, admissions, students, learning">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
     <style>
         /* CSS Variables for consistent theming */
         :root {
@@ -16,6 +19,20 @@
             --text: #444;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
+            --bg-color: #fff;
+            --text-color: #444;
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --primary: #3a7bd5;
+            --secondary: #ffb74d;
+            --accent: #4caf50;
+            --light: #2d2d2d;
+            --dark: #f5f5f5;
+            --text: #e0e0e0;
+            --bg-color: #1e1e1e;
+            --text-color: #e0e0e0;
         }
 
         /* Base Styles */
@@ -33,7 +50,8 @@
         body {
             line-height: 1.6;
             color: var(--text);
-            background-color: #fff;
+            background-color: var(--bg-color);
+            transition: var(--transition);
         }
 
         h1, h2, h3, h4 {
@@ -105,12 +123,25 @@
 
         /* Header & Navigation */
         header {
-            background-color: white;
+            background-color: var(--bg-color);
             box-shadow: var(--shadow);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.shrink {
+            padding: 5px 0;
+        }
+
+        header.shrink .logo img {
+            height: 40px;
+        }
+
+        header.shrink .logo-text {
+            font-size: 1.3rem;
         }
 
         .header-container {
@@ -118,6 +149,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 0;
+            transition: var(--transition);
         }
 
         .logo {
@@ -128,12 +160,14 @@
         .logo img {
             height: 50px;
             margin-right: 10px;
+            transition: var(--transition);
         }
 
         .logo-text {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary);
+            transition: var(--transition);
         }
 
         .nav-menu {
@@ -143,6 +177,7 @@
 
         .nav-menu li {
             margin-left: 30px;
+            position: relative;
         }
 
         .nav-menu a {
@@ -151,7 +186,8 @@
             position: relative;
         }
 
-        .nav-menu a:hover {
+        .nav-menu a:hover,
+        .nav-menu a.active {
             color: var(--secondary);
         }
 
@@ -166,14 +202,57 @@
             transition: var(--transition);
         }
 
-        .nav-menu a:hover:after {
+        .nav-menu a:hover:after,
+        .nav-menu a.active:after {
             width: 100%;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--bg-color);
+            min-width: 200px;
+            box-shadow: var(--shadow);
+            z-index: 1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: var(--text);
+            padding: 12px 16px;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--light);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
         }
 
         .mobile-toggle {
             display: none;
             font-size: 1.5rem;
             cursor: pointer;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 20px;
+            transition: var(--transition);
         }
 
         /* Hero Section */
@@ -246,7 +325,7 @@
         }
 
         .value-card {
-            background: white;
+            background: var(--bg-color);
             padding: 30px;
             border-radius: 8px;
             box-shadow: var(--shadow);
@@ -272,7 +351,7 @@
         }
 
         .academic-card {
-            background: white;
+            background: var(--bg-color);
             border-radius: 8px;
             overflow: hidden;
             box-shadow: var(--shadow);
@@ -303,6 +382,100 @@
             padding: 25px;
         }
 
+        .prospectus-btn {
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        /* Faculty Section */
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .faculty-card {
+            background: var(--bg-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .faculty-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .faculty-img {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .faculty-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .faculty-card:hover .faculty-img img {
+            transform: scale(1.05);
+        }
+
+        .faculty-info {
+            padding: 20px;
+        }
+
+        .faculty-bio {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .faculty-card:hover .faculty-bio {
+            max-height: 200px;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            background-color: var(--light);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial {
+            background: var(--bg-color);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .testimonial:before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--secondary);
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            opacity: 0.3;
+        }
+
+        .testimonial p {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .testimonial h4 {
+            color: var(--primary);
+            margin-bottom: 0;
+        }
+
         /* News Section */
         .news {
             background-color: var(--light);
@@ -312,10 +485,11 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
+            margin-bottom: 40px;
         }
 
         .news-card {
-            background: white;
+            background: var(--bg-color);
             border-radius: 8px;
             overflow: hidden;
             box-shadow: var(--shadow);
@@ -343,6 +517,128 @@
             display: block;
         }
 
+        .load-more {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* Calendar Section */
+        .calendar-container {
+            background: var(--bg-color);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-top: 50px;
+        }
+
+        #calendar {
+            max-width: 100%;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            background-color: var(--light);
+        }
+
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: var(--bg-color);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            height: 200px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .lightbox-content img {
+            width: 100%;
+            height: auto;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
         /* Admissions Section */
         .admission-steps {
             display: grid;
@@ -354,7 +650,7 @@
         .step {
             text-align: center;
             padding: 30px 20px;
-            background: white;
+            background: var(--bg-color);
             border-radius: 8px;
             box-shadow: var(--shadow);
         }
@@ -373,7 +669,7 @@
         }
 
         .admission-form {
-            background: white;
+            background: var(--bg-color);
             padding: 40px;
             border-radius: 8px;
             box-shadow: var(--shadow);
@@ -397,35 +693,40 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 1rem;
+            background: var(--bg-color);
+            color: var(--text-color);
         }
 
-        /* Gallery Section */
-        .gallery {
-            background-color: var(--light);
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .gallery-item {
-            border-radius: 8px;
-            overflow: hidden;
-            height: 200px;
-            box-shadow: var(--shadow);
+        .file-upload {
+            border: 2px dashed #ddd;
+            padding: 20px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
             transition: var(--transition);
         }
 
-        .gallery-item:hover {
-            transform: scale(1.05);
+        .file-upload:hover {
+            border-color: var(--primary);
         }
 
-        .gallery-item img {
-            width: 100%;
+        .file-upload input {
+            display: none;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
             height: 100%;
-            object-fit: cover;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
         }
 
         /* Contact Section */
@@ -542,6 +843,98 @@
             font-size: 0.9rem;
         }
 
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+        }
+
+        /* AI Chat Assistant */
+        .chatbot {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background: var(--bg-color);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chatbot-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-close {
+            cursor: pointer;
+        }
+
+        .chatbot-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .chatbot-message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            background: var(--light);
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+
         /* Responsive Design */
         @media (max-width: 992px) {
             .about-content {
@@ -563,7 +956,7 @@
                 top: 80px;
                 left: -100%;
                 flex-direction: column;
-                background-color: white;
+                background-color: var(--bg-color);
                 width: 100%;
                 text-align: center;
                 transition: 0.3s;
@@ -590,6 +983,11 @@
             .section {
                 padding: 60px 0;
             }
+
+            .chatbot {
+                width: 300px;
+                height: 400px;
+            }
         }
 
         @media (max-width: 576px) {
@@ -606,6 +1004,13 @@
             .admission-form {
                 padding: 25px;
             }
+
+            .chatbot {
+                width: 280px;
+                height: 400px;
+                right: 10px;
+                bottom: 80px;
+            }
         }
     </style>
 </head>
@@ -614,7 +1019,7 @@
     <header>
         <div class="container header-container">
             <div class="logo">
-                <img src="media/logo.jpeg" alt="Prima Academy Logo">
+                <img src="media/logo.png" alt="Prima Academy Logo">
                 <div class="logo-text">Prima Academy</div>
             </div>
             
@@ -623,14 +1028,28 @@
             </div>
             
             <ul class="nav-menu">
-                <li><a href="#home">Home</a></li>
+                <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#about">About Us</a></li>
-                <li><a href="#academics">Academics</a></li>
+                <li class="dropdown">
+                    <a href="#academics">Academics <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="primary.html">Primary School</a>
+                        <a href="middle.html">Middle School</a>
+                        <a href="high.html">High School</a>
+                        <a href="extracurricular.html">Extracurricular</a>
+                    </div>
+                </li>
+                <li><a href="#faculty">Faculty</a></li>
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="#news">News & Events</a></li>
                 <li><a href="admission.html">Admissions</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+            
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
     </header>
 
@@ -701,7 +1120,8 @@
                     <div class="academic-content">
                         <h3>Primary School</h3>
                         <p>Our primary program focuses on building strong foundations in literacy, numeracy, and inquiry-based learning in a nurturing environment.</p>
-                        <a href="#" class="btn btn-primary" style="margin-top: 15px;">Learn More</a>
+                        <a href="primary.html" class="btn btn-primary" style="margin-top: 15px;">Learn More</a>
+                        <a href="PRIMA ACADEMY PROSPECTUS.pdf" class="btn prospectus-btn">Download Prospectus</a>
                     </div>
                 </div>
                 
@@ -712,7 +1132,8 @@
                     <div class="academic-content">
                         <h3>Middle School</h3>
                         <p>Our middle school curriculum challenges students academically while supporting their social and emotional development during these formative years.</p>
-                        <a href="#" class="btn btn-primary" style="margin-top: 15px;">Learn More</a>
+                        <a href="middle.html" class="btn btn-primary" style="margin-top: 15px;">Learn More</a>
+                        <a href="PRIMA ACADEMY PROSPECTUS.pdf" class="btn prospectus-btn">Download Prospectus</a>
                     </div>
                 </div>
                 
@@ -723,9 +1144,146 @@
                     <div class="academic-content">
                         <h3>High School</h3>
                         <p>Our comprehensive high school program prepares students for university and beyond with advanced courses, extracurricular activities, and career guidance.</p>
-                        <a href="#" class="btn btn-primary" style="margin-top: 15px;">Learn More</a>
+                        <a href="high.html" class="btn btn-primary" style="margin-top: 15px;">Learn More</a>
+                        <a href="PRIMA ACADEMY PROSPECTUS.pdf" class="btn prospectus-btn">Download Prospectus</a>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Faculty Section -->
+    <section class="section faculty" id="faculty">
+        <div class="container">
+            <h2 class="section-title">Our Faculty</h2>
+            <div class="faculty-grid">
+                <div class="faculty-card">
+                    <div class="faculty-img">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Dr. Sarah Johnson">
+                    </div>
+                    <div class="faculty-info">
+                        <h3>Dr. Sarah Johnson</h3>
+                        <p>Principal</p>
+                        <div class="faculty-bio">
+                            <p>Dr. Johnson has over 20 years of experience in educational leadership and holds a PhD in Educational Administration.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faculty-card">
+                    <div class="faculty-img">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1376&q=80" alt="Mr. David Chen">
+                    </div>
+                    <div class="faculty-info">
+                        <h3>Mr. David Chen</h3>
+                        <p>Head of Science</p>
+                        <div class="faculty-bio">
+                            <p>Mr. Chen is passionate about making science accessible and engaging for all students. He has a Master's in Chemistry Education.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faculty-card">
+                    <div class="faculty-img">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1361&q=80" alt="Ms. Maria Rodriguez">
+                    </div>
+                    <div class="faculty-info">
+                        <h3>Ms. Maria Rodriguez</h3>
+                        <p>Head of Languages</p>
+                        <div class="faculty-bio">
+                            <p>Ms. Rodriguez is fluent in four languages and brings a multicultural perspective to language instruction.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faculty-card">
+                    <div class="faculty-img">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Mr. James Wilson">
+                    </div>
+                    <div class="faculty-info">
+                        <h3>Mr. James Wilson</h3>
+                        <p>Head of Mathematics</p>
+                        <div class="faculty-bio">
+                            <p>Mr. Wilson has developed innovative approaches to teaching mathematics that make complex concepts understandable.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Students Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <p>"Prima Academy changed my life! The teachers are supportive and inspiring. The extracurricular activities helped me discover my passion for robotics."</p>
+                    <h4>- Sarah, Class of 2024</h4>
+                </div>
+                
+                <div class="testimonial">
+                    <p>"The academic challenges at Prima prepared me well for university. The small class sizes meant I got personalized attention from my teachers."</p>
+                    <h4>- Michael, Class of 2023</h4>
+                </div>
+                
+                <div class="testimonial">
+                    <p>"I love the sense of community at Prima. The school events and clubs helped me make friends and develop leadership skills."</p>
+                    <h4>- Aisha, Class of 2025</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News & Events Section -->
+    <section class="section news" id="news">
+        <div class="container">
+            <h2 class="section-title">News & Events</h2>
+            <div class="news-grid" id="newsGrid">
+                <div class="news-card">
+                    <div class="news-img">
+                        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Science Fair">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-date">June 15, 2023</span>
+                        <h3>Annual Science Fair Winners Announced</h3>
+                        <p>Congratulations to all participants in our annual science fair. The projects showcased incredible creativity and scientific thinking.</p>
+                        <a href="news.html" class="btn">Read More</a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-img">
+                        <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Sports Day">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-date">May 28, 2023</span>
+                        <h3>Sports Day 2023: A Celebration of Athleticism</h3>
+                        <p>Our annual sports day brought together students, parents, and teachers for a day of friendly competition and physical activity.</p>
+                        <a href="news.html" class="btn">Read More</a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-img">
+                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Graduation">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-date">April 10, 2023</span>
+                        <h3>Class of 2023 Graduation Ceremony</h3>
+                        <p>We celebrated the achievements of our graduating class in a memorable ceremony attended by families and faculty.</p>
+                        <a href="news.html" class="btn">Read More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="load-more">
+                <a href="news.html" class="btn" id="loadMoreBtn">Load More News</a>
+            </div>
+            
+            <div class="calendar-container">
+                <h3 style="text-align: center; margin-bottom: 20px;">School Calendar</h3>
+                <div id="calendar"></div>
             </div>
         </div>
     </section>
@@ -733,69 +1291,38 @@
     <!-- Gallery Section -->
     <section class="section gallery" id="gallery">
         <div class="container">
-            <h2 class="section-title">School Gallery</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="Classroom">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Science Lab">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1490&q=80" alt="Basketball">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1516627145497-ae69578cfc06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Library">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1462536943532-57a629f6cc60?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Art Class">
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Music Room">
-                </div>
+            <h2 class="section-title">Our Gallery</h2>
+            <div class="gallery-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="academics">Academics</button>
+                <button class="filter-btn" data-filter="sports">Sports</button>
+                <button class="filter-btn" data-filter="arts">Arts</button>
+                <button class="filter-btn" data-filter="events">Events</button>
             </div>
-        </div>
-    </section>
-
-    <!-- News Section -->
-    <section class="section news" id="news">
-        <div class="container">
-            <h2 class="section-title">News & Events</h2>
-            <div class="news-grid">
-                <div class="news-card">
-                    <div class="news-img">
-                        <img src="https://images.unsplash.com/photo-1472745433479-4556f22e32c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="Sports Day">
-                    </div>
-                    <div class="news-content">
-                        <span class="news-date">October 15, 2025</span>
-                        <h3>Annual Sports Day 2025</h3>
-                        <p>Join us for our Annual Sports Day celebration on November 10th. Students will participate in various athletic events and team competitions.</p>
-                        <a href="#" class="btn" style="margin-top: 15px;">Read More</a>
-                    </div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item" data-category="academics">
+                    <img src="https://images.unsplash.com/photo-1588072432836-4b4f2ca7f4e6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Science Class">
                 </div>
                 
-                <div class="news-card">
-                    <div class="news-img">
-                        <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Science Fair">
-                    </div>
-                    <div class="news-content">
-                        <span class="news-date">October 5, 2025</span>
-                        <h3>Science Fair Winners Announced</h3>
-                        <p>Congratulations to our students who showcased innovative projects at the regional science fair. Three projects advanced to the national level.</p>
-                        <a href="#" class="btn" style="margin-top: 15px;">Read More</a>
-                    </div>
+                <div class="gallery-item" data-category="sports">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Basketball Team">
                 </div>
                 
-                <div class="news-card">
-                    <div class="news-img">
-                        <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Parent Workshop">
-                    </div>
-                    <div class="news-content">
-                        <span class="news-date">September 28, 2025</span>
-                        <h3>Parent Workshop: Digital Literacy</h3>
-                        <p>We're hosting a workshop for parents on navigating digital learning tools and promoting healthy technology habits at home.</p>
-                        <a href="#" class="btn" style="margin-top: 15px;">Read More</a>
-                    </div>
+                <div class="gallery-item" data-category="arts">
+                    <img src="https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Art Exhibition">
+                </div>
+                
+                <div class="gallery-item" data-category="events">
+                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="School Play">
+                </div>
+                
+                <div class="gallery-item" data-category="academics">
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1422&q=80" alt="Library">
+                </div>
+                
+                <div class="gallery-item" data-category="sports">
+                    <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Soccer Match">
                 </div>
             </div>
         </div>
@@ -804,14 +1331,13 @@
     <!-- Admissions Section -->
     <section class="section admissions" id="admissions">
         <div class="container">
-            <h2 class="section-title">Admissions</h2>
-            <p style="text-align: center; max-width: 800px; margin: 0 auto 50px;">We welcome applications from students who demonstrate academic potential, character, and a willingness to contribute to our school community. Our admissions process is designed to identify students who will thrive in our learning environment.</p>
+            <h2 class="section-title">Admissions Process</h2>
             
             <div class="admission-steps">
                 <div class="step">
                     <div class="step-number">1</div>
                     <h3>Inquiry</h3>
-                    <p>Submit an inquiry form or attend an open house to learn more about our programs.</p>
+                    <p>Submit an inquiry form or schedule a campus tour to learn more about our programs.</p>
                 </div>
                 
                 <div class="step">
@@ -823,57 +1349,19 @@
                 <div class="step">
                     <div class="step-number">3</div>
                     <h3>Assessment</h3>
-                    <p>Students participate in age-appropriate assessments and interviews.</p>
+                    <p>Students may be invited for an assessment or interview as part of the process.</p>
                 </div>
                 
                 <div class="step">
                     <div class="step-number">4</div>
                     <h3>Enrollment</h3>
-                    <p>Receive admission decision and complete enrollment procedures.</p>
+                    <p>Upon acceptance, complete enrollment forms and submit fees to secure placement.</p>
                 </div>
             </div>
             
-            <div class="admission-form">
-                <h3 style="text-align: center; margin-bottom: 30px;">Request More Information</h3>
-                <form>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div class="form-group">
-                            <label for="firstName">First Name</label>
-                            <input type="text" id="firstName" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name</label>
-                            <input type="text" id="lastName" class="form-control" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" class="form-control">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="interest">Program of Interest</label>
-                        <select id="interest" class="form-control">
-                            <option value="">Select a program</option>
-                            <option value="primary">Primary School</option>
-                            <option value="middle">Middle School</option>
-                            <option value="high">High School</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" class="form-control" rows="5"></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Inquiry</button>
-                </form>
+            <div class="admission-form" style="text-align: center;">
+                <h3 style="text-align: center; margin-bottom: 30px;">Ready to Apply?</h3>
+                <a href="admission.html" class="btn btn-primary">APPLY NOW</a>
             </div>
         </div>
     </section>
@@ -882,6 +1370,7 @@
     <section class="section contact" id="contact">
         <div class="container">
             <h2 class="section-title">Contact Us</h2>
+            
             <div class="contact-container">
                 <div class="contact-info">
                     <div class="contact-item">
@@ -889,8 +1378,8 @@
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div>
-                            <h3>Our Location</h3>
-                            <p>123 Education Avenue<br>Tabora, City 12345</p>
+                            <h3>Address</h3>
+                            <p>123 Education Avenue<br>Accra, Ghana</p>
                         </div>
                     </div>
                     
@@ -900,7 +1389,7 @@
                         </div>
                         <div>
                             <h3>Phone</h3>
-                            <p>+1 (234) 567-8900<br>+1 (234) 567-8901</p>
+                            <p>+233 123 456 789</p>
                         </div>
                     </div>
                     
@@ -910,7 +1399,7 @@
                         </div>
                         <div>
                             <h3>Email</h3>
-                            <p>info@primaacademy.edu<br>admissions@primaacademy.edu</p>
+                            <p>info@primaacademy.edu.gh</p>
                         </div>
                     </div>
                     
@@ -920,14 +1409,40 @@
                         </div>
                         <div>
                             <h3>Office Hours</h3>
-                            <p>Monday - Friday: 8:00 AM - 4:00 PM<br>Saturday: 9:00 AM - 12:00 PM</p>
+                            <p>Monday - Friday: 8:00 AM - 4:00 PM<br>Saturday: 9:00 AM - 1:00 PM</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="map">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.640156791003!2d-0.26360149999999993!3d5.620030799999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf98e1842a55a7%3A0x6f65d0ef99e7f20c!2sPrima%20Academy!5e0!3m2!1sen!2sgh!4v1761642273290!5m2!1sen!2sgh" allowfullscreen="" loading="lazy"></iframe>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="contactName">Your Name</label>
+                            <input type="text" id="contactName" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactEmail">Your Email</label>
+                            <input type="email" id="contactEmail" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactSubject">Subject</label>
+                            <input type="text" id="contactSubject" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactMessage">Message</label>
+                            <textarea id="contactMessage" class="form-control" rows="5" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
                 </div>
+            </div>
+            
+            <div class="map" style="margin-top: 50px;">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.755207351895!2d-0.200367924443997!3d5.603979432899313!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9c94381c6d6b%3A0x7acc27e5c1e9e9e9!2sAccra%2C%20Ghana!5e0!3m2!1sen!2sus!4v1687891234567!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </section>
@@ -938,7 +1453,7 @@
             <div class="footer-container">
                 <div class="footer-col">
                     <h3>Prima Academy</h3>
-                    <p>Committed to excellence in education, holistic development, and strong community values since 2000.</p>
+                    <p>Excellence in Education, Holistic Development. Preparing students for success in a rapidly changing world.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -953,63 +1468,376 @@
                         <li><a href="#home">Home</a></li>
                         <li><a href="#about">About Us</a></li>
                         <li><a href="#academics">Academics</a></li>
-                        <li><a href="#gallery">Gallery</a></li>
-                        <li><a href="#news">News & Events</a></li>
                         <li><a href="#admissions">Admissions</a></li>
+                        <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-col">
                     <h3>Programs</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Primary School</a></li>
-                        <li><a href="#">Middle School</a></li>
-                        <li><a href="#">High School</a></li>
-                        <li><a href="#">Extracurricular</a></li>
+                        <li><a href="primary.html">Primary School</a></li>
+                        <li><a href="middle.html">Middle School</a></li>
+                        <li><a href="high.html">High School</a></li>
+                        <li><a href="extracurricular.html">Extracurricular</a></li>
                         <li><a href="#">Summer Programs</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-col">
-                    <h3>Resources</h3>
+                    <h3>Contact Info</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Parent Portal</a></li>
-                        <li><a href="#">Student Portal</a></li>
-                        <li><a href="#">School Calendar</a></li>
-                        <li><a href="#">Lunch Menu</a></li>
-                        <li><a href="#">Careers</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Education Avenue, Accra, Ghana</li>
+                        <li><i class="fas fa-phone"></i> +233 123 456 789</li>
+                        <li><i class="fas fa-envelope"></i> info@primaacademy.edu.gh</li>
                     </ul>
                 </div>
             </div>
             
             <div class="copyright">
-                <p>&copy; 2025 Prima Academy. All Rights Reserved.</p>
+                <p>&copy; 2023 Prima Academy. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Floating Action Button -->
+    <div class="fab" id="applyFab">
+        <i class="fas fa-edit"></i>
+    </div>
+
+    <!-- AI Chat Assistant -->
+    <div class="chatbot" id="chatbot">
+        <div class="chatbot-header">
+            <h3>Prima Academy Assistant</h3>
+            <div class="chatbot-close" id="chatbotClose">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        <div class="chatbot-body" id="chatbotBody">
+            <div class="chatbot-message bot-message">
+                Hello! I'm the Prima Academy assistant. How can I help you today?
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbotInput" placeholder="Type your message...">
+            <button class="btn" id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-close" id="lightboxClose">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="lightbox-nav lightbox-prev" id="lightboxPrev">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="lightbox-nav lightbox-next" id="lightboxNext">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <div class="lightbox-content">
+            <img src="" alt="" id="lightboxImage">
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <script>
-        // Mobile Navigation Toggle
-        const mobileToggle = document.querySelector('.mobile-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        
-        mobileToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
-        
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
+        // DOM Content Loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sticky Shrinking Navbar
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                header.classList.toggle('shrink', window.scrollY > 50);
+                
+                // Active Link Highlighting
+                const sections = document.querySelectorAll('section');
+                const navLinks = document.querySelectorAll('.nav-menu a');
+                
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (scrollY >= (sectionTop - 200)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
             });
-        });
-        
-        // Simple form submission handler
-        document.querySelector('.admission-form form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your inquiry! We will contact you soon.');
-            this.reset();
+            
+            // Mobile Menu Toggle
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            mobileToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+            });
+            
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navMenu.classList.remove('active');
+                });
+            });
+            
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            themeToggle.addEventListener('click', function() {
+                document.body.setAttribute('data-theme', 
+                    document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+                );
+                
+                if (document.body.getAttribute('data-theme') === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            });
+            
+            // Load More News
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const newsGrid = document.getElementById('newsGrid');
+            
+            loadMoreBtn.addEventListener('click', function() {
+                // In a real implementation, this would fetch more news from a server
+                const newNews = `
+                    <div class="news-card">
+                        <div class="news-img">
+                            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="New Building">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-date">March 22, 2023</span>
+                            <h3>New Science Wing Opening Soon</h3>
+                            <p>Construction of our new state-of-the-art science wing is nearing completion, with an expected opening in September.</p>
+                            <a href="#" class="btn">Read More</a>
+                        </div>
+                    </div>
+                `;
+                
+                newsGrid.innerHTML += newNews;
+                loadMoreBtn.textContent = 'No More News';
+                loadMoreBtn.disabled = true;
+            });
+            
+            // Calendar Initialization
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                    {
+                        title: 'First Day of School',
+                        start: '2023-09-05'
+                    },
+                    {
+                        title: 'Parent-Teacher Conferences',
+                        start: '2023-10-15',
+                        end: '2023-10-17'
+                    },
+                    {
+                        title: 'Science Fair',
+                        start: '2023-11-10'
+                    },
+                    {
+                        title: 'Winter Break',
+                        start: '2023-12-22',
+                        end: '2024-01-08'
+                    }
+                ]
+            });
+            calendar.render();
+            
+            // Gallery Filtering
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    
+                    galleryItems.forEach(item => {
+                        if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Lightbox Gallery
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxClose = document.getElementById('lightboxClose');
+            const lightboxPrev = document.getElementById('lightboxPrev');
+            const lightboxNext = document.getElementById('lightboxNext');
+            const galleryImages = document.querySelectorAll('.gallery-item img');
+            
+            let currentImageIndex = 0;
+            
+            galleryImages.forEach((img, index) => {
+                img.addEventListener('click', function() {
+                    currentImageIndex = index;
+                    lightboxImage.src = this.src;
+                    lightbox.style.display = 'flex';
+                });
+            });
+            
+            lightboxClose.addEventListener('click', function() {
+                lightbox.style.display = 'none';
+            });
+            
+            lightboxPrev.addEventListener('click', function() {
+                currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+                lightboxImage.src = galleryImages[currentImageIndex].src;
+            });
+            
+            lightboxNext.addEventListener('click', function() {
+                currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+                lightboxImage.src = galleryImages[currentImageIndex].src;
+            });
+            
+            // Close lightbox when clicking outside the image
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    lightbox.style.display = 'none';
+                }
+            });
+            
+            // Admissions CTA
+            
+            // Contact Form Submission
+            const contactForm = document.getElementById('contactForm');
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Thank you for your message! We will get back to you soon.');
+                this.reset();
+            });
+            
+            // Floating Action Button
+            const applyFab = document.getElementById('applyFab');
+            applyFab.addEventListener('click', function() {
+                window.location.href = 'admission.html';
+            });
+            
+            // AI Chat Assistant
+            const chatbot = document.getElementById('chatbot');
+            const chatbotClose = document.getElementById('chatbotClose');
+            const chatbotBody = document.getElementById('chatbotBody');
+            const chatbotInput = document.getElementById('chatbotInput');
+            const chatbotSend = document.getElementById('chatbotSend');
+            
+            // Show chatbot after a delay
+            setTimeout(() => {
+                chatbot.style.display = 'flex';
+            }, 5000);
+            
+            chatbotClose.addEventListener('click', function() {
+                chatbot.style.display = 'none';
+            });
+            
+            function addBotMessage(message) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chatbot-message bot-message';
+                messageDiv.textContent = message;
+                chatbotBody.appendChild(messageDiv);
+                chatbotBody.scrollTop = chatbotBody.scrollHeight;
+            }
+            
+            function addUserMessage(message) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chatbot-message user-message';
+                messageDiv.textContent = message;
+                chatbotBody.appendChild(messageDiv);
+                chatbotBody.scrollTop = chatbotBody.scrollHeight;
+            }
+            
+            function processUserMessage(message) {
+                const lowerMessage = message.toLowerCase();
+                
+                if (lowerMessage.includes('admission') || lowerMessage.includes('apply')) {
+                    addBotMessage('You can find our admission process and application form in the Admissions section of our website. Would you like me to direct you there?');
+                } else if (lowerMessage.includes('fee') || lowerMessage.includes('tuition')) {
+                    addBotMessage('Our tuition fees vary by grade level. Please contact our admissions office at admissions@primaacademy.edu.gh for detailed fee information.');
+                } else if (lowerMessage.includes('program') || lowerMessage.includes('curriculum')) {
+                    addBotMessage('We offer programs for Primary, Middle, and High School levels. Each program is designed to provide a comprehensive education. You can learn more in the Academics section.');
+                } else if (lowerMessage.includes('contact') || lowerMessage.includes('phone') || lowerMessage.includes('email')) {
+                    addBotMessage('You can reach us at +233 123 456 789 or info@primaacademy.edu.gh. Our address is 123 Education Avenue, Accra, Ghana.');
+                } else if (lowerMessage.includes('visit') || lowerMessage.includes('tour')) {
+                    addBotMessage('We would love to show you around! Please contact our admissions office to schedule a campus tour.');
+                } else {
+                    addBotMessage('I\'m here to help with information about Prima Academy. You can ask me about admissions, programs, fees, or contact information.');
+                }
+            }
+            
+            chatbotSend.addEventListener('click', function() {
+                const message = chatbotInput.value.trim();
+                if (message) {
+                    addUserMessage(message);
+                    chatbotInput.value = '';
+                    
+                    // Simulate typing delay
+                    setTimeout(() => {
+                        processUserMessage(message);
+                    }, 1000);
+                }
+            });
+            
+            chatbotInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    chatbotSend.click();
+                }
+            });
+            
+            // Lazy Loading for Images
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src;
+                            img.classList.remove('lazy');
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('img[data-src]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
         });
     </script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="js/firebase-config.js"></script>
+    
+    <!-- Firebase Modules -->
+    <script src="js/firebase-auth.js"></script>
+    <script src="js/firebase-db.js"></script>
 </body>
 </html>
