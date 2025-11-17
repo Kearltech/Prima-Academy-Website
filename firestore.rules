@@ -2,8 +2,98 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is admin
+    // IMPORTANT: This allows reading the user's own document to check role
+    function isAdmin() {
+      return isAuthenticated() && 
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Users Collection - CRITICAL: Users must be able to read their own document for admin check
+    match /users/{userId} {
+      // Allow users to read their own document (needed for admin verification during login)
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      // Allow admins to read any user document
+      allow read: if isAdmin();
+      // Only admins can write user documents
+      allow write: if isAdmin();
+    }
+    
+    // Admissions Collection - Public can create, Admin can read/update
+    match /admissions/{admissionId} {
+      allow create: if request.resource.data.keys().hasAll(['firstName', 'lastName', 'gradeLevel', 'status']);
+      allow read: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Contacts Collection - Public can create, Admin can read
+    match /contacts/{contactId} {
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'subject', 'message']);
+      allow read: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Students Collection - Admin only
+    match /students/{studentId} {
+      allow read, write: if isAdmin();
+    }
+    
+    // Classes Collection - Admin only
+    match /classes/{classId} {
+      allow read, write: if isAdmin();
+    }
+    
+    // Instructors Collection - Admin only
+    match /instructors/{instructorId} {
+      allow read, write: if isAdmin();
+    }
+    
+    // Schedules Collection - Admin only
+    match /schedules/{scheduleId} {
+      allow read, write: if isAdmin();
+    }
+    
+    // Payments Collection - Admin only
+    match /payments/{paymentId} {
+      allow read, write: if isAdmin();
+    }
+    
+    // News Collection - Public can read published, Admin can write
+    match /news/{newsId} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow write: if isAdmin();
+    }
+    
+    // Events Collection - Public can read published, Admin can write
+    match /events/{eventId} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow write: if isAdmin();
+    }
+    
+    // Gallery Collection - Public can read published, Admin can write
+    match /gallery/{imageId} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow write: if isAdmin();
+    }
+    
+    // Faculty Collection - Public can read active, Admin can write
+    match /faculty/{facultyId} {
+      allow read: if resource.data.status == 'active' || isAdmin();
+      allow write: if isAdmin();
+    }
+    
+    // Settings Collection - Admin only
+    match /settings/{settingId} {
+      allow read, write: if isAdmin();
     }
   }
 }
