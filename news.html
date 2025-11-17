@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News & Events | Prima Academy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --primary: #1a4b8c;
+            --secondary: #f9a826;
+            --accent: #2e7d32;
+            --light: #f5f5f5;
+            --dark: #333;
+            --text: #444;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #fff;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #e89a1f;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #0d3a6e;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+            margin: 15px auto;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-left: 30px;
+        }
+
+        .nav-menu a {
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-menu a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            bottom: -5px;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover:after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* News Hero */
+        .news-hero {
+            background: linear-gradient(rgba(26, 75, 140, 0.8), rgba(26, 75, 140, 0.9));
+            color: white;
+            padding: 180px 0 100px;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .news-hero h1 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .news-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .news-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .news-card:hover .news-img img {
+            transform: scale(1.1);
+        }
+
+        .news-content {
+            padding: 25px;
+        }
+
+        .news-date {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .news-excerpt {
+            color: var(--text);
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-full {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .news-full.active {
+            display: block;
+        }
+
+        .read-more {
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-block;
+            transition: var(--transition);
+        }
+
+        .read-more:hover {
+            color: var(--secondary);
+        }
+
+        /* Load More Button */
+        .load-more {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .load-more .btn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+        }
+
+        .load-more .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .load-more .btn:disabled:hover {
+            background-color: #cccccc;
+            transform: none;
+        }
+
+        /* News Categories */
+        .news-categories {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 10px 25px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .category-btn.active,
+        .category-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Single News Article */
+        .single-news {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .single-news-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .single-news-date {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .single-news-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .single-news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .single-news-content {
+            line-height: 1.8;
+        }
+
+        .single-news-content p {
+            margin-bottom: 20px;
+        }
+
+        .single-news-content h2, 
+        .single-news-content h3 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .single-news-content ul, 
+        .single-news-content ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .single-news-content li {
+            margin-bottom: 8px;
+        }
+
+        .back-to-news {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .back-to-news:hover {
+            color: var(--secondary);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            color: white;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                flex-direction: column;
+                background-color: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: var(--shadow);
+                padding: 20px 0;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-menu li {
+                margin: 15px 0;
+            }
+            
+            .news-hero {
+                padding: 150px 0 80px;
+            }
+            
+            .news-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .news-categories {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="media/logo.png" alt="Prima Academy Logo">
+                <div class="logo-text">Prima Academy</div>
+            </div>
+            
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About Us</a></li>
+                <li><a href="index.html#academics">Academics</a></li>
+                <li><a href="index.html#faculty">Faculty</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
+                <li><a href="news.html" class="active">News & Events</a></li>
+                <li><a href="index.html#admissions">Admissions</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- News Hero -->
+    <section class="news-hero">
+        <div class="container">
+            <h1>News & Events</h1>
+            <p>Stay updated with the latest happenings, achievements, and events at Prima Academy.</p>
+        </div>
+    </section>
+
+    <!-- News Categories -->
+    <section class="section">
+        <div class="container">
+            <div class="news-categories">
+                <button class="category-btn active" data-category="all">All News</button>
+                <button class="category-btn" data-category="academics">Academics</button>
+                <button class="category-btn" data-category="sports">Sports</button>
+                <button class="category-btn" data-category="events">Events</button>
+                <button class="category-btn" data-category="achievements">Achievements</button>
+            </div>
+
+            <!-- News Grid -->
+            <div class="news-grid" id="newsGrid">
+                <!-- News items will be loaded here dynamically -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more">
+                <button class="btn" id="loadMoreBtn">Load More News</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Prima Academy</h3>
+                    <p>Committed to excellence in education, holistic development, and strong community values since 2000.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#academics">Academics</a></li>
+                        <li><a href="index.html#gallery">Gallery</a></li>
+                        <li><a href="news.html">News & Events</a></li>
+                        <li><a href="index.html#admissions">Admissions</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Academic Programs</h3>
+                    <ul class="footer-links">
+                        <li><a href="primary.html">Primary School</a></li>
+                        <li><a href="middle.html">Middle School</a></li>
+                        <li><a href="high.html">High School</a></li>
+                        <li><a href="extracurricular.html">Extracurricular</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Education Avenue, Accra</li>
+                        <li><i class="fas fa-phone"></i> +233 123 456 789</li>
+                        <li><i class="fas fa-envelope"></i> info@primaacademy.edu.gh</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Prima Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample news data
+        const newsData = [
+            {
+                id: 1,
+                title: "Annual Science Fair Winners Announced",
+                date: "June 15, 2023",
+                category: "academics",
+                image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                excerpt: "Congratulations to all participants in our annual science fair. The projects showcased incredible creativity and scientific thinking.",
+                fullContent: `
+                    <p>We are thrilled to announce the winners of our Annual Science Fair 2023, which showcased the incredible scientific talent and creativity of our students. This year's fair featured over 50 projects spanning various scientific disciplines.</p>
+                    
+                    <h3>First Place Winners</h3>
+                    <ul>
+                        <li><strong>Sarah Johnson (Grade 10)</strong> - "The Effects of Different Light Wavelengths on Plant Growth"</li>
+                        <li><strong>Michael Chen (Grade 8)</strong> - "Building a Sustainable Water Filtration System"</li>
+                        <li><strong>Aisha Mohammed (Grade 11)</strong> - "Investigating Antibacterial Properties of Local Herbs"</li>
+                    </ul>
+                    
+                    <h3>Special Recognition Awards</h3>
+                    <p>Several projects received special recognition for their innovation and real-world applications:</p>
+                    <ul>
+                        <li>Most Innovative Project: David Wilson (Grade 9) - "Solar-Pcharged Phone Charger"</li>
+                        <li>Best Environmental Project: Maria Rodriguez (Grade 12) - "Reducing Plastic Waste with Biodegradable Alternatives"</li>
+                        <li>Community Impact Award: James Brown (Grade 10) - "Improving Access to Clean Water in Rural Communities"</li>
+                    </ul>
+                    
+                    <p>The judges, including local scientists and university professors, were impressed by the depth of research and presentation skills demonstrated by all participants. The fair not only showcased scientific knowledge but also highlighted our students' commitment to solving real-world problems.</p>
+                    
+                    <p>Congratulations to all participants and their dedicated teachers who supported them throughout this process. We look forward to seeing even more innovative projects next year!</p>
+                `
+            },
+            {
+                id: 2,
+                title: "Sports Day 2023: A Celebration of Athleticism",
+                date: "May 28, 2023",
+                category: "sports",
+                image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                excerpt: "Our annual sports day brought together students, parents, and teachers for a day of friendly competition and physical activity.",
+                fullContent: `
+                    <p>The sun was shining brightly as our school community gathered for the much-anticipated Sports Day 2023. The event, held on our expansive sports field, was a vibrant celebration of athleticism, teamwork, and school spirit.</p>
+                    
+                    <h3>Highlights of the Day</h3>
+                    <ul>
+                        <li><strong>Opening Ceremony:</strong> The day began with a spectacular parade of houses, with each house showcasing their unique cheers and banners.</li>
+                        <li><strong>Track Events:</strong> Students competed in various track events including 100m, 200m, 400m races, and relay competitions.</li>
+                        <li><strong>Field Events:</strong> Long jump, high jump, shot put, and javelin throw events showcased our students' diverse athletic talents.</li>
+                        <li><strong>Team Sports:</strong> Basketball, soccer, and volleyball tournaments kept the excitement levels high throughout the day.</li>
+                    </ul>
+                    
+                    <h3>House Competition Results</h3>
+                    <p>After a day of intense competition, the final house standings were:</p>
+                    <ol>
+                        <li><strong>Blue House</strong> - 245 points</li>
+                        <li><strong>Red House</strong> - 228 points</li>
+                        <li><strong>Green House</strong> - 215 points</li>
+                        <li><strong>Yellow House</strong> - 198 points</li>
+                    </ol>
+                    
+                    <h3>Outstanding Performers</h3>
+                    <p>Special recognition goes to:</p>
+                    <ul>
+                        <li><strong>Sarah Johnson</strong> - Broke the school record in 100m dash (12.3 seconds)</li>
+                        <li><strong>Michael Chen</strong> - Outstanding performance in long jump (5.8 meters)</li>
+                        <li><strong>Blue House Relay Team</strong> - Set a new record in 4x100m relay</li>
+                    </ul>
+                    
+                    <p>The event concluded with an awards ceremony where our principal, Dr. Sarah Johnson, commended all participants for their sportsmanship and dedication. The day was not just about winning but about celebrating physical fitness, teamwork, and the joy of sports.</p>
+                    
+                    <p>We extend our gratitude to all parents, teachers, and volunteers who made this event possible. Your support helps create memorable experiences for our students.</p>
+                `
+            },
+            {
+                id: 3,
+                title: "Class of 2023 Graduation Ceremony",
+                date: "April 10, 2023",
+                category: "events",
+                image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                excerpt: "We celebrated the achievements of our graduating class in a memorable ceremony attended by families and faculty.",
+                fullContent: `
+                    <p>On a beautiful spring afternoon, we gathered to celebrate the remarkable achievements of the Class of 2023 in a moving graduation ceremony that marked the culmination of their journey at Prima Academy.</p>
+                    
+                    <h3>Ceremony Highlights</h3>
+                    <p>The ceremony began with a procession of 125 graduating students, dressed in their academic regalia, entering the auditorium to the sound of Pomp and Circumstance. Families, friends, and faculty members filled the venue with proud smiles and joyful tears.</p>
+                    
+                    <h3>Special Awards and Recognitions</h3>
+                    <ul>
+                        <li><strong>Valedictorian:</strong> Sarah Johnson, who will be attending Stanford University to study Computer Science</li>
+                        <li><strong>Salutatorian:</strong> Michael Chen, accepted to MIT for Engineering</li>
+                        <li><strong>Principal's Award:</strong> Aisha Mohammed for outstanding leadership and community service</li>
+                        <li><strong>Academic Excellence Awards:</strong> 15 students recognized for exceptional performance across all subjects</li>
+                    </ul>
+                    
+                    <h3>Notable Achievements</h3>
+                    <p>The Class of 2023 has achieved remarkable success:</p>
+                    <ul>
+                        <li>98% college acceptance rate</li>
+                        <li>Over $2.5 million in scholarships awarded</li>
+                        <li>15 students accepted to Ivy League universities</li>
+                        <li>25 students recognized as National Merit Scholars</li>
+                    </ul>
+                    
+                    <h3>Inspirational Addresses</h3>
+                    <p>Valedictorian Sarah Johnson delivered an inspiring speech about resilience and the importance of following one's passions. Our keynote speaker, Dr. James Wilson (Class of 2005), now a renowned neuroscientist, shared valuable insights about embracing challenges and lifelong learning.</p>
+                    
+                    <p>Principal Dr. Sarah Johnson addressed the graduates, saying: "You have shown remarkable resilience, intellectual curiosity, and compassion. As you embark on your next chapter, remember that you carry with you not just knowledge, but the values that define Prima Academy - integrity, excellence, and service to others."</p>
+                    
+                    <p>The ceremony concluded with the traditional cap toss, symbolizing the beginning of new adventures for our graduates. We are incredibly proud of the Class of 2023 and excited to see the positive impact they will make in the world.</p>
+                `
+            },
+            {
+                id: 4,
+                title: "New Science Wing Grand Opening",
+                date: "March 22, 2023",
+                category: "achievements",
+                image: "https://images.unsplash.com/photo-1588072432836-4b4f2ca7f4e6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                excerpt: "State-of-the-art science facilities now available to inspire the next generation of scientists and innovators.",
+                fullContent: `
+                    <p>We are excited to announce the grand opening of our new $5 million Science Wing, a cutting-edge facility designed to provide our students with the best possible environment for scientific exploration and discovery.</p>
+                    
+                    <h3>Facility Features</h3>
+                    <p>The new Science Wing includes:</p>
+                    <ul>
+                        <li><strong>Advanced Biology Lab:</strong> Equipped with DNA sequencing equipment, microscopes with digital imaging, and tissue culture facilities</li>
+                        <li><strong>Chemistry Innovation Center:</strong> Featuring fume hoods, analytical balances, and spectroscopy equipment</li>
+                        <li><strong>Physics Discovery Lab:</strong> With laser optics equipment, robotics stations, and renewable energy research stations</li>
+                        <li><strong>Environmental Science Station:</strong> Complete with weather monitoring equipment and ecological study tools</li>
+                        <li><strong>Collaborative Learning Spaces:</strong> Flexible classrooms designed for project-based learning and interdisciplinary studies</li>
+                    </ul>
+                    
+                    <h3>Educational Impact</h3>
+                    <p>This new facility will enable us to:</p>
+                    <ul>
+                        <li>Offer advanced research opportunities for students</li>
+                        <li>Host science competitions and workshops</li>
+                        <li>Partner with local universities for joint research projects</li>
+                        <li>Provide hands-on experience with professional-grade equipment</li>
+                    </ul>
+                    
+                    <p>The opening ceremony was attended by local dignitaries, alumni, and community partners who have supported this project. The ribbon was cut by our youngest science competition winner, 14-year-old Maria Rodriguez.</p>
+                `
+            },
+            {
+                id: 5,
+                title: "Mathematics Olympiad Team Wins Regional Championship",
+                date: "February 18, 2023",
+                category: "achievements",
+                image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                excerpt: "Our mathematics team demonstrated exceptional problem-solving skills at the regional competition.",
+                fullContent: `
+                    <p>We are proud to announce that our Mathematics Olympiad Team has won the Regional Mathematics Championship, competing against 25 schools from across the region.</p>
+                    
+                    <h3>Team Performance</h3>
+                    <p>Our team of six students achieved outstanding results:</p>
+                    <ul>
+                        <li><strong>First Place Team Overall</strong></li>
+                        <li><strong>Individual Gold Medals:</strong> Sarah Johnson and Michael Chen</li>
+                        <li><strong>Individual Silver Medals:</strong> David Wilson and Maria Rodriguez</li>
+                        <li><strong>Perfect Scores:</strong> Two students achieved perfect scores in the algebra section</li>
+                    </ul>
+                    
+                    <h3>Competition Highlights</h3>
+                    <p>The competition included challenging problems in algebra, geometry, number theory, and combinatorics. Our students demonstrated not only mathematical proficiency but also creative problem-solving approaches that impressed the judges.</p>
+                    
+                    <p>Team coach Mr. James Wilson commented: "I'm incredibly proud of our students. Their dedication to practicing complex problems and their ability to work collaboratively under pressure was remarkable. This victory is a testament to their hard work and mathematical talent."</p>
+                    
+                    <p>The team will now advance to the National Mathematics Olympiad next month, where they will represent our region against the top mathematical minds from across the country.</p>
+                `
+            },
+            {
+                id: 6,
+                title: "Annual Art Exhibition Showcases Student Creativity",
+                date: "January 25, 2023",
+                category: "events",
+                image: "https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80",
+                excerpt: "The school gallery transformed into a vibrant display of artistic talent from students across all grade levels.",
+                fullContent: `
+                    <p>Our annual Art Exhibition opened to great acclaim, showcasing the incredible artistic talents of students from kindergarten through high school. The exhibition featured over 200 pieces across various media.</p>
+                    
+                    <h3>Exhibition Highlights</h3>
+                    <p>The exhibition was organized into several themed galleries:</p>
+                    <ul>
+                        <li><strong>Digital Arts Gallery:</strong> Featuring digital paintings, animations, and graphic design projects</li>
+                        <li><strong>Sculpture Garden:</strong> Showcasing three-dimensional works in clay, metal, and mixed media</li>
+                        <li><strong>Photography Wing:</strong> Displaying student photography exploring themes of identity and environment</li>
+                        <li><strong>Traditional Arts:</strong> Paintings, drawings, and prints in various traditional media</li>
+                    </ul>
+                    
+                    <h3>Notable Works</h3>
+                    <p>Several pieces received special recognition:</p>
+                    <ul>
+                        <li>"Urban Dreams" by Sarah Johnson (Grade 11) - A mixed media exploration of city life</li>
+                        <li>"Echoes of Nature" by Michael Chen (Grade 9) - A series of landscape photographs</li>
+                        <li>"Metamorphosis" by Maria Rodriguez (Grade 12) - A sculpture exploring transformation</li>
+                    </ul>
+                    
+                    <p>The exhibition will remain open for two weeks, and several pieces have already been purchased by community members and art enthusiasts.</p>
+                `
+            }
+        ];
+
+        // Additional news items for load more functionality
+        const additionalNews = [
+            {
+                id: 7,
+                title: "Debate Team Qualifies for National Tournament",
+                date: "December 15, 2022",
+                category: "achievements",
+                image: "https://images.unsplash.com/photo-1588072432836-4b4f2ca7f4e6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                excerpt: "Our debate team demonstrated exceptional rhetorical skills at the state championship.",
+                fullContent: "Full content for debate team achievement..."
+            },
+            {
+                id: 8,
+                title: "Winter Music Concert Delights Audience",
+                date: "December 10, 2022",
+                category: "events",
+                image: "https://images.unsplash.com/photo-1511376777868-611b54f68947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                excerpt: "The annual winter concert featured performances from choir, band, and orchestra students.",
+                fullContent: "Full content for winter concert..."
+            }
+        ];
+
+        // DOM Content Loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const newsGrid = document.getElementById('newsGrid');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            
+            let currentItems = 3; // Number of items to show initially
+            let currentCategory = 'all';
+            let allNews = [...newsData]; // Start with initial news
+            
+            // Mobile Menu Toggle
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            mobileToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+            });
+            
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navMenu.classList.remove('active');
+                });
+            });
+            
+            // Render news items
+            function renderNews(newsToRender) {
+                newsGrid.innerHTML = '';
+                
+                newsToRender.slice(0, currentItems).forEach(news => {
+                    const newsCard = document.createElement('div');
+                    newsCard.className = 'news-card';
+                    newsCard.setAttribute('data-category', news.category);
+                    newsCard.setAttribute('data-id', news.id);
+                    
+                    newsCard.innerHTML = `
+                        <div class="news-img">
+                            <img src="${news.image}" alt="${news.title}">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-date">${news.date}</span>
+                            <h3>${news.title}</h3>
+                            <p class="news-excerpt">${news.excerpt}</p>
+                            <div class="news-full" id="full-content-${news.id}">
+                                ${news.fullContent}
+                            </div>
+                            <span class="read-more" data-id="${news.id}">Read More</span>
+                        </div>
+                    `;
+                    
+                    newsGrid.appendChild(newsCard);
+                });
+                
+                // Add event listeners to read more buttons
+                document.querySelectorAll('.read-more').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const newsId = this.getAttribute('data-id');
+                        const fullContent = document.getElementById(`full-content-${newsId}`);
+                        const isExpanded = fullContent.classList.contains('active');
+                        
+                        if (isExpanded) {
+                            fullContent.classList.remove('active');
+                            this.textContent = 'Read More';
+                        } else {
+                            fullContent.classList.add('active');
+                            this.textContent = 'Read Less';
+                        }
+                    });
+                });
+                
+                // Update load more button
+                if (currentItems >= newsToRender.length) {
+                    loadMoreBtn.disabled = true;
+                    loadMoreBtn.textContent = 'No More News';
+                } else {
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.textContent = 'Load More News';
+                }
+            }
+            
+            // Filter news by category
+            function filterNews(category) {
+                currentCategory = category;
+                currentItems = 3; // Reset to initial items when filtering
+                
+                if (category === 'all') {
+                    renderNews(allNews);
+                } else {
+                    const filteredNews = allNews.filter(news => news.category === category);
+                    renderNews(filteredNews);
+                }
+            }
+            
+            // Category button event listeners
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    filterNews(category);
+                });
+            });
+            
+            // Load more functionality
+            loadMoreBtn.addEventListener('click', function() {
+                currentItems += 3;
+                
+                if (currentCategory === 'all') {
+                    renderNews(allNews);
+                } else {
+                    const filteredNews = allNews.filter(news => news.category === currentCategory);
+                    renderNews(filteredNews);
+                }
+            });
+            
+            // Simulate loading additional news (in a real app, this would be an API call)
+            function loadAdditionalNews() {
+                // Simulate API delay
+                setTimeout(() => {
+                    allNews = [...newsData, ...additionalNews];
+                    renderNews(allNews);
+                }, 1000);
+            }
+            
+            // Initial render
+            renderNews(allNews);
+            
+            // Simulate loading more news when reaching the end
+            window.addEventListener('scroll', function() {
+                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+                    if (!loadMoreBtn.disabled) {
+                        loadMoreBtn.click();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

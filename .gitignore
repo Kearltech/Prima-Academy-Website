@@ -1,0 +1,83 @@
+# Prima Academy Website - .gitignore
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+*.min.js
+*.min.css
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Firebase config (if you want to keep actual config private)
+# Uncomment the line below if you want to use firebase-config.example.js as template
+# js/firebase-config.js
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+*~
+
+# Cache
+.cache/
+.parcel-cache/
+.next/
+
+# Testing
+coverage/
+.nyc_output/
+*.test.js.snap
+
+# Production
+*.production.js
+*.production.css
+
+# Local development
+local/
+.local/
+
+# Documentation builds
+docs/_build/
+
+# Keep empty directories
+!css/.gitkeep
+!js/.gitkeep
+!images/.gitkeep
+!assets/.gitkeep
+!pages/.gitkeep
+!docs/.gitkeep
+
