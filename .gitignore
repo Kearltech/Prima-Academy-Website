@@ -16,6 +16,10 @@ build/
 .env.local
 .env.production
 
+# Firebase config (if you want to keep actual config private)
+# Uncomment the line below if you want to use firebase-config.example.js as template
+# js/firebase-config.js
+
 # IDE and Editor files
 .vscode/
 .idea/

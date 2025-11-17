@@ -1,27 +1,24 @@
 /**
- * Firebase Configuration
+ * Firebase Configuration Template
  * Prima Academy Website
  * 
- * This file contains Firebase initialization and configuration
- * 
- * IMPORTANT: Replace the config values with your actual Firebase project config
+ * IMPORTANT: Copy this file to firebase-config.js and fill in your actual Firebase project config
  * Get these values from Firebase Console > Project Settings > General > Your apps
  * 
- * SECURITY NOTE: Firebase API keys are safe to expose in client-side code.
- * Security is enforced through Firestore Security Rules, not API key secrecy.
- * See SECURITY_NOTES.md for more information.
+ * NOTE: For client-side Firebase apps, API keys are safe to expose as they're meant to be public.
+ * Security is enforced through Firebase Security Rules, not API key secrecy.
  */
 
 // Firebase configuration object
-// Updated with actual Firebase project configuration
+// Copy this file to firebase-config.js and replace with your actual values
 const firebaseConfig = {
-    apiKey: "AIzaSyAYJZx4bVSaA06njWIOjuKEnMUofcii41Q", // Public API key - safe for client-side use
-    authDomain: "prima-academy-website.firebaseapp.com",
-    projectId: "prima-academy-website",
-    storageBucket: "prima-academy-website.firebasestorage.app",
-    messagingSenderId: "321142938461",
-    appId: "1:321142938461:web:1c7d6eddf39bec01a6a6b4",
-    measurementId: "G-CHFZ93P3BF" // Optional, for Analytics
+    apiKey: "YOUR_API_KEY_HERE",
+    authDomain: "your-project.firebaseapp.com",
+    projectId: "your-project-id",
+    storageBucket: "your-project.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abcdef123456",
+    measurementId: "G-XXXXXXXXXX" // Optional, for Analytics
 };
 
 // Initialize Firebase
@@ -63,20 +60,4 @@ if (typeof firebase !== 'undefined') {
 } else {
     console.error('Firebase SDK not loaded. Make sure to include Firebase scripts in your HTML.');
 }
-
-// Alternative: For Firebase v9+ (modular SDK)
-// Uncomment if using the newer modular SDK
-/*
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
-import { getAnalytics } from 'firebase/analytics';
-
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
-export const analytics = getAnalytics(app);
-*/
 
