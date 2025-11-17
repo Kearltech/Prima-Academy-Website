@@ -90,11 +90,62 @@ try {
     console.log('Firebase initialized successfully');
 } catch (error) {
     console.error('Firebase initialization error:', error);
+    console.error('Error details:', {
+        message: error.message,
+        code: error.code
+    });
     // Don't throw - let the page load and show error message
-    window.firebaseApp = null;
-    window.firebaseAuth = null;
-    window.firebaseDb = null;
-    window.firebaseStorage = null;
+    // But try to initialize what we can as fallback
+    if (typeof firebase !== 'undefined') {
+        try {
+            // Try to get existing app instance
+            try {
+                window.firebaseApp = firebase.app();
+            } catch (e) {
+                // App doesn't exist, try to initialize
+                try {
+                    window.firebaseApp = firebase.initializeApp(firebaseConfig);
+                } catch (initError) {
+                    if (initError.code !== 'app/already-initialized') {
+                        throw initError;
+                    }
+                    window.firebaseApp = firebase.app();
+                }
+            }
+            
+            // Try to get auth and firestore
+            if (firebase.auth) {
+                try {
+                    window.firebaseAuth = firebase.auth();
+                } catch (e) {
+                    console.warn('Could not initialize Auth:', e);
+                }
+            }
+            
+            if (firebase.firestore) {
+                try {
+                    window.firebaseDb = firebase.firestore();
+                } catch (e) {
+                    console.warn('Could not initialize Firestore:', e);
+                }
+            }
+            
+            if (window.firebaseAuth && window.firebaseDb) {
+                console.log('Firebase initialized via fallback method');
+            }
+        } catch (fallbackError) {
+            console.error('Fallback initialization also failed:', fallbackError);
+            window.firebaseApp = null;
+            window.firebaseAuth = null;
+            window.firebaseDb = null;
+            window.firebaseStorage = null;
+        }
+    } else {
+        window.firebaseApp = null;
+        window.firebaseAuth = null;
+        window.firebaseDb = null;
+        window.firebaseStorage = null;
+    }
 }
 
 // Alternative: For Firebase v9+ (modular SDK)
