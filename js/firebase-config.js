@@ -26,42 +26,75 @@ const firebaseConfig = {
 
 // Initialize Firebase
 // Make sure Firebase SDK is loaded before this script
-if (typeof firebase !== 'undefined') {
-    // Initialize Firebase services
-    const app = firebase.initializeApp(firebaseConfig);
+try {
+    if (typeof firebase === 'undefined') {
+        console.error('Firebase SDK not loaded. Make sure to include Firebase scripts in your HTML.');
+        throw new Error('Firebase SDK not available');
+    }
+
+    // Initialize Firebase app
+    let app;
+    try {
+        app = firebase.initializeApp(firebaseConfig);
+        window.firebaseApp = app;
+        console.log('Firebase app initialized');
+    } catch (error) {
+        // App might already be initialized
+        if (error.code === 'app/already-initialized') {
+            app = firebase.app();
+            window.firebaseApp = app;
+            console.log('Firebase app already initialized, using existing instance');
+        } else {
+            throw error;
+        }
+    }
     
-    // Initialize Firebase services
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    // Initialize Firebase Auth (required)
+    try {
+        const auth = firebase.auth();
+        window.firebaseAuth = auth;
+        console.log('Firebase Auth initialized');
+    } catch (error) {
+        console.error('Failed to initialize Firebase Auth:', error);
+        throw new Error('Firebase Auth initialization failed');
+    }
+    
+    // Initialize Firestore (required)
+    try {
+        const db = firebase.firestore();
+        window.firebaseDb = db;
+        console.log('Firebase Firestore initialized');
+    } catch (error) {
+        console.error('Failed to initialize Firestore:', error);
+        throw new Error('Firestore initialization failed');
+    }
     
     // Storage is optional (requires billing plan)
     // Initialize Storage only if available
     let storage = null;
     try {
-        storage = firebase.storage();
-    } catch (error) {
-        console.warn('Firebase Storage not available. File uploads will be disabled.');
-    }
-    
-    // Analytics is optional (may not be available in compat SDK)
-    let analytics = null;
-    try {
-        if (firebase.analytics) {
-            analytics = firebase.analytics();
+        if (firebase.storage) {
+            storage = firebase.storage();
+            window.firebaseStorage = storage;
+            console.log('Firebase Storage initialized');
         }
     } catch (error) {
-        console.warn('Firebase Analytics not available.');
+        console.warn('Firebase Storage not available. File uploads will be disabled.');
+        window.firebaseStorage = null;
     }
     
-    // Export for use in other files
-    window.firebaseApp = app;
-    window.firebaseAuth = auth;
-    window.firebaseDb = db;
-    window.firebaseStorage = storage; // May be null if Storage not enabled
+    // Analytics is optional - skip initialization (not needed for core functionality)
+    // If needed, ensure firebase-analytics-compat.js is loaded before this script
+    window.firebaseAnalytics = null;
     
     console.log('Firebase initialized successfully');
-} else {
-    console.error('Firebase SDK not loaded. Make sure to include Firebase scripts in your HTML.');
+} catch (error) {
+    console.error('Firebase initialization error:', error);
+    // Don't throw - let the page load and show error message
+    window.firebaseApp = null;
+    window.firebaseAuth = null;
+    window.firebaseDb = null;
+    window.firebaseStorage = null;
 }
 
 // Alternative: For Firebase v9+ (modular SDK)
