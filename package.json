@@ -1,20 +1,36 @@
 {
-  "private": true,
+  "name": "prima-academy-website",
+  "version": "1.0.0",
+  "description": "Prima Academy Website - Educational Institution Website",
+  "main": "index.html",
   "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start",
-    "type-check": "tsc"
+    "serve": "firebase emulators:start",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:firestore": "firebase deploy --only firestore",
+    "deploy:storage": "firebase deploy --only storage",
+    "deploy:rules": "firebase deploy --only firestore:rules,storage:rules",
+    "init": "firebase init",
+    "login": "firebase login",
+    "logout": "firebase logout"
+  },
+  "keywords": [
+    "education",
+    "school",
+    "website",
+    "firebase",
+    "static-site"
+  ],
+  "author": "Prima Academy",
+  "license": "ISC",
+  "devDependencies": {
+    "firebase-tools": "^12.0.0"
   },
   "dependencies": {
-    "next": "latest",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "firebase": "^12.5.0"
   },
-  "devDependencies": {
-    "@types/node": "^12.12.21",
-    "@types/react": "^17.0.2",
-    "@types/react-dom": "^17.0.1",
-    "typescript": "^4.8.3"
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
   }
 }
