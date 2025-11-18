@@ -7181,7 +7181,7 @@
         }
 
         // Logout function
-        function logout() {
+        async function logout() {
             Swal.fire({
                 title: 'Logout?',
                 text: 'Are you sure you want to logout?',
@@ -7191,8 +7191,11 @@
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Yes, Logout',
                 cancelButtonText: 'Cancel'
-            }).then((result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
+                    // Hide content immediately
+                    document.body.classList.add('auth-checking');
+                    
                     // Show loading
                     Swal.fire({
                         title: 'Logging out...',
@@ -7211,25 +7214,17 @@
                         }
                     }
                     
+                    // Unsubscribe from auth state listener
+                    if (authStateUnsubscribe) {
+                        authStateUnsubscribe();
+                        authStateUnsubscribe = null;
+                    }
+                    
                     // Clear user session
                     localStorage.removeItem('prima_current_user');
                     
-                    // Optional: Clear other session data if needed
-                    // localStorage.clear(); // Uncomment if you want to clear all data
-                    
-                    // Redirect to login page after a short delay
-                    setTimeout(() => {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Logged Out',
-                            text: 'You have been successfully logged out',
-                            confirmButtonColor: '#4361ee',
-                            timer: 1500,
-                            showConfirmButton: false
-                        }).then(() => {
-                            window.location.href = 'admin-login.html';
-                        });
-                    }, 500);
+                    // Redirect to login page immediately
+                    window.location.href = 'admin-login.html';
                 }
             });
         }
