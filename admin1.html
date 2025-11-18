@@ -49,6 +49,55 @@
             min-height: 100vh;
         }
 
+        /* Hide content during authentication check */
+        body.auth-checking,
+        body.auth-checking * {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        body.auth-checking::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f5f7fb;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.auth-checking::after {
+            content: 'Verifying authentication...';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Hide dashboard content until authenticated */
+        .main-content,
+        .sidebar {
+            display: none;
+        }
+
+        body.authenticated .main-content,
+        body.authenticated .sidebar {
+            display: block;
+        }
+
+        body.authenticated .sidebar {
+            display: flex;
+            flex-direction: column;
+        }
+
         /* Sidebar Styles */
         .sidebar {
             width: var(--sidebar-width);
@@ -7259,15 +7308,15 @@
                 const userData = userDoc.data();
                 
                 if (userData.role !== 'admin') {
-                    await window.firebaseAuth.signOut();
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Access Denied',
-                        text: 'You do not have admin privileges.',
-                        confirmButtonColor: '#4361ee'
-                    }).then(() => {
-                        window.location.href = 'admin-login.html';
-                    });
+                    // Sign out immediately
+                    try {
+                        await window.firebaseAuth.signOut();
+                    } catch (signOutError) {
+                        console.error('Sign out error:', signOutError);
+                    }
+                    localStorage.removeItem('prima_current_user');
+                    // Redirect immediately without showing alert
+                    window.location.href = 'admin-login.html';
                     return false;
                 }
                 
@@ -7286,29 +7335,110 @@
                 
             } catch (error) {
                 console.error('Authentication check error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Authentication Error',
-                    text: 'Unable to verify your credentials. Please log in again.',
-                    confirmButtonColor: '#4361ee'
-                }).then(() => {
-                    window.location.href = 'admin-login.html';
-                });
+                // Sign out and clear session
+                try {
+                    if (window.firebaseAuth) {
+                        await window.firebaseAuth.signOut();
+                    }
+                } catch (signOutError) {
+                    console.error('Sign out error:', signOutError);
+                }
+                localStorage.removeItem('prima_current_user');
+                // Redirect immediately
+                window.location.href = 'admin-login.html';
                 return false;
             }
         }
 
+        // Monitor authentication state changes
+        let authStateUnsubscribe = null;
+        
+        function setupAuthStateListener() {
+            if (!window.firebaseAuth) return;
+            
+            authStateUnsubscribe = window.firebaseAuth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    // User logged out or session expired
+                    localStorage.removeItem('prima_current_user');
+                    window.location.href = 'admin-login.html';
+                    return;
+                }
+                
+                // Verify user is still admin
+                try {
+                    if (window.firebaseDb) {
+                        const userDoc = await window.firebaseDb.collection('users').doc(user.uid).get();
+                        if (!userDoc.exists || userDoc.data().role !== 'admin') {
+                            await window.firebaseAuth.signOut();
+                            window.location.href = 'admin-login.html';
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error verifying auth state:', error);
+                }
+            });
+        }
+
+        // Periodic authentication check (every 5 minutes)
+        function setupPeriodicAuthCheck() {
+            setInterval(async () => {
+                try {
+                    if (!window.firebaseAuth || !window.firebaseDb) return;
+                    
+                    const user = window.firebaseAuth.currentUser;
+                    if (!user) {
+                        window.location.href = 'admin-login.html';
+                        return;
+                    }
+                    
+                    // Verify user is still admin
+                    const userDoc = await window.firebaseDb.collection('users').doc(user.uid).get();
+                    if (!userDoc.exists || userDoc.data().role !== 'admin') {
+                        await window.firebaseAuth.signOut();
+                        window.location.href = 'admin-login.html';
+                    }
+                } catch (error) {
+                    console.error('Periodic auth check error:', error);
+                }
+            }, 5 * 60 * 1000); // Check every 5 minutes
+        }
+
         // Initialize the dashboard
         document.addEventListener('DOMContentLoaded', async function() {
+            // Hide all content immediately
             document.body.classList.add('auth-checking');
-            const isAuthenticated = await checkAuthentication();
             
-            if (!isAuthenticated) {
-                return;
+            // Prevent any content from being visible
+            const mainContent = document.querySelector('.main-content');
+            const sidebar = document.querySelector('.sidebar');
+            if (mainContent) mainContent.style.display = 'none';
+            if (sidebar) sidebar.style.display = 'none';
+            
+            try {
+                const isAuthenticated = await checkAuthentication();
+                
+                if (!isAuthenticated) {
+                    // Will redirect to login, but ensure content stays hidden
+                    return;
+                }
+                
+                // Show content only after successful authentication
+                document.body.classList.remove('auth-checking');
+                document.body.classList.add('authenticated');
+                
+                if (mainContent) mainContent.style.display = 'block';
+                if (sidebar) sidebar.style.display = 'flex';
+                
+                // Setup auth monitoring
+                setupAuthStateListener();
+                setupPeriodicAuthCheck();
+                
+                // Initialize dashboard
+                initializeDashboard();
+            } catch (error) {
+                console.error('Initialization error:', error);
+                window.location.href = 'admin-login.html';
             }
-            
-            document.body.classList.remove('auth-checking');
-            initializeDashboard();
         });
         
         function initializeDashboard() {
