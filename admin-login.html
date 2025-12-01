@@ -402,11 +402,27 @@
         let loginFormInitialized = false;
 
         // Wait for Firebase to be ready
-        function waitForFirebaseReady(timeout = 10000) {
+        function waitForFirebaseReady(timeout = 15000) {
             return new Promise((resolve, reject) => {
                 const start = Date.now();
                 const interval = setInterval(() => {
-                    const firebaseReady = Boolean(window.firebaseAuth && window.firebaseDb && typeof firebase !== 'undefined');
+                    // Check if Firebase SDK is loaded
+                    if (typeof firebase === 'undefined') {
+                        if (Date.now() - start > timeout) {
+                            clearInterval(interval);
+                            reject(new Error('Firebase SDK not loaded. Please check your internet connection and refresh the page.'));
+                        }
+                        return;
+                    }
+                    
+                    // Check if Firebase services are initialized
+                    const firebaseReady = Boolean(
+                        window.firebaseAuth && 
+                        window.firebaseDb && 
+                        typeof firebase !== 'undefined' &&
+                        window.firebaseApp
+                    );
+                    
                     if (firebaseReady) {
                         clearInterval(interval);
                         resolve(true);
@@ -415,9 +431,13 @@
 
                     if (Date.now() - start > timeout) {
                         clearInterval(interval);
-                        reject(new Error('Firebase failed to initialize. Please refresh the page.'));
+                        const missing = [];
+                        if (!window.firebaseAuth) missing.push('Auth');
+                        if (!window.firebaseDb) missing.push('Firestore');
+                        if (!window.firebaseApp) missing.push('App');
+                        reject(new Error(`Firebase initialization timeout. Missing: ${missing.join(', ')}. Please refresh the page.`));
                     }
-                }, 100);
+                }, 150);
             });
         }
 
@@ -425,6 +445,9 @@
         document.addEventListener('DOMContentLoaded', async function() {
             // Initialize UI elements first
             initializeLoginUI();
+
+            // Setup form submission immediately (it will check Firebase when submitted)
+            setupLoginForm();
 
             try {
                 // Wait for Firebase to initialize
@@ -434,10 +457,28 @@
                 // Check existing auth
                 await checkExistingAuth();
                 
-                // Setup form submission after Firebase is ready
-                setupLoginForm();
+                // Enable login button
+                const loginButton = document.getElementById('loginButton');
+                if (loginButton) {
+                    loginButton.disabled = false;
+                    const loginText = document.getElementById('loginText');
+                    if (loginText) loginText.textContent = 'Sign In';
+                }
+                
+                // Clear any error messages
+                const errorMessage = document.getElementById('errorMessage');
+                if (errorMessage) {
+                    errorMessage.classList.remove('show');
+                    errorMessage.textContent = '';
+                }
             } catch (error) {
                 console.error('Firebase initialization error:', error);
+                console.log('Firebase status:', {
+                    firebaseSDK: typeof firebase !== 'undefined',
+                    firebaseApp: !!window.firebaseApp,
+                    firebaseAuth: !!window.firebaseAuth,
+                    firebaseDb: !!window.firebaseDb
+                });
                 showFirebaseError(error.message || 'Firebase failed to initialize. Please refresh the page.');
             }
         });
@@ -537,21 +578,41 @@
             const loadingSpinner = document.getElementById('loadingSpinner');
             const errorMessage = document.getElementById('errorMessage');
             
+            // Validate input
+            if (!email || !password) {
+                errorMessage.textContent = 'Please enter both email and password.';
+                errorMessage.classList.add('show');
+                return;
+            }
+            
             // Hide error message
             errorMessage.classList.remove('show');
             errorMessage.textContent = '';
             
             // Disable button and show loading
             loginButton.disabled = true;
-            loginIcon.style.display = 'none';
-            loadingSpinner.classList.add('show');
-            loginText.textContent = 'Signing in...';
+            if (loginIcon) loginIcon.style.display = 'none';
+            if (loadingSpinner) loadingSpinner.classList.add('show');
+            if (loginText) loginText.textContent = 'Signing in...';
             
             try {
+                // Try to wait for Firebase if not ready
+                if (!window.firebaseAuth || !window.firebaseDb) {
+                    console.log('Firebase not ready, attempting to wait...');
+                    try {
+                        await waitForFirebaseReady(5000); // Wait up to 5 seconds
+                    } catch (waitError) {
+                        console.error('Firebase wait failed:', waitError);
+                        throw new Error('Firebase services are not available. Please refresh the page and try again.');
+                    }
+                }
+                
                 // Verify Firebase is ready
                 if (!window.firebaseAuth || !window.firebaseDb) {
                     throw new Error('Firebase not initialized. Please refresh the page.');
                 }
+                
+                console.log('Attempting to sign in with:', email);
                 
                 // Sign in with email and password
                 const userCredential = await window.firebaseAuth.signInWithEmailAndPassword(email, password);
@@ -613,10 +674,10 @@
                 console.error('Login error:', error);
                 
                 // Reset button state
-                loginButton.disabled = false;
-                loginIcon.style.display = 'inline-block';
-                loadingSpinner.classList.remove('show');
-                loginText.textContent = 'Sign In';
+                if (loginButton) loginButton.disabled = false;
+                if (loginIcon) loginIcon.style.display = 'inline-block';
+                if (loadingSpinner) loadingSpinner.classList.remove('show');
+                if (loginText) loginText.textContent = 'Sign In';
                 
                 // Show error message
                 let errorMsg = 'An error occurred. Please try again.';
@@ -648,14 +709,26 @@
                     errorMsg = error.message;
                 }
                 
-                errorMessage.textContent = errorMsg;
-                errorMessage.classList.add('show');
+                console.error('Login error:', error);
+                
+                if (errorMessage) {
+                    errorMessage.textContent = errorMsg;
+                    errorMessage.classList.add('show');
+                }
                 
                 // Show SweetAlert for critical errors
                 if (error.code && error.code.startsWith('auth/')) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Login Failed',
+                        text: errorMsg,
+                        confirmButtonColor: '#4361ee'
+                    });
+                } else {
+                    // Show alert for other errors too
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
                         text: errorMsg,
                         confirmButtonColor: '#4361ee'
                     });

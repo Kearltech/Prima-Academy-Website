@@ -54,8 +54,13 @@ main.html
 # Excel files
 *.xlsx
 
+# Downloads folder
+Downloads/
+
 # Other
 .DS_Store
 Thumbs.db
 desktop.ini
+pglite-debug.log
+.expo/
 
