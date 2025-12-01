@@ -13,14 +13,26 @@
       "**/*.md",
       "**/.git/**",
       "**/.gitignore",
-      "**/ANALYSIS_REPORT.md",
-      "**/ACTION_PLAN.md",
-      "**/FIREBASE_*.md",
-      "**/PROJECT_STRUCTURE.md",
-      "**/STRUCTURE_CREATED.md",
-      "**/app.js",
       "**/package.json",
-      "**/package-lock.json"
+      "**/package-lock.json",
+      "**/*.exe",
+      "**/*.dll",
+      "**/*.bat",
+      "**/*.cmd",
+      "**/*.sh",
+      "**/*.ps1",
+      "**/Downloads/**",
+      "**/*.docx",
+      "**/*.pdf",
+      "**/*.log",
+      "**/.expo/**",
+      "**/app.js"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ],
     "headers": [
       {

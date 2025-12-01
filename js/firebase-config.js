@@ -15,13 +15,14 @@
 // Firebase configuration object
 // Updated with actual Firebase project configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAYJZx4bVSaA06njWIOjuKEnMUofcii41Q", // Public API key - safe for client-side use
+    apiKey: "AIzaSyAYJZx4bVSaA06njWIOjuKEnMUofcii41Q",
     authDomain: "prima-academy-website.firebaseapp.com",
     projectId: "prima-academy-website",
-    storageBucket: "prima-academy-website.firebasestorage.app",
+    // Use the canonical storage bucket name (appspot.com)
+    storageBucket: "prima-academy-website.appspot.com",
     messagingSenderId: "321142938461",
-    appId: "1:321142938461:web:1c7d6eddf39bec01a6a6b4",
-    measurementId: "G-CHFZ93P3BF" // Optional, for Analytics
+    appId: "1:321142938461:web:2bf7ffb55d961f75a6a6b4",
+    measurementId: "G-EYBYWG3XZ0" // Optional, for Analytics
 };
 
 // Initialize Firebase

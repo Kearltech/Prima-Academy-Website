@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prima Academy | Excellence in Education</title>
+    <meta name="google-site-verification" content="d15TtkIt55zBmeINOOdFXuLMSw5blooaK4Rpz_H4Y_k" />
     <meta name="description" content="Prima Academy offers world-class education focused on academic excellence and holistic development.">
     <meta name="keywords" content="Prima Academy, school, education, Ghana, admissions, students, learning">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,7 +12,7 @@
     <style>
         /* CSS Variables for consistent theming */
         :root {
-            --primary: #1a4b8c;
+            --primary: #f88e10;
             --secondary: #f9a826;
             --accent: #2e7d32;
             --light: #f5f5f5;
@@ -25,7 +26,7 @@
 
         /* Dark Mode Variables */
         [data-theme="dark"] {
-            --primary: #3a7bd5;
+            --primary: #f88e10;
             --secondary: #ffb74d;
             --accent: #4caf50;
             --light: #2d2d2d;
@@ -64,6 +65,12 @@
             margin-bottom: 1rem;
         }
 
+        .empty-state {
+            text-align: center;
+            color: #777;
+            padding: 40px 20px;
+        }
+
         a {
             text-decoration: none;
             color: inherit;
@@ -79,7 +86,7 @@
         .btn {
             display: inline-block;
             padding: 12px 30px;
-            background-color: var(--secondary);
+            background-color: #000;
             color: white;
             border: none;
             border-radius: 4px;
@@ -90,16 +97,16 @@
         }
 
         .btn:hover {
-            background-color: #e89a1f;
+            background-color: #222;
             transform: translateY(-2px);
         }
 
         .btn-primary {
-            background-color: var(--primary);
+            background-color: #555;
         }
 
         .btn-primary:hover {
-            background-color: #0d3a6e;
+            background-color: #333;
         }
 
         .section {
@@ -257,7 +264,7 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(26, 75, 140, 0.8), rgba(26, 75, 140, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background: linear-gradient(rgba(248, 142, 16, 0.8), rgba(248, 142, 16, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
             background-size: cover;
             background-position: center;
             color: white;
@@ -1543,94 +1550,120 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <script>
-        // DOM Content Loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Sticky Shrinking Navbar
-            window.addEventListener('scroll', function() {
-                const header = document.querySelector('header');
-                header.classList.toggle('shrink', window.scrollY > 50);
-                
-                // Active Link Highlighting
-                const sections = document.querySelectorAll('section');
-                const navLinks = document.querySelectorAll('.nav-menu a');
-                
+        const NEWS_LIMIT = 3;
+        const GALLERY_LIMIT = 8;
+        let galleryLightboxImages = [];
+        let currentGalleryImageIndex = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupNavigation();
+            setupThemeToggle();
+            setupCalendar();
+            setupGalleryFilters();
+            setupContactForm();
+            setupFabChatbot();
+            setupChatbot();
+            setupLazyImages();
+            initializeDynamicContent();
+        });
+
+        async function initializeDynamicContent() {
+            try {
+                await waitForFirebaseReady();
+                loadNewsFromFirestore();
+                loadGalleryFromFirestore();
+                loadFacultyFromFirestore();
+                trackPageVisit('Homepage');
+            } catch (error) {
+                console.error('Dynamic content failed to load:', error);
+            }
+        }
+
+        async function trackPageVisit(pageName) {
+            if (!window.firebaseDBInstance) return;
+            try {
+                await window.firebaseDBInstance.trackPageVisit(pageName);
+            } catch (error) {
+                console.error('Failed to track page visit:', error);
+            }
+        }
+
+        function waitForFirebaseReady(timeout = 8000) {
+            return new Promise((resolve, reject) => {
+                const start = Date.now();
+                const interval = setInterval(() => {
+                    if (window.firebaseDBInstance && window.firebaseDb) {
+                        clearInterval(interval);
+                        resolve(true);
+                    } else if (Date.now() - start > timeout) {
+                        clearInterval(interval);
+                        reject(new Error('Firebase not ready'));
+                    }
+                }, 100);
+            });
+        }
+
+        function setupNavigation() {
+            const header = document.querySelector('header');
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            window.addEventListener('scroll', () => {
+                if (header) {
+                    header.classList.toggle('shrink', window.scrollY > 50);
+                }
                 let current = '';
                 sections.forEach(section => {
                     const sectionTop = section.offsetTop;
-                    const sectionHeight = section.clientHeight;
                     if (scrollY >= (sectionTop - 200)) {
                         current = section.getAttribute('id');
                     }
                 });
-                
                 navLinks.forEach(link => {
                     link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${current}`) {
+                    if (current && link.getAttribute('href') === `#${current}`) {
                         link.classList.add('active');
                     }
                 });
             });
             
-            // Mobile Menu Toggle
             const mobileToggle = document.querySelector('.mobile-toggle');
             const navMenu = document.querySelector('.nav-menu');
-            
-            mobileToggle.addEventListener('click', function() {
-                navMenu.classList.toggle('active');
-            });
-            
-            // Close mobile menu when clicking on a link
-            document.querySelectorAll('.nav-menu a').forEach(link => {
-                link.addEventListener('click', function() {
-                    navMenu.classList.remove('active');
-                });
-            });
-            
-            // Theme Toggle
+            if (mobileToggle && navMenu) {
+                mobileToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+                navLinks.forEach(link => link.addEventListener('click', () => navMenu.classList.remove('active')));
+            }
+        }
+
+        function setupThemeToggle() {
             const themeToggle = document.getElementById('themeToggle');
+            if (!themeToggle) return;
             const themeIcon = themeToggle.querySelector('i');
-            
-            themeToggle.addEventListener('click', function() {
-                document.body.setAttribute('data-theme', 
-                    document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
-                );
-                
-                if (document.body.getAttribute('data-theme') === 'dark') {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
+            const savedTheme = localStorage.getItem('prima-theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(themeIcon, savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.body.setAttribute('data-theme', newTheme);
+                localStorage.setItem('prima-theme', newTheme);
+                updateThemeIcon(themeIcon, newTheme);
+            });
+        }
+
+        function updateThemeIcon(icon, theme) {
+            if (!icon) return;
+            if (theme === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
                 } else {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                }
-            });
-            
-            // Load More News
-            const loadMoreBtn = document.getElementById('loadMoreBtn');
-            const newsGrid = document.getElementById('newsGrid');
-            
-            loadMoreBtn.addEventListener('click', function() {
-                // In a real implementation, this would fetch more news from a server
-                const newNews = `
-                    <div class="news-card">
-                        <div class="news-img">
-                            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="New Building">
-                        </div>
-                        <div class="news-content">
-                            <span class="news-date">March 22, 2023</span>
-                            <h3>New Science Wing Opening Soon</h3>
-                            <p>Construction of our new state-of-the-art science wing is nearing completion, with an expected opening in September.</p>
-                            <a href="#" class="btn">Read More</a>
-                        </div>
-                    </div>
-                `;
-                
-                newsGrid.innerHTML += newNews;
-                loadMoreBtn.textContent = 'No More News';
-                loadMoreBtn.disabled = true;
-            });
-            
-            // Calendar Initialization
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+
+        function setupCalendar() {
             const calendarEl = document.getElementById('calendar');
+            if (!calendarEl) return;
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 headerToolbar: {
@@ -1639,111 +1672,82 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 events: [
-                    {
-                        title: 'First Day of School',
-                        start: '2023-09-05'
-                    },
-                    {
-                        title: 'Parent-Teacher Conferences',
-                        start: '2023-10-15',
-                        end: '2023-10-17'
-                    },
-                    {
-                        title: 'Science Fair',
-                        start: '2023-11-10'
-                    },
-                    {
-                        title: 'Winter Break',
-                        start: '2023-12-22',
-                        end: '2024-01-08'
-                    }
+                    { title: 'First Day of School', start: '2023-09-05' },
+                    { title: 'Parent-Teacher Conferences', start: '2023-10-15', end: '2023-10-17' },
+                    { title: 'Science Fair', start: '2023-11-10' },
+                    { title: 'Winter Break', start: '2023-12-22', end: '2024-01-08' }
                 ]
             });
             calendar.render();
+        }
             
-            // Gallery Filtering
+        function setupGalleryFilters() {
             const filterBtns = document.querySelectorAll('.filter-btn');
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            
+            if (!filterBtns.length) return;
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
-                    // Remove active class from all buttons
                     filterBtns.forEach(b => b.classList.remove('active'));
-                    // Add active class to clicked button
                     this.classList.add('active');
-                    
-                    const filter = this.getAttribute('data-filter');
-                    
-                    galleryItems.forEach(item => {
-                        if (filter === 'all' || item.getAttribute('data-category') === filter) {
-                            item.style.display = 'block';
-                        } else {
-                            item.style.display = 'none';
-                        }
+                    const filter = this.dataset.filter;
+                    document.querySelectorAll('.gallery-item').forEach(item => {
+                        const matches = filter === 'all' || item.dataset.category === filter;
+                        item.style.display = matches ? 'block' : 'none';
                     });
                 });
             });
+        }
             
-            // Lightbox Gallery
+        function prepareGalleryLightbox() {
             const lightbox = document.getElementById('lightbox');
             const lightboxImage = document.getElementById('lightboxImage');
             const lightboxClose = document.getElementById('lightboxClose');
             const lightboxPrev = document.getElementById('lightboxPrev');
             const lightboxNext = document.getElementById('lightboxNext');
-            const galleryImages = document.querySelectorAll('.gallery-item img');
-            
-            let currentImageIndex = 0;
-            
-            galleryImages.forEach((img, index) => {
-                img.addEventListener('click', function() {
-                    currentImageIndex = index;
-                    lightboxImage.src = this.src;
-                    lightbox.style.display = 'flex';
-                });
+            if (!lightbox || !lightboxImage) return;
+
+            galleryLightboxImages = Array.from(document.querySelectorAll('.gallery-item img'));
+            galleryLightboxImages.forEach((img, index) => {
+                img.onclick = () => openLightboxAt(index, lightbox, lightboxImage);
             });
-            
-            lightboxClose.addEventListener('click', function() {
-                lightbox.style.display = 'none';
-            });
-            
-            lightboxPrev.addEventListener('click', function() {
-                currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
-                lightboxImage.src = galleryImages[currentImageIndex].src;
-            });
-            
-            lightboxNext.addEventListener('click', function() {
-                currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
-                lightboxImage.src = galleryImages[currentImageIndex].src;
-            });
-            
-            // Close lightbox when clicking outside the image
-            lightbox.addEventListener('click', function(e) {
+
+            lightboxClose.onclick = () => lightbox.style.display = 'none';
+            lightboxPrev.onclick = () => navigateLightbox(-1, lightboxImage);
+            lightboxNext.onclick = () => navigateLightbox(1, lightboxImage);
+            lightbox.addEventListener('click', (e) => {
                 if (e.target === lightbox) {
                     lightbox.style.display = 'none';
                 }
             });
-            
-            // Admissions CTA
-            
-            // Contact Form Submission
+        }
+
+        function openLightboxAt(index, lightbox, lightboxImage) {
+            if (!galleryLightboxImages.length) return;
+            currentGalleryImageIndex = index;
+            lightboxImage.src = galleryLightboxImages[currentGalleryImageIndex].src;
+            lightbox.style.display = 'flex';
+        }
+
+        function navigateLightbox(direction, lightboxImage) {
+            if (!galleryLightboxImages.length) return;
+            currentGalleryImageIndex = (currentGalleryImageIndex + direction + galleryLightboxImages.length) % galleryLightboxImages.length;
+            lightboxImage.src = galleryLightboxImages[currentGalleryImageIndex].src;
+        }
+
+        function setupContactForm() {
             const contactForm = document.getElementById('contactForm');
+            if (!contactForm) return;
             contactForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                
-                // Check if Firebase is initialized
                 if (!window.firebaseDBInstance || !window.firebaseDb) {
                     alert('Database not initialized. Please refresh and try again.');
                     return;
                 }
-                
                 const submitBtn = this.querySelector('button[type="submit"]');
                 const originalText = submitBtn ? submitBtn.textContent : 'Send Message';
-                
                 if (submitBtn) {
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Sending...';
                 }
-                
                 try {
                     const contactData = {
                         name: document.getElementById('contactName').value.trim(),
@@ -1751,11 +1755,8 @@
                         subject: document.getElementById('contactSubject').value.trim(),
                         message: document.getElementById('contactMessage').value.trim()
                     };
-                    
                     const result = await window.firebaseDBInstance.submitContact(contactData);
-                    
                     if (result && result.success) {
-                        // Show success message
                         if (typeof Swal !== 'undefined') {
                             Swal.fire({
                                 icon: 'success',
@@ -1789,113 +1790,203 @@
                     }
                 }
             });
+        }
             
-            // Floating Action Button
+        function setupFabChatbot() {
             const applyFab = document.getElementById('applyFab');
-            applyFab.addEventListener('click', function() {
-                window.location.href = 'admission.html';
+            const chatbot = document.getElementById('chatbot');
+            const chatbotInput = document.getElementById('chatbotInput');
+            if (!applyFab || !chatbot) return;
+            applyFab.addEventListener('click', () => {
+                chatbot.style.display = 'flex';
+                chatbotInput?.focus();
             });
-            
-            // AI Chat Assistant
+        }
+
+        function setupChatbot() {
             const chatbot = document.getElementById('chatbot');
             const chatbotClose = document.getElementById('chatbotClose');
             const chatbotBody = document.getElementById('chatbotBody');
             const chatbotInput = document.getElementById('chatbotInput');
             const chatbotSend = document.getElementById('chatbotSend');
+            if (!chatbot || !chatbotBody || !chatbotSend) return;
             
-            // Show chatbot after a delay
             setTimeout(() => {
                 chatbot.style.display = 'flex';
             }, 5000);
             
-            chatbotClose.addEventListener('click', function() {
-                chatbot.style.display = 'none';
-            });
-            
-            function addBotMessage(message) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'chatbot-message bot-message';
-                messageDiv.textContent = message;
-                chatbotBody.appendChild(messageDiv);
+            const addMessage = (message, type = 'bot') => {
+                const div = document.createElement('div');
+                div.className = `chatbot-message ${type === 'bot' ? 'bot-message' : 'user-message'}`;
+                div.textContent = message;
+                chatbotBody.appendChild(div);
                 chatbotBody.scrollTop = chatbotBody.scrollHeight;
-            }
-            
-            function addUserMessage(message) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'chatbot-message user-message';
-                messageDiv.textContent = message;
-                chatbotBody.appendChild(messageDiv);
-                chatbotBody.scrollTop = chatbotBody.scrollHeight;
-            }
-            
-            function processUserMessage(message) {
-                const lowerMessage = message.toLowerCase();
-                
-                if (lowerMessage.includes('admission') || lowerMessage.includes('apply')) {
-                    addBotMessage('You can find our admission process and application form in the Admissions section of our website. Would you like me to direct you there?');
-                } else if (lowerMessage.includes('fee') || lowerMessage.includes('tuition')) {
-                    addBotMessage('Our tuition fees vary by grade level. Please contact our admissions office at admissions@primaacademy.edu.gh for detailed fee information.');
-                } else if (lowerMessage.includes('program') || lowerMessage.includes('curriculum')) {
-                    addBotMessage('We offer programs for Primary, Middle, and High School levels. Each program is designed to provide a comprehensive education. You can learn more in the Academics section.');
-                } else if (lowerMessage.includes('contact') || lowerMessage.includes('phone') || lowerMessage.includes('email')) {
-                    addBotMessage('You can reach us at +233 123 456 789 or info@primaacademy.edu.gh. Our address is 123 Education Avenue, Accra, Ghana.');
-                } else if (lowerMessage.includes('visit') || lowerMessage.includes('tour')) {
-                    addBotMessage('We would love to show you around! Please contact our admissions office to schedule a campus tour.');
+            };
+
+            const processMessage = (message) => {
+                const text = message.toLowerCase();
+                if (text.includes('admission')) {
+                    addMessage('You can find our admission process in the Admissions section of our website. Would you like me to direct you there?');
+                } else if (text.includes('fee') || text.includes('tuition')) {
+                    addMessage('Our tuition fees vary by grade level. Please contact admissions@primaacademy.edu.gh for detailed information.');
+                } else if (text.includes('program')) {
+                    addMessage('We offer Primary, Middle, and High School programs with a holistic curriculum.');
+                } else if (text.includes('contact')) {
+                    addMessage('Reach us at +233 123 456 789 or info@primaacademy.edu.gh.');
                 } else {
-                    addBotMessage('I\'m here to help with information about Prima Academy. You can ask me about admissions, programs, fees, or contact information.');
+                    addMessage('I\'m here to help with information about Prima Academy. Feel free to ask about admissions, programs, or contact details.');
                 }
-            }
+            };
             
-            chatbotSend.addEventListener('click', function() {
+            chatbotSend.addEventListener('click', () => {
                 const message = chatbotInput.value.trim();
-                if (message) {
-                    addUserMessage(message);
+                if (!message) return;
+                addMessage(message, 'user');
                     chatbotInput.value = '';
-                    
-                    // Simulate typing delay
-                    setTimeout(() => {
-                        processUserMessage(message);
-                    }, 1000);
-                }
+                setTimeout(() => processMessage(message), 800);
             });
-            
-            chatbotInput.addEventListener('keypress', function(e) {
+
+            chatbotInput?.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     chatbotSend.click();
                 }
             });
             
-            // Lazy Loading for Images
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
+            chatbotClose?.addEventListener('click', () => chatbot.style.display = 'none');
+        }
+
+        function setupLazyImages() {
+            if (!('IntersectionObserver' in window)) return;
+            const observer = new IntersectionObserver((entries, obs) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             const img = entry.target;
                             img.src = img.dataset.src;
                             img.classList.remove('lazy');
-                            imageObserver.unobserve(img);
+                        obs.unobserve(img);
                         }
                     });
                 });
-                
-                document.querySelectorAll('img[data-src]').forEach(img => {
-                    imageObserver.observe(img);
-                });
+            document.querySelectorAll('img[data-src]').forEach(img => observer.observe(img));
+        }
+
+        async function loadNewsFromFirestore() {
+            const newsGrid = document.getElementById('newsGrid');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (!newsGrid || !window.firebaseDBInstance) return;
+            const fallback = newsGrid.innerHTML;
+            try {
+                const result = await (window.firebaseDBInstance.getNews ? window.firebaseDBInstance.getNews(NEWS_LIMIT) : window.firebaseDBInstance.getAllNewsArticles());
+                if (!result.success || !result.data.length) {
+                    newsGrid.innerHTML = `<p class="empty-state">News updates will appear here soon.</p>`;
+                    if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+                    return;
+                }
+                const articles = result.data.slice(0, NEWS_LIMIT);
+                newsGrid.innerHTML = articles.map(article => `
+                    <div class="news-card">
+                        <div class="news-img">
+                            <img src="${article.heroImage || article.image || 'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=900&q=80'}" alt="${article.title || 'Prima Academy News'}">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-date">${formatDate(article.publishDate || article.date)}</span>
+                            <h3>${article.title || 'Latest Update'}</h3>
+                            <p>${article.summary || 'Stay tuned for more details about this announcement.'}</p>
+                            <a href="news.html" class="btn">Read More</a>
+                        </div>
+                    </div>
+                `).join('');
+                if (loadMoreBtn) {
+                    loadMoreBtn.textContent = 'Explore News & Events';
+                    loadMoreBtn.href = 'news.html';
+                }
+            } catch (error) {
+                console.error('Error loading news:', error);
+                newsGrid.innerHTML = fallback;
             }
-        });
+        }
+
+        async function loadFacultyFromFirestore() {
+            const facultyGrid = document.querySelector('.faculty-grid');
+            if (!facultyGrid || !window.firebaseDBInstance) return;
+            const fallback = facultyGrid.innerHTML;
+            try {
+                const result = await (window.firebaseDBInstance.getAllFacultyMembers ? window.firebaseDBInstance.getAllFacultyMembers() : window.firebaseDBInstance.getFaculty());
+                if (!result.success || !result.data.length) {
+                    facultyGrid.innerHTML = fallback;
+                    return;
+                }
+                const members = result.data.slice(0, 4);
+                facultyGrid.innerHTML = members.map(member => `
+                    <div class="faculty-card">
+                        <div class="faculty-img">
+                            <img src="${member.photo || member.image || 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=800&q=80'}" alt="${member.name || member.firstName || 'Faculty Member'}">
+                        </div>
+                        <div class="faculty-info">
+                            <h3>${member.name || `${member.firstName || ''} ${member.lastName || ''}`.trim() || 'Faculty'}</h3>
+                            <p>${member.position || member.department || 'Instructor'}</p>
+                            <div class="faculty-bio">
+                                <p>${member.bio || 'Dedicated educator committed to student success.'}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading faculty:', error);
+                facultyGrid.innerHTML = fallback;
+            }
+        }
+
+        async function loadGalleryFromFirestore() {
+            const galleryGrid = document.querySelector('.gallery-grid');
+            if (!galleryGrid || !window.firebaseDBInstance) return;
+            const fallback = galleryGrid.innerHTML;
+            try {
+                const result = await window.firebaseDBInstance.getAllGalleryImages();
+                if (!result.success || !result.data.length) {
+                    galleryGrid.innerHTML = `<p class="empty-state">Gallery highlights will appear here soon.</p>`;
+                    prepareGalleryLightbox();
+                    return;
+                }
+                const galleryItemsData = result.data.slice(0, GALLERY_LIMIT).map(item => ({
+                    category: (item.category || 'events').toLowerCase(),
+                    imageUrl: item.imageUrl || item.url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80',
+                    title: item.title || 'Gallery Highlight'
+                }));
+                renderGalleryItems(galleryItemsData, galleryGrid);
+            } catch (error) {
+                console.error('Error loading gallery:', error);
+                galleryGrid.innerHTML = fallback;
+            }
+        }
+
+        function renderGalleryItems(items, container) {
+            container.innerHTML = items.map(item => `
+                <div class="gallery-item" data-category="${item.category}">
+                    <img src="${item.imageUrl}" alt="${item.title}">
+                </div>
+            `).join('');
+            prepareGalleryLightbox();
+        }
+
+        function formatDate(dateValue) {
+            if (!dateValue) return '';
+            if (dateValue.toDate) {
+                const d = dateValue.toDate();
+                return d.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+            }
+            const date = new Date(dateValue);
+            if (Number.isNaN(date.getTime())) return dateValue;
+            return date.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+        }
     </script>
 
-    <!-- Firebase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    
-    <!-- Firebase Configuration -->
-    <script src="js/firebase-config.js"></script>
-    
-    <!-- Firebase Modules -->
-    <script src="js/firebase-auth.js"></script>
-    <script src="js/firebase-db.js"></script>
+    <!-- Firebase (modular) initialization and app modules -->
+    <script type="module">
+        import './js/firebase-init.js';
+        import './js/init-emulators.js';
+        import './js/firebase-auth.js';
+        import './js/firebase-db.js';
+    </script>
 </body>
 </html>

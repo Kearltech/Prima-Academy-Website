@@ -24,8 +24,8 @@
     <script src="js/admin-config.js"></script>
     <style>
         :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
+            --primary: #f88e10;
+            --secondary: #f9a826;
             --success: #4cc9f0;
             --warning: #f72585;
             --info: #4895ef;
@@ -33,6 +33,25 @@
             --dark: #212529;
             --sidebar-width: 250px;
             --header-height: 70px;
+            --bg-color: #f5f7fb;
+            --text-color: #212529;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --primary: #f88e10;
+            --secondary: #ffb74d;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --info: #4895ef;
+            --light: #2d2d2d;
+            --dark: #f5f5f5;
+            --bg-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --card-bg: #2d2d2d;
+            --border-color: #404040;
         }
 
         * {
@@ -43,10 +62,11 @@
         }
 
         body {
-            background-color: #f5f7fb;
-            color: var(--dark);
+            background-color: var(--bg-color);
+            color: var(--text-color);
             display: flex;
             min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Hide content during authentication check */
@@ -63,7 +83,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #f5f7fb;
+            background: var(--bg-color);
             z-index: 9999;
             display: flex;
             align-items: center;
@@ -126,6 +146,18 @@
             padding: 15px 0;
         }
 
+        .sidebar-section-title {
+            padding: 10px 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .sidebar-menu .secondary-menu li a {
+            opacity: 0.85;
+        }
+
         .sidebar-menu ul {
             list-style: none;
         }
@@ -168,7 +200,7 @@
         /* Header Styles */
         .header {
             height: var(--header-height);
-            background-color: white;
+            background-color: var(--card-bg);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
@@ -177,6 +209,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: background-color 0.3s ease;
         }
 
         .header-left h1 {
@@ -189,6 +222,26 @@
             align-items: center;
         }
 
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-right: 15px;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
         .search-box {
             position: relative;
             margin-right: 20px;
@@ -197,15 +250,18 @@
         .search-box input {
             padding: 8px 15px 8px 35px;
             border-radius: 20px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             outline: none;
             width: 200px;
             transition: all 0.3s;
+            background-color: var(--card-bg);
+            color: var(--text-color);
         }
 
         .search-box input:focus {
             border-color: var(--primary);
             width: 250px;
+            box-shadow: 0 0 0 3px rgba(248, 142, 16, 0.15);
         }
 
         .search-box i {
@@ -263,7 +319,7 @@
             top: 100%;
             right: 0;
             margin-top: 10px;
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             min-width: 200px;
@@ -272,6 +328,7 @@
             transform: translateY(-10px);
             transition: all 0.3s ease;
             z-index: 1000;
+            border: 1px solid var(--border-color);
         }
 
         .user-profile-dropdown.active {
@@ -282,12 +339,12 @@
 
         .user-profile-dropdown-header {
             padding: 15px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .user-profile-dropdown-header .user-name {
             font-weight: 600;
-            color: var(--dark);
+            color: var(--text-color);
             margin-bottom: 5px;
         }
 
@@ -309,13 +366,13 @@
             display: flex;
             align-items: center;
             padding: 12px 15px;
-            color: var(--dark);
+            color: var(--text-color);
             text-decoration: none;
             transition: all 0.3s;
         }
 
         .user-profile-dropdown-menu a:hover {
-            background-color: #f8f9fa;
+            background-color: var(--light);
             color: var(--primary);
         }
 
@@ -327,7 +384,7 @@
 
         .user-profile-dropdown-menu a.logout {
             color: #ef233c;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--border-color);
         }
 
         .user-profile-dropdown-menu a.logout:hover {
@@ -368,7 +425,9 @@
         }
 
         .card {
-            background-color: white;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             padding: 20px;
@@ -403,6 +462,162 @@
         .stat-info p {
             color: #6c757d;
             font-size: 0.9rem;
+        }
+
+        .content-section {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .section-header .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .data-table thead tr {
+            background: var(--light);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .data-table th {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #7a7f90;
+        }
+
+        .data-table tbody tr {
+            background: #fff;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(248, 142, 16, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .table-empty {
+            text-align: center;
+            padding: 30px 10px;
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.82rem;
+        }
+
+        .status-pill i {
+            font-size: 0.8rem;
+        }
+
+        .status-pill.success {
+            background: rgba(40, 167, 69, 0.15);
+            color: var(--success);
+        }
+
+        .status-pill.warning {
+            background: rgba(255, 193, 7, 0.18);
+            color: var(--warning);
+        }
+
+        .status-pill.info {
+            background: rgba(23, 162, 184, 0.15);
+            color: var(--info);
+        }
+
+        .status-pill.danger {
+            background: rgba(220, 53, 69, 0.14);
+            color: var(--danger);
+        }
+
+        .category-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+            font-size: 0.82rem;
+        }
+
+        .gallery-preview {
+            width: 64px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: var(--shadow);
+        }
+
+        .gallery-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .gallery-category-card {
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 18px;
+            background: #fff;
+            box-shadow: var(--shadow);
+        }
+
+        .gallery-category-card h4 {
+            margin-bottom: 6px;
+            color: var(--primary);
+        }
+
+        .gallery-category-card p {
+            margin-bottom: 0;
+            color: #71717a;
+            font-size: 0.88rem;
         }
 
         .bg-primary-light {
@@ -561,6 +776,12 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            background-color: #000;
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: #222;
         }
 
         .btn i {
@@ -568,12 +789,12 @@
         }
 
         .btn-primary {
-            background-color: var(--primary);
+            background-color: #555;
             color: white;
         }
 
         .btn-primary:hover {
-            background-color: var(--secondary);
+            background-color: #333;
         }
 
         .btn-success {
@@ -593,7 +814,16 @@
         }
 
         .btn-outline:hover {
-            background-color: rgba(67, 97, 238, 0.1);
+            background-color: rgba(248, 142, 16, 0.1);
+        }
+
+        [data-theme="dark"] .btn-outline {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        [data-theme="dark"] .btn-outline:hover {
+            background-color: rgba(248, 142, 16, 0.2);
         }
 
         .btn-sm {
@@ -620,13 +850,16 @@
             width: 100%;
             padding: 10px 15px;
             border-radius: 5px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             outline: none;
             transition: all 0.3s;
+            background-color: var(--card-bg);
+            color: var(--text-color);
         }
 
         .form-control:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(248, 142, 16, 0.15);
         }
 
         .form-row {
@@ -653,7 +886,8 @@
         }
 
         .modal-content {
-            background-color: white;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
             width: 500px;
             max-width: 90%;
@@ -669,7 +903,7 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .modal-title {
@@ -1723,11 +1957,17 @@
             <h2>Prima Academy</h2>
         </div>
         <div class="sidebar-menu">
-            <ul>
+            <ul class="primary-menu">
                 <li class="active" data-page="dashboard">
                     <a href="#">
                         <i class="fas fa-home"></i>
                         <span>Dashboard</span>
+                    </a>
+                </li>
+                <li data-page="instructors">
+                    <a href="#">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Teachers</span>
                     </a>
                 </li>
                 <li data-page="students">
@@ -1736,22 +1976,67 @@
                         <span>Students</span>
                     </a>
                 </li>
+                <li data-page="classes">
+                    <a href="#">
+                        <i class="fas fa-book"></i>
+                        <span>Subjects</span>
+                    </a>
+                </li>
+                <li data-page="library">
+                    <a href="#">
+                        <i class="fas fa-book-open"></i>
+                        <span>Library</span>
+                    </a>
+                </li>
+                <li data-page="notification">
+                    <a href="#">
+                        <i class="fas fa-bell"></i>
+                        <span>Notification</span>
+                    </a>
+                </li>
+                <li data-page="pages">
+                    <a href="#">
+                        <i class="fas fa-file"></i>
+                        <span>Pages</span>
+                    </a>
+                </li>
+                <li data-page="news">
+                    <a href="#">
+                        <i class="fas fa-newspaper"></i>
+                        <span>News & Events</span>
+                    </a>
+                </li>
+                <li data-page="faculty">
+                    <a href="#">
+                        <i class="fas fa-users"></i>
+                        <span>Faculty</span>
+                    </a>
+                </li>
+                <li data-page="gallery">
+                    <a href="#">
+                        <i class="fas fa-images"></i>
+                        <span>Gallery</span>
+                    </a>
+                </li>
+                <li data-page="settings">
+                    <a href="#">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-section-title">Operations</div>
+            <ul class="secondary-menu">
                 <li data-page="enrollment">
                     <a href="#">
                         <i class="fas fa-user-plus"></i>
                         <span>Enrollment</span>
-                    </a>
-                </li>
-                <li data-page="classes">
-                    <a href="#">
-                        <i class="fas fa-chalkboard"></i>
-                        <span>Classes</span>
-                    </a>
-                </li>
-                <li data-page="instructors">
-                    <a href="#">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <span>Instructors</span>
                     </a>
                 </li>
                 <li data-page="schedule">
@@ -1772,12 +2057,6 @@
                         <span>Reports</span>
                     </a>
                 </li>
-                <li data-page="settings">
-                    <a href="#">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
             </ul>
         </div>
     </div>
@@ -1794,6 +2073,9 @@
                     <i class="fas fa-search"></i>
                     <input type="text" id="globalSearch" placeholder="Search..." onkeyup="handleGlobalSearch()">
                 </div>
+                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle Dark Mode">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
                 <div class="notification-icon" onclick="toggleNotificationCenter(event)">
                     <i class="fas fa-bell"></i>
                     <span class="notification-badge hidden" id="notificationBadge">0</span>
@@ -1917,6 +2199,15 @@
                         <div class="stat-info">
                             <h3>$24,580</h3>
                             <p>Revenue</p>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon" style="background: rgba(139, 69, 19, 0.1); color: #8b4513;">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalPageVisits">0</h3>
+                            <p>Page Visits</p>
                         </div>
                     </div>
                 </div>
@@ -2952,6 +3243,238 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Library Page -->
+            <div class="page" id="library">
+                <div class="page-header">
+                    <h2 class="page-title">Library Management</h2>
+                    <div>
+                        <button class="btn btn-primary" id="addLibraryBookBtn"><i class="fas fa-plus"></i> Add Book</button>
+                    </div>
+                </div>
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Library Catalog</h2>
+                        <button class="btn btn-outline" id="importLibraryCatalogBtn"><i class="fas fa-file-import"></i> Import Catalog</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>ISBN</th>
+                                    <th>Category</th>
+                                    <th>Available Copies</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="libraryTable">
+                                <tr>
+                                    <td colspan="6" class="text-center">Library data will appear here once integrated.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Page -->
+            <div class="page" id="notification">
+                <div class="page-header">
+                    <h2 class="page-title">Notification Center</h2>
+                    <div>
+                        <button class="btn btn-primary" id="addNotificationBtn"><i class="fas fa-plus"></i> Create Notification</button>
+                    </div>
+                </div>
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Recent Notifications</h2>
+                        <div class="action-buttons">
+                            <button class="btn btn-outline" id="markNotificationsReadBtn"><i class="fas fa-check"></i> Mark All Read</button>
+                            <button class="btn btn-outline" id="clearNotificationsBtn"><i class="fas fa-trash"></i> Clear All</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Message</th>
+                                    <th>Audience</th>
+                                    <th>Scheduled For</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="notificationTable">
+                                <tr>
+                                    <td colspan="6" class="text-center">Notifications will appear here once configured.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pages Management Page -->
+            <div class="page" id="pages">
+                <div class="page-header">
+                    <h2 class="page-title">Website Pages</h2>
+                    <div>
+                        <button class="btn btn-primary" id="addWebsitePageBtn"><i class="fas fa-plus"></i> Add Page</button>
+                    </div>
+                </div>
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Content Pages</h2>
+                        <button class="btn btn-outline" id="syncPagesBtn"><i class="fas fa-sync"></i> Sync Content</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Page Title</th>
+                                    <th>URL</th>
+                                    <th>Status</th>
+                                    <th>Last Updated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pagesManagementTable">
+                                <tr>
+                                    <td colspan="5" class="text-center">Pages will be listed here after integration.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News & Events Page -->
+            <div class="page" id="news">
+                <div class="page-header">
+                    <h2 class="page-title">News & Events</h2>
+                    <div>
+                        <button class="btn btn-primary" id="addNewsEventBtn"><i class="fas fa-plus"></i> Add News</button>
+                    </div>
+                </div>
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Published Stories</h2>
+                        <button class="btn btn-outline" id="draftNewsBtn"><i class="fas fa-file-alt"></i> View Drafts</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Publish Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="newsEventsTable">
+                                <tr>
+                                    <td colspan="5" class="text-center">News items will show up here once data is connected.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Faculty Page -->
+            <div class="page" id="faculty">
+                <div class="page-header">
+                    <h2 class="page-title">Faculty Management</h2>
+                    <div>
+                        <button class="btn btn-primary" id="addFacultyMemberBtn"><i class="fas fa-plus"></i> Add Faculty</button>
+                    </div>
+                </div>
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Faculty Directory</h2>
+                        <button class="btn btn-outline" id="exportFacultyBtn"><i class="fas fa-download"></i> Export</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="facultyManagementTable">
+                                <tr>
+                                    <td colspan="5" class="text-center">Faculty members will be listed here after integration.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Page -->
+            <div class="page" id="gallery">
+                <div class="page-header">
+                    <h2 class="page-title">Gallery Management</h2>
+                    <div>
+                        <button class="btn btn-primary" id="addGalleryImageBtn"><i class="fas fa-plus"></i> Add Image</button>
+                    </div>
+                </div>
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Gallery Images</h2>
+                        <button class="btn btn-outline" id="manageGalleryCategoriesBtn"><i class="fas fa-folder-plus"></i> Manage Categories</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Preview</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Uploaded</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="galleryImagesTable">
+                                <tr>
+                                    <td colspan="5" class="text-center">Gallery uploads will appear here after integration.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2>Categories</h2>
+                        <button class="btn btn-outline" id="addGalleryCategoryBtn"><i class="fas fa-plus"></i> Add Category</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Description</th>
+                                    <th>Total Items</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="galleryCategoriesTable">
+                                <tr>
+                                    <td colspan="4" class="text-center">Gallery categories will appear here once created.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -3264,6 +3787,310 @@
         </div>
     </div>
 
+    <!-- Library Modal -->
+    <div class="modal" id="libraryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="libraryModalTitle">Add Book</h3>
+                <button class="close-modal" onclick="closeModal('libraryModal')">&times;</button>
+            </div>
+            <form id="libraryForm">
+                <input type="hidden" id="libraryId">
+                <div class="form-group">
+                    <label for="libraryTitle">Title *</label>
+                    <input type="text" id="libraryTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="libraryAuthor">Author *</label>
+                    <input type="text" id="libraryAuthor" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="libraryISBN">ISBN</label>
+                    <input type="text" id="libraryISBN" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="libraryCategory">Category *</label>
+                    <input type="text" id="libraryCategory" class="form-control" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="libraryTotalCopies">Total Copies *</label>
+                        <input type="number" id="libraryTotalCopies" class="form-control" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="libraryAvailableCopies">Available Copies *</label>
+                        <input type="number" id="libraryAvailableCopies" class="form-control" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="libraryStatus">Status *</label>
+                    <select id="libraryStatus" class="form-control" required>
+                        <option value="Available">Available</option>
+                        <option value="Checked Out">Checked Out</option>
+                        <option value="Maintenance">Maintenance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="libraryNotes">Notes</label>
+                    <textarea id="libraryNotes" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('libraryModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Modal -->
+    <div class="modal" id="notificationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="notificationModalTitle">Create Notification</h3>
+                <button class="close-modal" onclick="closeModal('notificationModal')">&times;</button>
+            </div>
+            <form id="notificationForm">
+                <input type="hidden" id="notificationId">
+                <div class="form-group">
+                    <label for="notificationTitle">Title *</label>
+                    <input type="text" id="notificationTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="notificationMessage">Message *</label>
+                    <textarea id="notificationMessage" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="notificationAudience">Target Audience *</label>
+                    <select id="notificationAudience" class="form-control" required>
+                        <option value="All">All</option>
+                        <option value="Students">Students</option>
+                        <option value="Parents">Parents</option>
+                        <option value="Faculty">Faculty</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="notificationChannel">Delivery Channel *</label>
+                    <select id="notificationChannel" class="form-control" required>
+                        <option value="Email">Email</option>
+                        <option value="SMS">SMS</option>
+                        <option value="Portal">Portal</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="notificationSchedule">Scheduled For *</label>
+                    <input type="datetime-local" id="notificationSchedule" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="notificationStatus">Status *</label>
+                    <select id="notificationStatus" class="form-control" required>
+                        <option value="Draft">Draft</option>
+                        <option value="Scheduled">Scheduled</option>
+                        <option value="Sent">Sent</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('notificationModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Page Modal -->
+    <div class="modal" id="pageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="pageModalTitle">Add Page</h3>
+                <button class="close-modal" onclick="closeModal('pageModal')">&times;</button>
+            </div>
+            <form id="pageForm">
+                <input type="hidden" id="pageId">
+                <div class="form-group">
+                    <label for="pageTitle">Page Title *</label>
+                    <input type="text" id="pageTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="pageSlug">URL Slug *</label>
+                    <input type="text" id="pageSlug" class="form-control" placeholder="e.g., admissions" required>
+                </div>
+                <div class="form-group">
+                    <label for="pageStatus">Status *</label>
+                    <select id="pageStatus" class="form-control" required>
+                        <option value="Draft">Draft</option>
+                        <option value="Review">In Review</option>
+                        <option value="Published">Published</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pageSummary">Summary</label>
+                    <textarea id="pageSummary" class="form-control" rows="4"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('pageModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- News Modal -->
+    <div class="modal" id="newsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="newsModalTitle">Add News</h3>
+                <button class="close-modal" onclick="closeModal('newsModal')">&times;</button>
+            </div>
+            <form id="newsForm">
+                <input type="hidden" id="newsId">
+                <div class="form-group">
+                    <label for="newsTitle">Title *</label>
+                    <input type="text" id="newsTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="newsCategory">Category *</label>
+                    <input type="text" id="newsCategory" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="newsStatus">Status *</label>
+                    <select id="newsStatus" class="form-control" required>
+                        <option value="Draft">Draft</option>
+                        <option value="Scheduled">Scheduled</option>
+                        <option value="Published">Published</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="newsDate">Publish Date *</label>
+                    <input type="date" id="newsDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="newsHeroImage">Hero Image URL</label>
+                    <input type="url" id="newsHeroImage" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="newsSummary">Summary</label>
+                    <textarea id="newsSummary" class="form-control" rows="4"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('newsModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Faculty Modal -->
+    <div class="modal" id="facultyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="facultyModalTitle">Add Faculty Member</h3>
+                <button class="close-modal" onclick="closeModal('facultyModal')">&times;</button>
+            </div>
+            <form id="facultyForm">
+                <input type="hidden" id="facultyId">
+                <div class="form-group">
+                    <label for="facultyName">Full Name *</label>
+                    <input type="text" id="facultyName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="facultyPosition">Position *</label>
+                    <input type="text" id="facultyPosition" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="facultyDepartment">Department *</label>
+                    <input type="text" id="facultyDepartment" class="form-control" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="facultyEmail">Email</label>
+                        <input type="email" id="facultyEmail" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="facultyPhone">Phone</label>
+                        <input type="text" id="facultyPhone" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="facultyStatus">Status *</label>
+                    <select id="facultyStatus" class="form-control" required>
+                        <option value="Active">Active</option>
+                        <option value="On Leave">On Leave</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="facultyBio">Bio</label>
+                    <textarea id="facultyBio" class="form-control" rows="4"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('facultyModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Gallery Image Modal -->
+    <div class="modal" id="galleryImageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="galleryImageModalTitle">Add Gallery Image</h3>
+                <button class="close-modal" onclick="closeModal('galleryImageModal')">&times;</button>
+            </div>
+            <form id="galleryImageForm">
+                <input type="hidden" id="galleryImageId">
+                <div class="form-group">
+                    <label for="galleryImageTitle">Title *</label>
+                    <input type="text" id="galleryImageTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="galleryImageUrl">Image URL *</label>
+                    <input type="url" id="galleryImageUrl" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="galleryImageCategory">Category *</label>
+                    <input type="text" id="galleryImageCategory" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="galleryImageStatus">Status *</label>
+                    <select id="galleryImageStatus" class="form-control" required>
+                        <option value="Published">Published</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Archived">Archived</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('galleryImageModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Gallery Category Modal -->
+    <div class="modal" id="galleryCategoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="galleryCategoryModalTitle">Add Gallery Category</h3>
+                <button class="close-modal" onclick="closeModal('galleryCategoryModal')">&times;</button>
+            </div>
+            <form id="galleryCategoryForm">
+                <input type="hidden" id="galleryCategoryId">
+                <div class="form-group">
+                    <label for="galleryCategoryName">Category Name *</label>
+                    <input type="text" id="galleryCategoryName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="galleryCategoryDescription">Description</label>
+                    <textarea id="galleryCategoryDescription" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('galleryCategoryModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         // ========== CONFIGURATION HELPERS ==========
         // Initialize configuration and create helper functions
@@ -3507,6 +4334,62 @@
                         if (typeof updateDashboardStats === 'function') updateDashboardStats();
                     }
                 });
+
+                // Library listener
+                window.firebaseDBInstance.onLibraryUpdate((result) => {
+                    if (result.success) {
+                        libraryItems = result.data;
+                        if (typeof renderLibraryTable === 'function') renderLibraryTable();
+                    }
+                });
+
+                // Notifications listener
+                window.firebaseDBInstance.onNotificationsUpdate((result) => {
+                    if (result.success) {
+                        notificationsList = result.data;
+                        if (typeof renderNotificationTable === 'function') renderNotificationTable();
+                    }
+                });
+
+                // Pages listener
+                window.firebaseDBInstance.onPagesUpdate((result) => {
+                    if (result.success) {
+                        pagesData = result.data;
+                        if (typeof renderPagesTable === 'function') renderPagesTable();
+                    }
+                });
+
+                // News listener
+                window.firebaseDBInstance.onNewsArticlesUpdate((result) => {
+                    if (result.success) {
+                        newsArticles = result.data;
+                        if (typeof renderNewsTable === 'function') renderNewsTable();
+                    }
+                });
+
+                // Faculty listener
+                window.firebaseDBInstance.onFacultyUpdate((result) => {
+                    if (result.success) {
+                        facultyMembers = result.data;
+                        if (typeof renderFacultyTable === 'function') renderFacultyTable();
+                    }
+                });
+
+                // Gallery images listener
+                window.firebaseDBInstance.onGalleryUpdate((result) => {
+                    if (result.success) {
+                        galleryImages = result.data;
+                        if (typeof renderGalleryImagesTable === 'function') renderGalleryImagesTable();
+                    }
+                });
+
+                // Gallery categories listener
+                window.firebaseDBInstance.onGalleryCategoriesUpdate((result) => {
+                    if (result.success) {
+                        galleryCategories = result.data;
+                        if (typeof renderGalleryCategoriesTable === 'function') renderGalleryCategoriesTable();
+                    }
+                });
             },
 
             calculateEndTime(startTime, duration) {
@@ -3541,6 +4424,41 @@
             async getPayments() {
                 if (!window.firebaseDBInstance) return [];
                 const result = await window.firebaseDBInstance.getAllPayments();
+                return result.success ? result.data : [];
+            },
+            async getLibraryItems() {
+                if (!window.firebaseDBInstance) return [];
+                const result = await window.firebaseDBInstance.getAllLibraryItems();
+                return result.success ? result.data : [];
+            },
+            async getNotifications() {
+                if (!window.firebaseDBInstance) return [];
+                const result = await window.firebaseDBInstance.getAllNotifications();
+                return result.success ? result.data : [];
+            },
+            async getPages() {
+                if (!window.firebaseDBInstance) return [];
+                const result = await window.firebaseDBInstance.getAllPages();
+                return result.success ? result.data : [];
+            },
+            async getNewsArticles() {
+                if (!window.firebaseDBInstance) return [];
+                const result = await window.firebaseDBInstance.getAllNewsArticles();
+                return result.success ? result.data : [];
+            },
+            async getFacultyMembers() {
+                if (!window.firebaseDBInstance) return [];
+                const result = await window.firebaseDBInstance.getAllFacultyMembers();
+                return result.success ? result.data : [];
+            },
+            async getGalleryImages() {
+                if (!window.firebaseDBInstance) return [];
+                const result = await window.firebaseDBInstance.getAllGalleryImages();
+                return result.success ? result.data : [];
+            },
+            async getGalleryCategories() {
+                if (!window.firebaseDBInstance) return [];
+                const result = await window.firebaseDBInstance.getAllGalleryCategories();
                 return result.success ? result.data : [];
             },
             
@@ -3592,6 +4510,13 @@
         let instructors = [];
         let schedule = [];
         let payments = [];
+        let libraryItems = [];
+        let notificationsList = [];
+        let pagesData = [];
+        let newsArticles = [];
+        let facultyMembers = [];
+        let galleryImages = [];
+        let galleryCategories = [];
         
         // Load initial data from Firestore (listeners will keep it updated)
         async function loadInitialData() {
@@ -3601,6 +4526,13 @@
                 instructors = await DataManager.getInstructors();
                 schedule = await DataManager.getSchedule();
                 payments = await DataManager.getPayments();
+                libraryItems = await DataManager.getLibraryItems();
+                notificationsList = await DataManager.getNotifications();
+                pagesData = await DataManager.getPages();
+                newsArticles = await DataManager.getNewsArticles();
+                facultyMembers = await DataManager.getFacultyMembers();
+                galleryImages = await DataManager.getGalleryImages();
+                galleryCategories = await DataManager.getGalleryCategories();
                 
                 // Initialize tables with loaded data
                 if (typeof initializeTables === 'function') {
@@ -3734,6 +4666,13 @@
                 instructors = await DataManager.getInstructors();
                 schedule = await DataManager.getSchedule();
                 payments = await DataManager.getPayments();
+                libraryItems = await DataManager.getLibraryItems();
+                notificationsList = await DataManager.getNotifications();
+                pagesData = await DataManager.getPages();
+                newsArticles = await DataManager.getNewsArticles();
+                facultyMembers = await DataManager.getFacultyMembers();
+                galleryImages = await DataManager.getGalleryImages();
+                galleryCategories = await DataManager.getGalleryCategories();
             }
         }
 
@@ -3747,6 +4686,13 @@
             filterInstructors();
             filterSchedule();
             filterPayments();
+            renderLibraryTable();
+            renderNotificationTable();
+            renderPagesTable();
+            renderNewsTable();
+            renderFacultyTable();
+            renderGalleryImagesTable();
+            renderGalleryCategoriesTable();
             
             // Also update recent enrollments
             const recentEnrollmentsTable = document.getElementById('recentEnrollmentsTable');
@@ -5096,6 +6042,643 @@
                 }
             }
         }
+
+        // ========== EXTENDED MODULE MANAGEMENT ==========
+        const formatDate = (value) => {
+            if (!value) return '';
+            if (value.toDate) {
+                return value.toDate().toISOString().split('T')[0];
+            }
+            return value.split('T')[0];
+        };
+
+        // ----- Library -----
+        function renderLibraryTable(items = libraryItems) {
+            const tbody = document.getElementById('libraryTable');
+            if (!tbody) return;
+            if (!items.length) {
+                tbody.innerHTML = `<tr><td colspan="6" class="table-empty">Library catalog is empty. Add your first book.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = items.map(book => `
+                <tr>
+                    <td>${book.title || 'Untitled'}</td>
+                    <td>${book.author || '—'}</td>
+                    <td>${book.category || '—'}</td>
+                    <td>${book.availableCopies ?? 0}/${book.totalCopies ?? 0}</td>
+                    <td><span class="status-pill info">${book.status || 'Available'}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline" onclick="openLibraryModal('${book.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline" onclick="deleteLibraryItem('${book.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openLibraryModal(bookId = null) {
+            const form = document.getElementById('libraryForm');
+            if (!form) return;
+            form.reset();
+            document.getElementById('libraryId').value = bookId || '';
+            document.getElementById('libraryModalTitle').textContent = bookId ? 'Edit Book' : 'Add Book';
+
+            if (bookId) {
+                const book = libraryItems.find(item => item.id === bookId);
+                if (book) {
+                    document.getElementById('libraryTitle').value = book.title || '';
+                    document.getElementById('libraryAuthor').value = book.author || '';
+                    document.getElementById('libraryISBN').value = book.isbn || '';
+                    document.getElementById('libraryCategory').value = book.category || '';
+                    document.getElementById('libraryTotalCopies').value = book.totalCopies || 0;
+                    document.getElementById('libraryAvailableCopies').value = book.availableCopies || 0;
+                    document.getElementById('libraryStatus').value = book.status || 'Available';
+                    document.getElementById('libraryNotes').value = book.notes || '';
+                }
+            }
+
+            openModal('libraryModal');
+        }
+
+        async function deleteLibraryItem(bookId) {
+            if (!bookId) return;
+            const confirmed = await Swal.fire({
+                title: 'Delete book?',
+                text: 'This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete'
+            });
+            if (confirmed.isConfirmed) {
+                const result = await window.firebaseDBInstance.deleteLibraryItem(bookId);
+                if (result.success) {
+                    Swal.fire('Deleted!', 'Book removed from catalog.', 'success');
+                } else {
+                    Swal.fire('Error', result.error || 'Failed to delete book.', 'error');
+                }
+            }
+        }
+
+        document.getElementById('addLibraryBookBtn')?.addEventListener('click', () => openLibraryModal());
+        document.getElementById('libraryForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const bookId = document.getElementById('libraryId').value;
+            const payload = {
+                title: document.getElementById('libraryTitle').value.trim(),
+                author: document.getElementById('libraryAuthor').value.trim(),
+                isbn: document.getElementById('libraryISBN').value.trim(),
+                category: document.getElementById('libraryCategory').value.trim(),
+                totalCopies: parseInt(document.getElementById('libraryTotalCopies').value, 10) || 0,
+                availableCopies: parseInt(document.getElementById('libraryAvailableCopies').value, 10) || 0,
+                status: document.getElementById('libraryStatus').value,
+                notes: document.getElementById('libraryNotes').value.trim()
+            };
+            const action = bookId ? window.firebaseDBInstance.updateLibraryItem(bookId, payload) : window.firebaseDBInstance.addLibraryItem(payload);
+            const result = await action;
+            if (result.success) {
+                Swal.fire('Saved!', 'Library record saved successfully.', 'success');
+                closeModal('libraryModal');
+            } else {
+                Swal.fire('Error', result.error || 'Unable to save book.', 'error');
+            }
+        });
+
+        // ----- Notifications -----
+        function renderNotificationTable(items = notificationsList) {
+            const tbody = document.getElementById('notificationTable');
+            if (!tbody) return;
+            if (!items.length) {
+                tbody.innerHTML = `<tr><td colspan="6" class="table-empty">No notifications yet. Create one to get started.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = items.map(note => `
+                <tr>
+                    <td>${note.title || 'Untitled'}</td>
+                    <td>${note.message || '—'}</td>
+                    <td>${note.targetAudience || note.audience || 'All'}</td>
+                    <td>${formatDate(note.scheduledFor)}</td>
+                    <td><span class="status-pill ${note.status === 'Sent' ? 'success' : 'warning'}">${note.status || 'Draft'}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline" onclick="openNotificationModal('${note.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline" onclick="deleteNotificationItem('${note.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openNotificationModal(notificationId = null) {
+            const form = document.getElementById('notificationForm');
+            if (!form) return;
+            form.reset();
+            document.getElementById('notificationId').value = notificationId || '';
+            document.getElementById('notificationModalTitle').textContent = notificationId ? 'Edit Notification' : 'Create Notification';
+
+            if (notificationId) {
+                const note = notificationsList.find(item => item.id === notificationId);
+                if (note) {
+                    document.getElementById('notificationTitle').value = note.title || '';
+                    document.getElementById('notificationMessage').value = note.message || '';
+                    document.getElementById('notificationAudience').value = note.targetAudience || note.audience || 'All';
+                    document.getElementById('notificationChannel').value = note.channel || 'Portal';
+                    document.getElementById('notificationSchedule').value = note.scheduledFor ? formatDate(note.scheduledFor) + 'T00:00' : '';
+                    document.getElementById('notificationStatus').value = note.status || 'Draft';
+                }
+            }
+
+            openModal('notificationModal');
+        }
+
+        async function deleteNotificationItem(notificationId) {
+            if (!notificationId) return;
+            const confirmed = await Swal.fire({
+                title: 'Delete notification?',
+                text: 'This cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete'
+            });
+            if (confirmed.isConfirmed) {
+                const result = await window.firebaseDBInstance.deleteNotification(notificationId);
+                if (result.success) {
+                    Swal.fire('Deleted!', 'Notification removed.', 'success');
+                } else {
+                    Swal.fire('Error', result.error || 'Failed to delete notification.', 'error');
+                }
+            }
+        }
+
+        document.getElementById('addNotificationBtn')?.addEventListener('click', () => openNotificationModal());
+        document.getElementById('notificationForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const notificationId = document.getElementById('notificationId').value;
+            const payload = {
+                title: document.getElementById('notificationTitle').value.trim(),
+                message: document.getElementById('notificationMessage').value.trim(),
+                targetAudience: document.getElementById('notificationAudience').value,
+                channel: document.getElementById('notificationChannel').value,
+                scheduledFor: document.getElementById('notificationSchedule').value,
+                status: document.getElementById('notificationStatus').value
+            };
+            const action = notificationId ? window.firebaseDBInstance.updateNotification(notificationId, payload) : window.firebaseDBInstance.addNotification(payload);
+            const result = await action;
+            if (result.success) {
+                Swal.fire('Saved!', 'Notification saved successfully.', 'success');
+                closeModal('notificationModal');
+            } else {
+                Swal.fire('Error', result.error || 'Unable to save notification.', 'error');
+            }
+        });
+
+        document.getElementById('markNotificationsReadBtn')?.addEventListener('click', async () => {
+            if (!notificationsList.length) return;
+            await Promise.all(notificationsList
+                .filter(note => note.status !== 'Sent')
+                .map(note => window.firebaseDBInstance.updateNotification(note.id, { status: 'Sent' })));
+            Swal.fire('Updated', 'All notifications marked as sent.', 'success');
+        });
+
+        document.getElementById('clearNotificationsBtn')?.addEventListener('click', async () => {
+            if (!notificationsList.length) return;
+            const confirmed = await Swal.fire({
+                title: 'Clear all notifications?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, clear'
+            });
+            if (confirmed.isConfirmed) {
+                await Promise.all(notificationsList.map(note => window.firebaseDBInstance.deleteNotification(note.id)));
+                Swal.fire('Cleared', 'All notifications removed.', 'success');
+            }
+        });
+
+        // ----- Pages -----
+        function renderPagesTable(items = pagesData) {
+            const tbody = document.getElementById('pagesManagementTable');
+            if (!tbody) return;
+            if (!items.length) {
+                tbody.innerHTML = `<tr><td colspan="5" class="table-empty">No pages recorded yet.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = items.map(page => `
+                <tr>
+                    <td>${page.title || 'Untitled'}</td>
+                    <td>/${page.slug || page.url || ''}</td>
+                    <td><span class="status-pill ${page.status === 'Published' ? 'success' : 'warning'}">${page.status || 'Draft'}</span></td>
+                    <td>${formatDate(page.lastUpdated) || '—'}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline" onclick="openPageModal('${page.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline" onclick="deletePageItem('${page.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openPageModal(pageId = null) {
+            const form = document.getElementById('pageForm');
+            if (!form) return;
+            form.reset();
+            document.getElementById('pageId').value = pageId || '';
+            document.getElementById('pageModalTitle').textContent = pageId ? 'Edit Page' : 'Add Page';
+
+            if (pageId) {
+                const page = pagesData.find(item => item.id === pageId);
+                if (page) {
+                    document.getElementById('pageTitle').value = page.title || '';
+                    document.getElementById('pageSlug').value = page.slug || page.url || '';
+                    document.getElementById('pageStatus').value = page.status || 'Draft';
+                    document.getElementById('pageSummary').value = page.summary || '';
+                }
+            }
+
+            openModal('pageModal');
+        }
+
+        async function deletePageItem(pageId) {
+            const confirmed = await Swal.fire({
+                title: 'Delete page?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete'
+            });
+            if (confirmed.isConfirmed) {
+                const result = await window.firebaseDBInstance.deletePage(pageId);
+                if (result.success) {
+                    Swal.fire('Deleted!', 'Page removed.', 'success');
+                } else {
+                    Swal.fire('Error', result.error || 'Failed to delete page.', 'error');
+                }
+            }
+        }
+
+        document.getElementById('addWebsitePageBtn')?.addEventListener('click', () => openPageModal());
+        document.getElementById('pageForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const pageId = document.getElementById('pageId').value;
+            const payload = {
+                title: document.getElementById('pageTitle').value.trim(),
+                slug: document.getElementById('pageSlug').value.trim(),
+                status: document.getElementById('pageStatus').value,
+                summary: document.getElementById('pageSummary').value.trim()
+            };
+            const action = pageId ? window.firebaseDBInstance.updatePage(pageId, payload) : window.firebaseDBInstance.addPage(payload);
+            const result = await action;
+            if (result.success) {
+                Swal.fire('Saved!', 'Page saved successfully.', 'success');
+                closeModal('pageModal');
+            } else {
+                Swal.fire('Error', result.error || 'Unable to save page.', 'error');
+            }
+        });
+
+        document.getElementById('syncPagesBtn')?.addEventListener('click', () => {
+            Swal.fire('Sync queued', 'Content sync will run shortly.', 'info');
+        });
+
+        // ----- News -----
+        function renderNewsTable(items = newsArticles) {
+            const tbody = document.getElementById('newsEventsTable');
+            if (!tbody) return;
+            if (!items.length) {
+                tbody.innerHTML = `<tr><td colspan="5" class="table-empty">No news articles yet.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = items.map(article => `
+                <tr>
+                    <td>${article.title || 'Untitled'}</td>
+                    <td><span class="category-pill">${article.category || 'General'}</span></td>
+                    <td>${formatDate(article.publishDate || article.date)}</td>
+                    <td><span class="status-pill ${article.status === 'Published' ? 'success' : 'warning'}">${article.status || 'Draft'}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline" onclick="openNewsModal('${article.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline" onclick="deleteNewsArticle('${article.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openNewsModal(articleId = null) {
+            const form = document.getElementById('newsForm');
+            if (!form) return;
+            form.reset();
+            document.getElementById('newsId').value = articleId || '';
+            document.getElementById('newsModalTitle').textContent = articleId ? 'Edit News' : 'Add News';
+
+            if (articleId) {
+                const article = newsArticles.find(item => item.id === articleId);
+                if (article) {
+                    document.getElementById('newsTitle').value = article.title || '';
+                    document.getElementById('newsCategory').value = article.category || '';
+                    document.getElementById('newsStatus').value = article.status || 'Draft';
+                    document.getElementById('newsDate').value = formatDate(article.publishDate || article.date);
+                    document.getElementById('newsHeroImage').value = article.heroImage || article.image || '';
+                    document.getElementById('newsSummary').value = article.summary || article.excerpt || '';
+                }
+            }
+
+            openModal('newsModal');
+        }
+
+        async function deleteNewsArticle(articleId) {
+            const confirmed = await Swal.fire({
+                title: 'Delete article?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete'
+            });
+            if (confirmed.isConfirmed) {
+                const result = await window.firebaseDBInstance.deleteNewsArticle(articleId);
+                if (result.success) {
+                    Swal.fire('Deleted!', 'News article removed.', 'success');
+                } else {
+                    Swal.fire('Error', result.error || 'Failed to delete article.', 'error');
+                }
+            }
+        }
+
+        document.getElementById('addNewsEventBtn')?.addEventListener('click', () => openNewsModal());
+        document.getElementById('newsForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const articleId = document.getElementById('newsId').value;
+            const payload = {
+                title: document.getElementById('newsTitle').value.trim(),
+                category: document.getElementById('newsCategory').value.trim(),
+                status: document.getElementById('newsStatus').value,
+                publishDate: document.getElementById('newsDate').value,
+                heroImage: document.getElementById('newsHeroImage').value.trim(),
+                summary: document.getElementById('newsSummary').value.trim()
+            };
+            const action = articleId ? window.firebaseDBInstance.updateNewsArticle(articleId, payload) : window.firebaseDBInstance.addNewsArticle(payload);
+            const result = await action;
+            if (result.success) {
+                Swal.fire('Saved!', 'News article saved successfully.', 'success');
+                closeModal('newsModal');
+            } else {
+                Swal.fire('Error', result.error || 'Unable to save article.', 'error');
+            }
+        });
+
+        document.getElementById('draftNewsBtn')?.addEventListener('click', () => {
+            const drafts = newsArticles.filter(article => article.status !== 'Published').length;
+            Swal.fire('Drafts', `You currently have ${drafts} draft items.`, 'info');
+        });
+
+        // ----- Faculty -----
+        function renderFacultyTable(items = facultyMembers) {
+            const tbody = document.getElementById('facultyManagementTable');
+            if (!tbody) return;
+            if (!items.length) {
+                tbody.innerHTML = `<tr><td colspan="5" class="table-empty">No faculty members yet.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = items.map(member => `
+                <tr>
+                    <td>${member.name || 'Unnamed'}</td>
+                    <td>${member.position || '—'}</td>
+                    <td>${member.department || '—'}</td>
+                    <td><span class="status-pill ${member.status === 'Active' ? 'success' : 'warning'}">${member.status || 'Active'}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline" onclick="openFacultyModal('${member.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline" onclick="deleteFacultyMember('${member.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openFacultyModal(facultyId = null) {
+            const form = document.getElementById('facultyForm');
+            if (!form) return;
+            form.reset();
+            document.getElementById('facultyId').value = facultyId || '';
+            document.getElementById('facultyModalTitle').textContent = facultyId ? 'Edit Faculty' : 'Add Faculty';
+
+            if (facultyId) {
+                const member = facultyMembers.find(item => item.id === facultyId);
+                if (member) {
+                    document.getElementById('facultyName').value = member.name || '';
+                    document.getElementById('facultyPosition').value = member.position || '';
+                    document.getElementById('facultyDepartment').value = member.department || '';
+                    document.getElementById('facultyEmail').value = member.email || '';
+                    document.getElementById('facultyPhone').value = member.phone || '';
+                    document.getElementById('facultyStatus').value = member.status || 'Active';
+                    document.getElementById('facultyBio').value = member.bio || '';
+                }
+            }
+
+            openModal('facultyModal');
+        }
+
+        async function deleteFacultyMember(facultyId) {
+            const confirmed = await Swal.fire({
+                title: 'Remove faculty member?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, remove'
+            });
+            if (confirmed.isConfirmed) {
+                const result = await window.firebaseDBInstance.deleteFacultyMember(facultyId);
+                if (result.success) {
+                    Swal.fire('Removed!', 'Faculty member removed.', 'success');
+                } else {
+                    Swal.fire('Error', result.error || 'Failed to remove member.', 'error');
+                }
+            }
+        }
+
+        document.getElementById('addFacultyMemberBtn')?.addEventListener('click', () => openFacultyModal());
+        document.getElementById('facultyForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const facultyId = document.getElementById('facultyId').value;
+            const payload = {
+                name: document.getElementById('facultyName').value.trim(),
+                position: document.getElementById('facultyPosition').value.trim(),
+                department: document.getElementById('facultyDepartment').value.trim(),
+                email: document.getElementById('facultyEmail').value.trim(),
+                phone: document.getElementById('facultyPhone').value.trim(),
+                status: document.getElementById('facultyStatus').value,
+                bio: document.getElementById('facultyBio').value.trim()
+            };
+            const action = facultyId ? window.firebaseDBInstance.updateFacultyMember(facultyId, payload) : window.firebaseDBInstance.addFacultyMember(payload);
+            const result = await action;
+            if (result.success) {
+                Swal.fire('Saved!', 'Faculty profile saved.', 'success');
+                closeModal('facultyModal');
+            } else {
+                Swal.fire('Error', result.error || 'Unable to save faculty data.', 'error');
+            }
+        });
+
+        document.getElementById('exportFacultyBtn')?.addEventListener('click', () => {
+            Swal.fire('Export queued', 'Faculty export will be generated.', 'info');
+        });
+
+        // ----- Gallery -----
+        function renderGalleryImagesTable(items = galleryImages) {
+            const tbody = document.getElementById('galleryImagesTable');
+            if (!tbody) return;
+            if (!items.length) {
+                tbody.innerHTML = `<tr><td colspan="5" class="table-empty">No gallery images yet.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = items.map(image => `
+                <tr>
+                    <td><img src="${image.imageUrl || image.url || ''}" alt="${image.title || 'Image'}" class="gallery-preview"></td>
+                    <td>${image.title || 'Untitled'}</td>
+                    <td>${image.category || 'General'}</td>
+                    <td>${formatDate(image.uploadDate)}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline" onclick="openGalleryImageModal('${image.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline" onclick="deleteGalleryImage('${image.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderGalleryCategoriesTable(items = galleryCategories) {
+            const tbody = document.getElementById('galleryCategoriesTable');
+            if (!tbody) return;
+            if (!items.length) {
+                tbody.innerHTML = `<tr><td colspan="4" class="table-empty">No categories created yet.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = items.map(category => `
+                <tr>
+                    <td>${category.name || 'Unnamed'}</td>
+                    <td>${category.description || '—'}</td>
+                    <td>${category.totalItems || 0}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline" onclick="openGalleryCategoryModal('${category.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline" onclick="deleteGalleryCategory('${category.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openGalleryImageModal(imageId = null) {
+            const form = document.getElementById('galleryImageForm');
+            if (!form) return;
+            form.reset();
+            document.getElementById('galleryImageId').value = imageId || '';
+            document.getElementById('galleryImageModalTitle').textContent = imageId ? 'Edit Image' : 'Add Image';
+
+            if (imageId) {
+                const image = galleryImages.find(item => item.id === imageId);
+                if (image) {
+                    document.getElementById('galleryImageTitle').value = image.title || '';
+                    document.getElementById('galleryImageUrl').value = image.imageUrl || image.url || '';
+                    document.getElementById('galleryImageCategory').value = image.category || '';
+                    document.getElementById('galleryImageStatus').value = image.status || 'Published';
+                }
+            }
+
+            openModal('galleryImageModal');
+        }
+
+        async function deleteGalleryImage(imageId) {
+            const confirmed = await Swal.fire({
+                title: 'Delete gallery image?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete'
+            });
+            if (confirmed.isConfirmed) {
+                const result = await window.firebaseDBInstance.deleteGalleryImage(imageId);
+                if (result.success) {
+                    Swal.fire('Deleted', 'Gallery image removed.', 'success');
+                } else {
+                    Swal.fire('Error', result.error || 'Failed to delete image.', 'error');
+                }
+            }
+        }
+
+        document.getElementById('addGalleryImageBtn')?.addEventListener('click', () => openGalleryImageModal());
+        document.getElementById('galleryImageForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const imageId = document.getElementById('galleryImageId').value;
+            const payload = {
+                title: document.getElementById('galleryImageTitle').value.trim(),
+                imageUrl: document.getElementById('galleryImageUrl').value.trim(),
+                category: document.getElementById('galleryImageCategory').value.trim(),
+                status: document.getElementById('galleryImageStatus').value
+            };
+            const action = imageId ? window.firebaseDBInstance.updateGalleryImage(imageId, payload) : window.firebaseDBInstance.addGalleryImage(payload);
+            const result = await action;
+            if (result.success) {
+                Swal.fire('Saved!', 'Gallery image saved.', 'success');
+                closeModal('galleryImageModal');
+            } else {
+                Swal.fire('Error', result.error || 'Unable to save gallery image.', 'error');
+            }
+        });
+
+        function openGalleryCategoryModal(categoryId = null) {
+            const form = document.getElementById('galleryCategoryForm');
+            if (!form) return;
+            form.reset();
+            document.getElementById('galleryCategoryId').value = categoryId || '';
+            document.getElementById('galleryCategoryModalTitle').textContent = categoryId ? 'Edit Category' : 'Add Category';
+
+            if (categoryId) {
+                const category = galleryCategories.find(item => item.id === categoryId);
+                if (category) {
+                    document.getElementById('galleryCategoryName').value = category.name || '';
+                    document.getElementById('galleryCategoryDescription').value = category.description || '';
+                }
+            }
+
+            openModal('galleryCategoryModal');
+        }
+
+        async function deleteGalleryCategory(categoryId) {
+            const confirmed = await Swal.fire({
+                title: 'Delete category?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete'
+            });
+            if (confirmed.isConfirmed) {
+                const result = await window.firebaseDBInstance.deleteGalleryCategory(categoryId);
+                if (result.success) {
+                    Swal.fire('Deleted', 'Gallery category removed.', 'success');
+                } else {
+                    Swal.fire('Error', result.error || 'Failed to delete category.', 'error');
+                }
+            }
+        }
+
+        document.getElementById('manageGalleryCategoriesBtn')?.addEventListener('click', () => {
+            Swal.fire('Reminder', 'Use the categories table below to manage categories.', 'info');
+        });
+
+        document.getElementById('addGalleryCategoryBtn')?.addEventListener('click', () => openGalleryCategoryModal());
+        document.getElementById('galleryCategoryForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const categoryId = document.getElementById('galleryCategoryId').value;
+            const payload = {
+                name: document.getElementById('galleryCategoryName').value.trim(),
+                description: document.getElementById('galleryCategoryDescription').value.trim()
+            };
+            const action = categoryId ? window.firebaseDBInstance.updateGalleryCategory(categoryId, payload) : window.firebaseDBInstance.addGalleryCategory(payload);
+            const result = await action;
+            if (result.success) {
+                Swal.fire('Saved!', 'Gallery category saved.', 'success');
+                closeModal('galleryCategoryModal');
+            } else {
+                Swal.fire('Error', result.error || 'Unable to save category.', 'error');
+            }
+        });
 
         // ========== NOTIFICATIONS SYSTEM ==========
         
@@ -7398,8 +8981,39 @@
             }, 5 * 60 * 1000); // Check every 5 minutes
         }
 
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('prima-admin-theme', newTheme);
+            setThemeIcon(newTheme);
+        }
+
+        function setThemeIcon(theme) {
+            const themeIcon = document.getElementById('themeIcon');
+            if (themeIcon) {
+                if (theme === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            }
+        }
+
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('prima-admin-theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+            setThemeIcon(savedTheme);
+        }
+
         // Initialize the dashboard
         document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize theme
+            initializeTheme();
+            
             // Hide all content immediately
             document.body.classList.add('auth-checking');
             
@@ -7493,13 +9107,38 @@
                 }
             }
             
+            // Get total page visits
+            let totalPageVisits = 0;
+            if (window.firebaseDBInstance) {
+                try {
+                    const visitsResult = await window.firebaseDBInstance.getTotalPageVisits();
+                    if (visitsResult.success) {
+                        totalPageVisits = visitsResult.count || 0;
+                    }
+                } catch (error) {
+                    console.error('Error fetching page visits:', error);
+                }
+            }
+            
             // Update stat cards if they exist
             const statCards = document.querySelectorAll('.stat-info h3');
-            if (statCards.length >= 4) {
+            if (statCards.length >= 5) {
                 statCards[0].textContent = totalStudents.toLocaleString();
                 statCards[1].textContent = totalInstructors.toLocaleString();
                 statCards[2].textContent = totalClasses.toLocaleString();
                 statCards[3].textContent = '$' + totalRevenue.toLocaleString();
+                statCards[4].textContent = totalPageVisits.toLocaleString();
+            } else if (statCards.length >= 4) {
+                statCards[0].textContent = totalStudents.toLocaleString();
+                statCards[1].textContent = totalInstructors.toLocaleString();
+                statCards[2].textContent = totalClasses.toLocaleString();
+                statCards[3].textContent = '$' + totalRevenue.toLocaleString();
+            }
+            
+            // Update page visits separately if element exists
+            const pageVisitsElement = document.getElementById('totalPageVisits');
+            if (pageVisitsElement) {
+                pageVisitsElement.textContent = totalPageVisits.toLocaleString();
             }
             
             // Show notification badge for pending enrollments if any

@@ -8,7 +8,7 @@
     <style>
         /* CSS Variables for consistent theming */
         :root {
-            --primary: #1a4b8c;
+            --primary: #f88e10;
             --secondary: #f9a826;
             --accent: #2e7d32;
             --light: #f5f5f5;
@@ -22,7 +22,7 @@
 
         /* Dark Mode Variables */
         [data-theme="dark"] {
-            --primary: #3a7bd5;
+            --primary: #f88e10;
             --secondary: #ffb74d;
             --accent: #4caf50;
             --light: #2d2d2d;
@@ -76,7 +76,7 @@
         .btn {
             display: inline-block;
             padding: 12px 30px;
-            background-color: var(--secondary);
+            background-color: #000;
             color: white;
             border: none;
             border-radius: 4px;
@@ -87,26 +87,25 @@
         }
 
         .btn:hover {
-            background-color: #e89a1f;
+            background-color: #222;
             transform: translateY(-2px);
         }
 
         .btn-primary {
-            background-color: var(--primary);
+            background-color: #555;
         }
 
         .btn-primary:hover {
-            background-color: #0d3a6e;
+            background-color: #333;
         }
 
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
+        .download-btn {
+            background-color: #000;
+            border: 2px solid #000;
         }
 
-        .btn-outline:hover {
-            background-color: rgba(26, 75, 140, 0.1);
+        .download-btn:hover {
+            background-color: #222;
         }
 
         .section {
@@ -264,7 +263,7 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(26, 75, 140, 0.8), rgba(26, 75, 140, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background: linear-gradient(rgba(248, 142, 16, 0.8), rgba(248, 142, 16, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
             background-size: cover;
             background-position: center;
             color: white;
@@ -282,6 +281,49 @@
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto 30px;
+        }
+
+        .admission-updates {
+            background-color: var(--bg-color);
+        }
+
+        .updates-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .update-card {
+            background: var(--bg-color);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .update-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-bottom: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 25px 10px;
+            color: #888;
+        }
+
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .hero-btns .btn {
+            min-width: 180px;
         }
 
         /* Application Form Styles */
@@ -412,7 +454,7 @@
         .form-control:focus {
             border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.1);
+            box-shadow: 0 0 0 3px rgba(248, 142, 16, 0.15);
         }
 
         .form-text {
@@ -699,6 +741,20 @@
         <div class="container">
             <h1>Admissions Application</h1>
             <p>Begin your journey to academic excellence at Prima Academy. Complete the form below to apply for admission.</p>
+            <div class="hero-btns">
+                <a href="PRIMA ACADEMY PROSPECTUS.pdf" class="btn btn-primary" target="_blank" rel="noopener">View Prospectus</a>
+                <a href="PRIMA ACADEMY PROSPECTUS.pdf" class="btn download-btn" download>Download Prospectus</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admissions Updates Section -->
+    <section class="section admission-updates">
+        <div class="container">
+            <h2 class="section-title">Latest Admissions Updates</h2>
+            <div class="updates-list" id="admissionUpdatesList">
+                <p class="empty-state">Stay tuned for new admissions announcements.</p>
+            </div>
         </div>
     </section>
 
@@ -1165,16 +1221,33 @@
     <script>
         let admissionFormInitialized = false;
 
+        // Track page visit
+        async function trackPageVisit(pageName) {
+            if (!window.firebaseDBInstance) return;
+            try {
+                await window.firebaseDBInstance.trackPageVisit(pageName);
+            } catch (error) {
+                console.error('Failed to track page visit:', error);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', async function() {
             initializePageUI();
             initializeFileUploadInteraction();
 
             try {
                 await waitForFirebaseReady();
+                // Track admission page visit
+                trackPageVisit('Admissions');
+                await loadAdmissionUpdates();
                 setupAdmissionFormSubmission();
             } catch (error) {
                 console.error('Firebase initialization error:', error);
                 disableAdmissionForm('Admissions are temporarily unavailable. Please try again shortly.');
+                const updatesContainer = document.getElementById('admissionUpdatesList');
+                if (updatesContainer) {
+                    updatesContainer.innerHTML = '<p class="empty-state">Unable to load updates at this time.</p>';
+                }
             }
         });
 
@@ -1197,45 +1270,88 @@
             });
         }
 
+        async function loadAdmissionUpdates() {
+            const updatesContainer = document.getElementById('admissionUpdatesList');
+            if (!updatesContainer) return;
+            if (!window.firebaseDBInstance) {
+                updatesContainer.innerHTML = '<p class="empty-state">Admissions updates will appear soon.</p>';
+                return;
+            }
+            try {
+                const result = await window.firebaseDBInstance.getAllNotifications();
+                if (!result.success || !result.data.length) {
+                    updatesContainer.innerHTML = '<p class="empty-state">Admissions updates will appear soon.</p>';
+                    return;
+                }
+                const updates = result.data
+                    .filter(update => update.status !== 'Draft')
+                    .sort((a, b) => new Date(b.scheduledFor || b.createdAt?.toDate?.() || Date.now()) - new Date(a.scheduledFor || a.createdAt?.toDate?.() || Date.now()))
+                    .slice(0, 3);
+                updatesContainer.innerHTML = updates.map(update => `
+                    <div class="update-card">
+                        <div class="update-meta">
+                            <span>${formatDate(update.scheduledFor || update.createdAt)}</span>
+                            <span>${update.status || 'Scheduled'}</span>
+                        </div>
+                        <h3>${update.title || 'Admissions Update'}</h3>
+                        <p>${update.message || update.summary || 'Stay tuned for more information about our admissions timeline.'}</p>
+                        <p style="font-size:0.9rem;color:var(--text);margin-bottom:0;"><strong>Audience:</strong> ${update.targetAudience || 'Prospective Families'}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading admission updates:', error);
+                updatesContainer.innerHTML = '<p class="empty-state">Unable to load updates at this time.</p>';
+            }
+        }
+
         function initializePageUI() {
             window.addEventListener('scroll', function() {
                 const header = document.querySelector('header');
                 if (header) {
-                    header.classList.toggle('shrink', window.scrollY > 50);
+                header.classList.toggle('shrink', window.scrollY > 50);
                 }
             });
             
             const mobileToggle = document.querySelector('.mobile-toggle');
             const navMenu = document.querySelector('.nav-menu');
             if (mobileToggle && navMenu) {
-                mobileToggle.addEventListener('click', function() {
-                    navMenu.classList.toggle('active');
+            mobileToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+            });
+            
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navMenu.classList.remove('active');
                 });
-                
-                document.querySelectorAll('.nav-menu a').forEach(link => {
-                    link.addEventListener('click', function() {
-                        navMenu.classList.remove('active');
-                    });
-                });
+            });
             }
+            
+            const savedTheme = localStorage.getItem('prima-theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
             
             const themeToggle = document.getElementById('themeToggle');
             if (themeToggle) {
                 const themeIcon = themeToggle.querySelector('i');
+                
+                const setThemeIcon = (theme) => {
+                    if (!themeIcon) return;
+                    if (theme === 'dark') {
+                        themeIcon.classList.remove('fa-moon');
+                        themeIcon.classList.add('fa-sun');
+                    } else {
+                        themeIcon.classList.remove('fa-sun');
+                        themeIcon.classList.add('fa-moon');
+                    }
+                };
+                
+                setThemeIcon(savedTheme);
+                
                 themeToggle.addEventListener('click', function() {
                     const currentTheme = document.body.getAttribute('data-theme');
                     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
                     document.body.setAttribute('data-theme', newTheme);
-                    
-                    if (themeIcon) {
-                        if (newTheme === 'dark') {
-                            themeIcon.classList.remove('fa-moon');
-                            themeIcon.classList.add('fa-sun');
-                        } else {
-                            themeIcon.classList.remove('fa-sun');
-                            themeIcon.classList.add('fa-moon');
-                        }
-                    }
+                    localStorage.setItem('prima-theme', newTheme);
+                    setThemeIcon(newTheme);
                 });
             }
         }
@@ -1396,8 +1512,8 @@
             document.getElementById('step' + next).classList.add('active');
             
             if (currentSection && nextSection) {
-                currentSection.classList.remove('active');
-                nextSection.classList.add('active');
+            currentSection.classList.remove('active');
+            nextSection.classList.add('active');
             }
             
             if(next === 5) {
@@ -1414,8 +1530,8 @@
             document.getElementById('step' + (currentStep-1)).classList.remove('completed');
             
             if (currentSection && prevSection) {
-                currentSection.classList.remove('active');
-                prevSection.classList.add('active');
+            currentSection.classList.remove('active');
+            prevSection.classList.add('active');
             }
         }
         
@@ -1441,7 +1557,7 @@
                 <p><strong>Current School:</strong> ${currentSchool}</p>
             `;
         }
-
+        
         function initializeFileUploadInteraction() {
             document.querySelectorAll('.file-upload').forEach(area => {
                 area.addEventListener('click', function(event) {
@@ -1452,20 +1568,31 @@
                 });
             });
 
-            document.querySelectorAll('.file-input').forEach(input => {
-                input.addEventListener('change', function() {
-                    if(this.files.length > 0) {
-                        const uploadArea = this.parentElement;
+        document.querySelectorAll('.file-input').forEach(input => {
+            input.addEventListener('change', function() {
+                if(this.files.length > 0) {
+                    const uploadArea = this.parentElement;
                         const inputElement = this;
                         const fileName = this.files.length === 1 ? this.files[0].name : `${this.files.length} files selected`;
                         
                         uploadArea.innerHTML = `<i class=\"fas fa-file-check\"></i><p>${fileName}</p><p class=\"form-text\">Click to change file</p>`;
                         uploadArea.appendChild(inputElement);
-                        uploadArea.style.borderColor = 'var(--accent)';
-                        uploadArea.style.backgroundColor = 'rgba(46, 125, 50, 0.05)';
-                    }
-                });
+                    uploadArea.style.borderColor = 'var(--accent)';
+                    uploadArea.style.backgroundColor = 'rgba(46, 125, 50, 0.05)';
+                }
             });
+        });
+        }
+
+        function formatDate(dateValue) {
+            if (!dateValue) return '';
+            if (dateValue.toDate) {
+                const d = dateValue.toDate();
+                return d.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+            }
+            const date = new Date(dateValue);
+            if (Number.isNaN(date.getTime())) return dateValue;
+            return date.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
         }
     </script>
 </body>
