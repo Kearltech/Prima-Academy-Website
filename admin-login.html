@@ -3,20 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Prima Academy - Admin Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    
-    <!-- Firebase Configuration -->
-    <script src="js/firebase-config.js"></script>
-    
-    <!-- Firebase Auth Module -->
-    <script src="js/firebase-auth.js"></script>
     
     <style>
         * {
@@ -398,88 +390,71 @@
         </div>
     </div>
 
+    <!-- Supabase Authentication Module (load first) -->
+    <script type="module" src="js/supabase-auth.js"></script>
+
     <script>
+        // Suppress extension-related errors
+        window.addEventListener('error', function(e) {
+            // Ignore extension-related errors
+            if (e.message && e.message.includes('message channel closed')) {
+                e.preventDefault();
+                return false;
+            }
+        }, true);
+
         let loginFormInitialized = false;
 
-        // Wait for Firebase to be ready
-        function waitForFirebaseReady(timeout = 15000) {
+        // Wait for Supabase Auth instance to be available
+        function waitForSupabaseAuth(timeout = 10000) {
             return new Promise((resolve, reject) => {
+                // If already available, resolve immediately
+                if (window.supabaseAuthInstance) {
+                    resolve(window.supabaseAuthInstance);
+                    return;
+                }
+
                 const start = Date.now();
                 const interval = setInterval(() => {
-                    // Check if Firebase SDK is loaded
-                    if (typeof firebase === 'undefined') {
-                        if (Date.now() - start > timeout) {
-                            clearInterval(interval);
-                            reject(new Error('Firebase SDK not loaded. Please check your internet connection and refresh the page.'));
-                        }
-                        return;
-                    }
-                    
-                    // Check if Firebase services are initialized
-                    const firebaseReady = Boolean(
-                        window.firebaseAuth && 
-                        window.firebaseDb && 
-                        typeof firebase !== 'undefined' &&
-                        window.firebaseApp
-                    );
-                    
-                    if (firebaseReady) {
+                    if (window.supabaseAuthInstance) {
                         clearInterval(interval);
-                        resolve(true);
+                        resolve(window.supabaseAuthInstance);
                         return;
                     }
-
                     if (Date.now() - start > timeout) {
                         clearInterval(interval);
-                        const missing = [];
-                        if (!window.firebaseAuth) missing.push('Auth');
-                        if (!window.firebaseDb) missing.push('Firestore');
-                        if (!window.firebaseApp) missing.push('App');
-                        reject(new Error(`Firebase initialization timeout. Missing: ${missing.join(', ')}. Please refresh the page.`));
+                        reject(new Error('Supabase Auth module failed to load. Please check the browser console and refresh the page.'));
                     }
-                }, 150);
+                }, 100);
             });
         }
 
         // Check if user is already logged in
         document.addEventListener('DOMContentLoaded', async function() {
-            // Initialize UI elements first
+            // Initialize UI elements first (don't wait for auth)
             initializeLoginUI();
 
-            // Setup form submission immediately (it will check Firebase when submitted)
+            // Setup form submission (will wait for auth when submitted)
             setupLoginForm();
 
+            // Enable login button immediately (it will be disabled during login)
+            const loginButton = document.getElementById('loginButton');
+            if (loginButton) {
+                loginButton.disabled = false;
+            }
+
+            // Try to check existing auth in background (non-blocking)
             try {
-                // Wait for Firebase to initialize
-                await waitForFirebaseReady();
-                console.log('Firebase initialized successfully');
+                // Wait for Supabase Auth to be available
+                await waitForSupabaseAuth();
+                console.log('Supabase Auth ready');
                 
-                // Check existing auth
+                // Check existing auth session
                 await checkExistingAuth();
-                
-                // Enable login button
-                const loginButton = document.getElementById('loginButton');
-                if (loginButton) {
-                    loginButton.disabled = false;
-                    const loginText = document.getElementById('loginText');
-                    if (loginText) loginText.textContent = 'Sign In';
-                }
-                
-                // Clear any error messages
-                const errorMessage = document.getElementById('errorMessage');
-                if (errorMessage) {
-                    errorMessage.classList.remove('show');
-                    errorMessage.textContent = '';
-                }
             } catch (error) {
-                console.error('Firebase initialization error:', error);
-                console.log('Firebase status:', {
-                    firebaseSDK: typeof firebase !== 'undefined',
-                    firebaseApp: !!window.firebaseApp,
-                    firebaseAuth: !!window.firebaseAuth,
-                    firebaseDb: !!window.firebaseDb
-                });
-                showFirebaseError(error.message || 'Firebase failed to initialize. Please refresh the page.');
+                console.error('Supabase Auth initialization error:', error);
+                // Don't show error immediately - let user try to login
+                // The login form will handle errors when submitted
             }
         });
 
@@ -513,43 +488,40 @@
             }
         }
 
-        function showFirebaseError(message) {
-            const errorMessage = document.getElementById('errorMessage');
-            const loginButton = document.getElementById('loginButton');
-            
-            if (errorMessage) {
-                errorMessage.textContent = message;
-                errorMessage.classList.add('show');
-            }
-            
-            if (loginButton) {
-                loginButton.disabled = true;
-                loginButton.textContent = 'Firebase Not Ready';
-            }
-        }
-
         async function checkExistingAuth() {
             try {
-                if (!window.firebaseAuth || !window.firebaseDb) {
+                // Check if user just logged out - if so, don't redirect back
+                const logoutFlag = localStorage.getItem('admin_logout_flag');
+                if (logoutFlag === 'true') {
+                    // Clear the logout flag
+                    localStorage.removeItem('admin_logout_flag');
+                    // Don't check for existing auth - user just logged out
+                    console.log('Logout detected, staying on login page');
                     return;
                 }
-
-                const auth = window.firebaseAuth;
                 
-                // Wait for auth state to be determined
-                await new Promise((resolve) => {
-                    const unsubscribe = auth.onAuthStateChanged((user) => {
-                        unsubscribe();
-                        resolve(user);
-                    });
-                });
-
-                if (auth.currentUser) {
+                const authInstance = await waitForSupabaseAuth();
+                
+                // Wait a bit to ensure any logout operations have completed
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                // Check for existing session
+                const session = await authInstance.getSession();
+                
+                if (session?.user) {
+                    // Double-check logout flag wasn't set during the wait
+                    const logoutFlagCheck = localStorage.getItem('admin_logout_flag');
+                    if (logoutFlagCheck === 'true') {
+                        localStorage.removeItem('admin_logout_flag');
+                        return;
+                    }
+                    
                     // Check if user is admin
-                    const userDoc = await window.firebaseDb.collection('users').doc(auth.currentUser.uid).get();
-                    if (userDoc.exists && userDoc.data().role === 'admin') {
+                    const isAdmin = await authInstance.isAdmin();
+                    
+                    if (isAdmin) {
                         // User is already logged in and is admin, redirect to dashboard
-                        window.location.href = 'admin1.html';
+                        window.location.href = 'admin.html';
                         return;
                     }
                 }
@@ -596,66 +568,29 @@
             if (loginText) loginText.textContent = 'Signing in...';
             
             try {
-                // Try to wait for Firebase if not ready
-                if (!window.firebaseAuth || !window.firebaseDb) {
-                    console.log('Firebase not ready, attempting to wait...');
-                    try {
-                        await waitForFirebaseReady(5000); // Wait up to 5 seconds
-                    } catch (waitError) {
-                        console.error('Firebase wait failed:', waitError);
-                        throw new Error('Firebase services are not available. Please refresh the page and try again.');
-                    }
-                }
-                
-                // Verify Firebase is ready
-                if (!window.firebaseAuth || !window.firebaseDb) {
-                    throw new Error('Firebase not initialized. Please refresh the page.');
-                }
+                // Ensure Supabase Auth is loaded
+                const authInstance = await waitForSupabaseAuth();
                 
                 console.log('Attempting to sign in with:', email);
                 
-                // Sign in with email and password
-                const userCredential = await window.firebaseAuth.signInWithEmailAndPassword(email, password);
-                const user = userCredential.user;
+                // Sign in using Supabase Auth instance
+                const result = await authInstance.signIn(email, password);
                 
-                // Check if user is admin
-                const userDoc = await window.firebaseDb.collection('users').doc(user.uid).get();
-                
-                if (!userDoc.exists) {
-                    // User doesn't exist in users collection, sign them out
-                    await window.firebaseAuth.signOut();
-                    throw new Error('User account not found. Please contact administrator.');
+                if (!result.success) {
+                    throw new Error(result.error || 'Login failed');
                 }
                 
-                const userData = userDoc.data();
-                
-                if (userData.role !== 'admin') {
-                    // User is not admin, sign them out
-                    await window.firebaseAuth.signOut();
-                    throw new Error('Access denied. Admin privileges required.');
-                }
-                
-                // Set persistence based on remember me
-                if (rememberMe) {
-                    await window.firebaseAuth.setPersistence(window.firebase.auth.Auth.Persistence.LOCAL);
-                } else {
-                    await window.firebaseAuth.setPersistence(window.firebase.auth.Auth.Persistence.SESSION);
-                }
+                const user = result.user;
                 
                 // Save user data to localStorage for admin dashboard
                 const userSessionData = {
-                    id: user.uid,
+                    id: user.id,
                     email: user.email,
-                    name: userData.name || userData.username || user.email.split('@')[0],
-                    role: userData.role,
+                    name: user.email.split('@')[0],
+                    role: 'admin',
                     lastLogin: new Date().toISOString()
                 };
                 localStorage.setItem('prima_current_user', JSON.stringify(userSessionData));
-                
-                // Update last login in Firestore
-                await window.firebaseDb.collection('users').doc(user.uid).update({
-                    lastLogin: window.firebase.firestore.FieldValue.serverTimestamp()
-                });
                 
                 // Show success message
                 Swal.fire({
@@ -667,7 +602,7 @@
                     showConfirmButton: false
                 }).then(() => {
                     // Redirect to admin dashboard
-                    window.location.href = 'admin1.html';
+                    window.location.href = 'admin.html';
                 });
                 
             } catch (error) {
@@ -680,34 +615,7 @@
                 if (loginText) loginText.textContent = 'Sign In';
                 
                 // Show error message
-                let errorMsg = 'An error occurred. Please try again.';
-                
-                if (error.code) {
-                    switch (error.code) {
-                        case 'auth/user-not-found':
-                            errorMsg = 'No account found with this email address.';
-                            break;
-                        case 'auth/wrong-password':
-                            errorMsg = 'Incorrect password. Please try again.';
-                            break;
-                        case 'auth/invalid-email':
-                            errorMsg = 'Invalid email address format.';
-                            break;
-                        case 'auth/user-disabled':
-                            errorMsg = 'This account has been disabled. Please contact administrator.';
-                            break;
-                        case 'auth/too-many-requests':
-                            errorMsg = 'Too many failed login attempts. Please try again later.';
-                            break;
-                        case 'auth/network-request-failed':
-                            errorMsg = 'Network error. Please check your internet connection.';
-                            break;
-                        default:
-                            errorMsg = error.message || 'An error occurred. Please try again.';
-                    }
-                } else if (error.message) {
-                    errorMsg = error.message;
-                }
+                let errorMsg = error.message || 'An error occurred. Please try again.';
                 
                 console.error('Login error:', error);
                 
@@ -716,33 +624,36 @@
                     errorMessage.classList.add('show');
                 }
                 
-                // Show SweetAlert for critical errors
-                if (error.code && error.code.startsWith('auth/')) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Login Failed',
-                        text: errorMsg,
-                        confirmButtonColor: '#4361ee'
-                    });
-                } else {
-                    // Show alert for other errors too
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: errorMsg,
-                        confirmButtonColor: '#4361ee'
-                    });
-                }
+                // Show SweetAlert for errors
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Failed',
+                    text: errorMsg,
+                    confirmButtonColor: '#4361ee'
+                });
             }
             }); // Close addEventListener callback
         }
 
         async function handleForgotPassword() {
-            if (!window.firebaseAuth) {
+            try {
+                await waitForSupabaseAuth();
+            } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Firebase not initialized. Please refresh the page.',
+                    text: 'Supabase Auth not initialized. Please refresh the page.',
+                    confirmButtonColor: '#4361ee'
+                });
+                return;
+            }
+
+            // Get Supabase client from window (set by supabase-init.js)
+            if (!window.supabaseClient) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Supabase client not available. Please refresh the page.',
                     confirmButtonColor: '#4361ee'
                 });
                 return;
@@ -765,7 +676,15 @@
                     }
                     
                     try {
-                        await window.firebaseAuth.sendPasswordResetEmail(email);
+                        const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
+                            redirectTo: `${window.location.origin}/admin-login.html`
+                        });
+                        
+                        if (error) {
+                            Swal.showValidationMessage(error.message || 'Failed to send reset email');
+                            return false;
+                        }
+                        
                         return email;
                     } catch (error) {
                         Swal.showValidationMessage(error.message || 'Failed to send reset email');

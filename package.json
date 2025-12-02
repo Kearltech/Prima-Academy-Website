@@ -4,31 +4,20 @@
   "description": "Prima Academy Website - Educational Institution Website",
   "main": "index.html",
   "scripts": {
-    "serve": "firebase emulators:start",
-    "deploy": "firebase deploy",
-    "deploy:hosting": "firebase deploy --only hosting",
-    "deploy:firestore": "firebase deploy --only firestore",
-    "deploy:storage": "firebase deploy --only storage",
-    "deploy:rules": "firebase deploy --only firestore:rules,storage:rules",
-    "init": "firebase init",
-    "login": "firebase login",
-    "logout": "firebase logout"
+    "serve": "npx serve -s . -l 3000",
+    "start": "npx serve -s . -l 3000"
   },
   "keywords": [
     "education",
     "school",
     "website",
-    "firebase",
+    "supabase",
     "static-site"
   ],
   "author": "Prima Academy",
   "license": "ISC",
-  "devDependencies": {
-    "firebase-tools": "^12.0.0"
-  },
-  "dependencies": {
-    "firebase": "^12.6.0"
-  },
+  "devDependencies": {},
+  "dependencies": {},
   "engines": {
     "node": ">=14.0.0",
     "npm": ">=6.0.0"
