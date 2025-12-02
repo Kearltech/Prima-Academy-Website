@@ -1,42 +1,29 @@
 {
   "firestore": {
+    "database": "(default)",
+    "location": "nam5",
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "public": ".",
+    "public": "public",
     "ignore": [
       "firebase.json",
+      ".firebaserc",
       "**/.*",
       "**/node_modules/**",
       "**/docs/**",
       "**/*.md",
-      "**/.git/**",
-      "**/.gitignore",
-      "**/package.json",
-      "**/package-lock.json",
-      "**/*.exe",
-      "**/*.dll",
-      "**/*.bat",
-      "**/*.cmd",
-      "**/*.sh",
-      "**/*.ps1",
       "**/Downloads/**",
-      "**/*.docx",
-      "**/*.pdf",
-      "**/*.log",
-      "**/.expo/**",
-      "**/app.js"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
+      "**/package*.json",
+      "**/pglite-debug.log",
+      "**/media_backup/**",
+      "**/*.CR2",
+      "**/*.cr2"
     ],
     "headers": [
       {
-        "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|ico|css|js)",
+        "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|ico)",
         "headers": [
           {
             "key": "Cache-Control",
@@ -45,35 +32,15 @@
         ]
       },
       {
-        "source": "**/*.html",
+        "source": "**/*.@(js|css)",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "max-age=3600"
-          }
-        ]
-      },
-      {
-        "source": "**",
-        "headers": [
-          {
-            "key": "X-Content-Type-Options",
-            "value": "nosniff"
-          },
-          {
-            "key": "X-Frame-Options",
-            "value": "DENY"
-          },
-          {
-            "key": "X-XSS-Protection",
-            "value": "1; mode=block"
+            "value": "max-age=31536000"
           }
         ]
       }
     ]
-  },
-  "storage": {
-    "rules": "storage.rules"
   },
   "functions": {
     "predeploy": [],
@@ -92,13 +59,12 @@
     "hosting": {
       "port": 5000
     },
-    "storage": {
-      "port": 9199
-    },
     "ui": {
       "enabled": true,
       "port": 4000
     }
+  },
+  "database": {
+    "rules": "database.rules.json"
   }
 }
-

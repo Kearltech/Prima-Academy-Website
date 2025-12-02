@@ -91,6 +91,24 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     
+    // Notifications Collection - Public can read (for admission updates), Admin can write
+    match /notifications/{notificationId} {
+      allow read: if true; // Public read for admission updates page
+      allow write: if isAdmin();
+    }
+    
+    // Page Visits Collection - Public can write (analytics), Admin can read
+    match /pageVisits/{visitId} {
+      allow create: if true; // Allow anonymous tracking
+      allow read: if isAdmin();
+      allow update, delete: if isAdmin();
+    }
+    
+    // Visit Counters Collection - Public can write (analytics), Admin can read
+    match /visitCounters/{dateId} {
+      allow read, write: if true; // Allow anonymous analytics aggregation
+    }
+    
     // Settings Collection - Admin only
     match /settings/{settingId} {
       allow read, write: if isAdmin();

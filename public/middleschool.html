@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Programs | Prima Academy</title>
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --primary: #1a4b8c;
+            --secondary: #f9a826;
+            --accent: #2e7d32;
+            --light: #f5f5f5;
+            --dark: #333;
+            --text: #444;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #fff;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #e89a1f;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #0d3a6e;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+            margin: 15px auto;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-left: 30px;
+        }
+
+        .nav-menu a {
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-menu a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            bottom: -5px;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover:after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Program Navigation */
+        .program-nav {
+            background-color: var(--light);
+            padding: 20px 0;
+            margin-bottom: 50px;
+        }
+
+        .program-nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .program-nav-btn {
+            padding: 10px 25px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .program-nav-btn.active,
+        .program-nav-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Academic Program Hero */
+        .program-hero {
+            background: linear-gradient(rgba(26, 75, 140, 0.8), rgba(26, 75, 140, 0.9));
+            color: white;
+            padding: 180px 0 100px;
+            text-align: center;
+        }
+
+        .program-hero h1 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .program-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        /* Program Overview */
+        .program-overview {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .program-text {
+            flex: 1;
+        }
+
+        .program-image {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .program-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Curriculum Section */
+        .curriculum {
+            background-color: var(--light);
+        }
+
+        .curriculum-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .curriculum-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .curriculum-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .curriculum-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* Activities Section */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .activity-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .activity-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .activity-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .activity-card:hover .activity-img img {
+            transform: scale(1.1);
+        }
+
+        .activity-content {
+            padding: 25px;
+        }
+
+        /* Program Tabs */
+        .program-tabs {
+            margin-top: 50px;
+        }
+
+        .tabs-header {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Faculty Grid */
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .faculty-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .faculty-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .faculty-img {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .faculty-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .faculty-card:hover .faculty-img img {
+            transform: scale(1.05);
+        }
+
+        .faculty-info {
+            padding: 20px;
+        }
+
+        /* Schedule Table */
+        .schedule-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .schedule-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+        }
+
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-item strong {
+            min-width: 150px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            color: white;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .program-overview {
+                flex-direction: column;
+            }
+            
+            .program-hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                flex-direction: column;
+                background-color: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: var(--shadow);
+                padding: 20px 0;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-menu li {
+                margin: 15px 0;
+            }
+            
+            .program-hero {
+                padding: 150px 0 80px;
+            }
+            
+            .program-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .tabs-header {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .schedule-item {
+                flex-direction: column;
+            }
+
+            .schedule-item strong {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="media/logo.jpeg" alt="Prima Academy Logo">
+                <div class="logo-text">Prima Academy</div>
+            </div>
+            
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About Us</a></li>
+                <li><a href="index.html#academics">Academics</a></li>
+                <li><a href="index.html#faculty">Faculty</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
+                <li><a href="index.html#news">News & Events</a></li>
+                <li><a href="index.html#admissions">Admissions</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Program Navigation -->
+    <section class="program-nav">
+        <div class="container program-nav-container">
+            <a href="primary.html" class="program-nav-btn">Primary School</a>
+            <a href="middle.html" class="program-nav-btn active">Middle School</a>
+            <a href="high.html" class="program-nav-btn">High School</a>
+            <a href="extracurricular.html" class="program-nav-btn">Extracurricular</a>
+        </div>
+    </section>
+
+    <!-- Middle School Hero -->
+    <section class="program-hero">
+        <div class="container">
+            <h1>Middle School Program</h1>
+            <p>Navigating the pivotal years of adolescence with academic challenge, social-emotional support, and personal growth opportunities.</p>
+            <a href="#admissions" class="btn">Apply Now</a>
+        </div>
+    </section>
+
+    <!-- Middle School Overview -->
+    <section class="section">
+        <div class="container">
+            <div class="program-overview">
+                <div class="program-text">
+                    <h2>Developing Confident Learners</h2>
+                    <p>Our Middle School program serves students in Grades 6-8 during a critical period of intellectual, social, and emotional development. We provide a challenging academic curriculum while supporting students through the transitions of adolescence.</p>
+                    <p>Our program emphasizes critical thinking, collaboration, and communication skills while allowing students to explore their interests through electives and extracurricular activities. We foster independence while providing the structure and support middle school students need to thrive.</p>
+                    <p>With dedicated advisors, project-based learning, and a focus on developing executive functioning skills, we prepare students for the increased demands of high school and beyond.</p>
+                </div>
+                <div class="program-image">
+                    <img src="https://images.unsplash.com/photo-1591123120675-6f7f1aae0e5b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="Middle School Students">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum Section -->
+    <section class="section curriculum">
+        <div class="container">
+            <h2 class="section-title">Our Middle School Curriculum</h2>
+            <div class="curriculum-grid">
+                <div class="curriculum-card">
+                    <div class="curriculum-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>English Language Arts</h3>
+                    <p>Students develop advanced reading comprehension, analytical writing, and presentation skills through literature studies, research projects, and public speaking opportunities.</p>
+                </div>
+                
+                <div class="curriculum-card">
+                    <div class="curriculum-icon">
+                        <i class="fas fa-square-root-alt"></i>
+                    </div>
+                    <h3>Mathematics</h3>
+                    <p>Our math program progresses from pre-algebra to algebra and geometry, emphasizing problem-solving strategies and real-world applications of mathematical concepts.</p>
+                </div>
+                
+                <div class="curriculum-card">
+                    <div class="curriculum-icon">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <h3>Science</h3>
+                    <p>Students explore earth science, life science, and physical science through hands-on laboratories, scientific inquiry, and developing research skills.</p>
+                </div>
+                
+                <div class="curriculum-card">
+                    <div class="curriculum-icon">
+                        <i class="fas fa-monument"></i>
+                    </div>
+                    <h3>Social Studies</h3>
+                    <p>Our curriculum covers world geography, ancient civilizations, and American history, helping students understand historical context and global interconnectedness.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program Tabs -->
+    <section class="section">
+        <div class="container">
+            <div class="program-tabs">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="approach">Our Approach</button>
+                    <button class="tab-btn" data-tab="electives">Electives</button>
+                    <button class="tab-btn" data-tab="advisory">Advisory Program</button>
+                    <button class="tab-btn" data-tab="faculty">Middle School Faculty</button>
+                </div>
+                
+                <div class="tab-content active" id="approach">
+                    <h3>Balanced Approach to Middle School Education</h3>
+                    <p>Our Middle School program is designed to address the unique needs of early adolescents through a balanced approach that challenges students academically while supporting their social and emotional development.</p>
+                    <p>Key elements of our approach include:</p>
+                    <ul>
+                        <li>Departmentalized instruction with subject-specific teachers</li>
+                        <li>Project-based learning that connects concepts across disciplines</li>
+                        <li>Differentiated instruction to meet diverse learning needs</li>
+                        <li>Explicit instruction in study skills and organization</li>
+                        <li>Regular communication between teachers, students, and families</li>
+                    </ul>
+                </div>
+                
+                <div class="tab-content" id="electives">
+                    <h3>Exploratory Electives</h3>
+                    <p>Middle School students have the opportunity to explore their interests through a variety of elective courses that rotate throughout the year.</p>
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-content">
+                                <h3>Digital Media & Design</h3>
+                                <p>Students learn graphic design, video production, and digital storytelling using industry-standard software and equipment.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-content">
+                                <h3>Robotics & Engineering</h3>
+                                <p>Hands-on experience with building and programming robots while learning engineering principles and design thinking.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-content">
+                                <h3>Creative Writing</h3>
+                                <p>Students develop their unique voice through poetry, short stories, and personal narratives in a supportive workshop environment.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-card">
+                            <div class="activity-content">
+                                <h3>World Languages</h3>
+                                <p>Introduction to Spanish and French with focus on basic conversation, cultural awareness, and language foundations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="advisory">
+                    <h3>Advisory Program</h3>
+                    <p>Every Middle School student is part of a small advisory group that meets daily with a faculty advisor. This program provides academic support, social-emotional learning, and community building.</p>
+                    <p>Advisory activities include:</p>
+                    <ul>
+                        <li>Goal setting and progress monitoring</li>
+                        <li>Organization and time management skill development</li>
+                        <li>Social skills and conflict resolution</li>
+                        <li>Community service projects</li>
+                        <li>Preparation for student-led conferences</li>
+                    </ul>
+                    <p>Advisors serve as the primary point of contact for families and provide consistent support throughout the middle school years.</p>
+                </div>
+                
+                <div class="tab-content" id="faculty">
+                    <h3>Meet Our Middle School Faculty</h3>
+                    <p>Our Middle School teachers are subject-area specialists who understand the developmental needs of early adolescents. They create engaging, challenging learning experiences while providing the support students need during these transitional years.</p>
+                    <div class="faculty-grid">
+                        <div class="faculty-card">
+                            <div class="faculty-img">
+                                <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Mr. Robert Johnson">
+                            </div>
+                            <div class="faculty-info">
+                                <h4>Mr. Robert Johnson</h4>
+                                <p>Math Department Chair</p>
+                                <p>M.Ed. in Mathematics Education</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faculty-card">
+                            <div class="faculty-img">
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Ms. Sarah Chen">
+                            </div>
+                            <div class="faculty-info">
+                                <h4>Ms. Sarah Chen</h4>
+                                <p>Science Teacher</p>
+                                <p>10 years of teaching experience</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Middle School Activities</h2>
+            <div class="activities-grid">
+                <div class="activity-card">
+                    <div class="activity-img">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Middle School Sports">
+                    </div>
+                    <div class="activity-content">
+                        <h3>Interscholastic Sports</h3>
+                        <p>Students can participate in soccer, basketball, volleyball, and track teams that compete against other schools in the region.</p>
+                    </div>
+                </div>
+                
+                <div class="activity-card">
+                    <div class="activity-img">
+                        <img src="https://images.unsplash.com/photo-1511376777868-611b54f68947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Student Government">
+                    </div>
+                    <div class="activity-content">
+                        <h3>Student Government</h3>
+                        <p>Elected representatives plan events, address student concerns, and develop leadership skills through our middle school student government.</p>
+                    </div>
+                </div>
+                
+                <div class="activity-card">
+                    <div class="activity-img">
+                        <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Science Olympiad">
+                    </div>
+                    <div class="activity-content">
+                        <h3>Science Olympiad</h3>
+                        <p>Our competitive Science Olympiad team prepares throughout the year for regional competitions in various scientific disciplines.</p>
+                    </div>
+                </div>
+                
+                <div class="activity-card">
+                    <div class="activity-img">
+                        <img src="https://images.unsplash.com/photo-1516627145497-ae69578cfc06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Book Club">
+                    </div>
+                    <div class="activity-content">
+                        <h3>Book Club</h3>
+                        <p>Students explore diverse literature and engage in thoughtful discussions in our student-led book club.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admissions CTA -->
+    <section class="section" style="background-color: var(--light);">
+        <div class="container">
+            <div class="program-overview">
+                <div class="program-text">
+                    <h2>Ready to Join Our Middle School?</h2>
+                    <p>We're excited to welcome new students to our Middle School community. Our admissions team is here to guide you through the application process and answer any questions you may have.</p>
+                    <p>Contact us to schedule a tour or learn more about our program.</p>
+                    <div class="hero-btns">
+                        <a href="index.html#admissions" class="btn">Apply Now</a>
+                        <a href="index.html#contact" class="btn btn-primary">Contact Us</a>
+                    </div>
+                </div>
+                <div class="program-image">
+                    <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1490&q=80" alt="Middle School Students Collaborating">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Prima Academy</h3>
+                    <p>Committed to excellence in education, holistic development, and strong community values since 2000.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#academics">Academics</a></li>
+                        <li><a href="index.html#gallery">Gallery</a></li>
+                        <li><a href="index.html#news">News & Events</a></li>
+                        <li><a href="index.html#admissions">Admissions</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Academic Programs</h3>
+                    <ul class="footer-links">
+                        <li><a href="primary.html">Primary School</a></li>
+                        <li><a href="middle.html">Middle School</a></li>
+                        <li><a href="high.html">High School</a></li>
+                        <li><a href="extracurricular.html">Extracurricular</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Education Avenue, Accra</li>
+                        <li><i class="fas fa-phone"></i> +233 123 456 789</li>
+                        <li><i class="fas fa-envelope"></i> info@primaacademy.edu.gh</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Prima Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Program navigation active state
+        const currentPage = window.location.pathname.split('/').pop();
+        const navBtns = document.querySelectorAll('.program-nav-btn');
+        
+        navBtns.forEach(btn => {
+            if (btn.getAttribute('href') === currentPage) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

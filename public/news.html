@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News & Events | Prima Academy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --primary: #f88e10;
+            --secondary: #000;
+            --accent: #2e7d32;
+            --light: #f5f5f5;
+            --dark: #333;
+            --text: #444;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #fff;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #777;
+            padding: 40px 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #222;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background-color: #555;
+        }
+
+        .btn-primary:hover {
+            background-color: #333;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+            margin: 15px auto;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-left: 30px;
+        }
+
+        .nav-menu a {
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-menu a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            bottom: -5px;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover:after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* News Hero */
+        .news-hero {
+            background: linear-gradient(rgba(248, 142, 16, 0.85), rgba(248, 142, 16, 0.95));
+            color: white;
+            padding: 180px 0 100px;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .news-hero h1 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .news-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .news-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .news-card:hover .news-img img {
+            transform: scale(1.1);
+        }
+
+        .news-content {
+            padding: 25px;
+        }
+
+        .news-date {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .news-excerpt {
+            color: var(--text);
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-full {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .news-full.active {
+            display: block;
+        }
+
+        .read-more {
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-block;
+            transition: var(--transition);
+        }
+
+        .read-more:hover {
+            color: var(--secondary);
+        }
+
+        /* Load More Button */
+        .load-more {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .load-more .btn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+        }
+
+        .load-more .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .load-more .btn:disabled:hover {
+            background-color: #cccccc;
+            transform: none;
+        }
+
+        /* News Categories */
+        .news-categories {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 10px 25px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .category-btn.active,
+        .category-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Single News Article */
+        .single-news {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .single-news-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .single-news-date {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .single-news-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .single-news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .single-news-content {
+            line-height: 1.8;
+        }
+
+        .single-news-content p {
+            margin-bottom: 20px;
+        }
+
+        .single-news-content h2, 
+        .single-news-content h3 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .single-news-content ul, 
+        .single-news-content ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .single-news-content li {
+            margin-bottom: 8px;
+        }
+
+        .back-to-news {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .back-to-news:hover {
+            color: var(--secondary);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            color: white;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                flex-direction: column;
+                background-color: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: var(--shadow);
+                padding: 20px 0;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-menu li {
+                margin: 15px 0;
+            }
+            
+            .news-hero {
+                padding: 150px 0 80px;
+            }
+            
+            .news-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .news-categories {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="media/logo.png" alt="Prima Academy Logo">
+                <div class="logo-text">Prima Academy</div>
+            </div>
+            
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About Us</a></li>
+                <li><a href="index.html#academics">Academics</a></li>
+                <li><a href="index.html#faculty">Faculty</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
+                <li><a href="news.html" class="active">News & Events</a></li>
+                <li><a href="index.html#admissions">Admissions</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- News Hero -->
+    <section class="news-hero">
+        <div class="container">
+            <h1>News & Events</h1>
+            <p>Stay updated with the latest happenings, achievements, and events at Prima Academy.</p>
+        </div>
+    </section>
+
+    <!-- News Categories -->
+    <section class="section">
+        <div class="container">
+            <div class="news-categories" id="newsCategories">
+                <button class="category-btn active" data-category="all">All News</button>
+                <button class="category-btn" data-category="academics">Academics</button>
+                <button class="category-btn" data-category="sports">Sports</button>
+                <button class="category-btn" data-category="events">Events</button>
+                <button class="category-btn" data-category="achievements">Achievements</button>
+            </div>
+
+            <!-- News Grid -->
+            <div class="news-grid" id="newsGrid">
+                <!-- News items will be loaded here dynamically -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more">
+                <button class="btn" id="loadMoreBtn">Load More News</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Prima Academy</h3>
+                    <p>Committed to excellence in education, holistic development, and strong community values since 2000.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#academics">Academics</a></li>
+                        <li><a href="index.html#gallery">Gallery</a></li>
+                        <li><a href="news.html">News & Events</a></li>
+                        <li><a href="index.html#admissions">Admissions</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Academic Programs</h3>
+                    <ul class="footer-links">
+                        <li><a href="primary.html">Primary School</a></li>
+                        <li><a href="middle.html">Middle School</a></li>
+                        <li><a href="high.html">High School</a></li>
+                        <li><a href="extracurricular.html">Extracurricular</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Education Avenue, Accra</li>
+                        <li><i class="fas fa-phone"></i> +233 123 456 789</li>
+                        <li><i class="fas fa-envelope"></i> info@primaacademy.edu.gh</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Prima Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase-db.js"></script>
+
+    <script>
+        const NEWS_BATCH_SIZE = 6;
+        let newsItems = [];
+        let filteredNews = [];
+        let visibleNewsCount = 0;
+        let activeCategory = 'all';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupMobileNavigation();
+            initializeNewsPage();
+            trackPageVisit('News & Events');
+        });
+
+        async function trackPageVisit(pageName) {
+            if (!window.firebaseDBInstance) return;
+            try {
+                await window.firebaseDBInstance.trackPageVisit(pageName);
+            } catch (error) {
+                console.error('Failed to track page visit:', error);
+            }
+        }
+
+        function setupMobileNavigation() {
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            if (!mobileToggle || !navMenu) return;
+            mobileToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+            });
+            navMenu.querySelectorAll('a').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    navMenu.classList.remove('active');
+                });
+            });
+        }
+
+        async function initializeNewsPage() {
+            try {
+                await waitForFirebaseReady();
+                await fetchNewsFromFirestore();
+            } catch (error) {
+                console.error('Failed to initialize news page:', error);
+                renderNewsFallback('Unable to load news at this time.');
+            }
+        }
+
+        function waitForFirebaseReady(timeout) {
+            timeout = timeout || 8000;
+            return new Promise(function(resolve, reject) {
+                const start = Date.now();
+                const interval = setInterval(function() {
+                    if (window.firebaseDBInstance && window.firebaseDb) {
+                        clearInterval(interval);
+                        resolve(true);
+                    } else if (Date.now() - start > timeout) {
+                        clearInterval(interval);
+                        reject(new Error('Firebase not ready'));
+                    }
+                }, 100);
+            });
+        }
+
+        async function fetchNewsFromFirestore() {
+            if (!window.firebaseDBInstance) {
+                renderNewsFallback('News updates will appear here soon.');
+                return;
+            }
+            const result = await window.firebaseDBInstance.getAllNewsArticles();
+            if (!result.success) {
+                renderNewsFallback(result.error || 'Unable to load news.');
+                return;
+            }
+            newsItems = result.data.map(formatArticle).sort(function(a, b) {
+                return new Date(b.publishDate) - new Date(a.publishDate);
+            });
+            renderCategoryFilters();
+            applyCategoryFilter('all');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', function() {
+                    visibleNewsCount = Math.min(visibleNewsCount + NEWS_BATCH_SIZE, filteredNews.length);
+                    renderNewsCards();
+                });
+            }
+        }
+
+        function formatArticle(article) {
+            return {
+                id: article.id,
+                title: article.title || 'Prima Academy News',
+                category: (article.category || 'general').toLowerCase(),
+                summary: article.summary || article.excerpt || '',
+                content: article.content || article.fullContent || '',
+                image: article.heroImage || article.image || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80',
+                publishDate: formatDate(article.publishDate || article.date || article.createdAt)
+            };
+        }
+
+        function renderCategoryFilters() {
+            const container = document.getElementById('newsCategories');
+            if (!container) return;
+            const categories = Array.from(new Set(newsItems.map(function(item) { return item.category; }))).filter(Boolean);
+            const buttons = ['all'].concat(categories);
+            container.innerHTML = buttons.map(function(category) {
+                const label = category === 'all' ? 'All News' : formatCategoryLabel(category);
+                const activeClass = category === activeCategory ? ' active' : '';
+                return '<button class="category-btn' + activeClass + '" data-category="' + category + '">' + label + '</button>';
+            }).join('');
+            container.querySelectorAll('.category-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                    applyCategoryFilter(btn.dataset.category);
+                });
+            });
+        }
+
+        function applyCategoryFilter(category) {
+            activeCategory = category;
+            filteredNews = category === 'all' ? newsItems : newsItems.filter(function(item) { return item.category === category; });
+            visibleNewsCount = Math.min(NEWS_BATCH_SIZE, filteredNews.length);
+            renderNewsCards();
+            updateCategoryActiveState();
+        }
+
+        function updateCategoryActiveState() {
+            document.querySelectorAll('.category-btn').forEach(function(btn) {
+                btn.classList.toggle('active', btn.dataset.category === activeCategory);
+            });
+        }
+
+        function renderNewsCards() {
+            const grid = document.getElementById('newsGrid');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (!grid) return;
+            if (!filteredNews.length) {
+                grid.innerHTML = '<p class="empty-state">No articles available for this category yet.</p>';
+                if (loadMoreBtn) {
+                    loadMoreBtn.disabled = true;
+                    loadMoreBtn.textContent = 'No More News';
+                }
+                return;
+            }
+            const items = filteredNews.slice(0, visibleNewsCount);
+            let cardsHtml = '';
+            items.forEach(function(article) {
+                cardsHtml += '<div class="news-card">';
+                cardsHtml += '<div class="news-img"><img src="' + article.image + '" alt="' + article.title + '"></div>';
+                cardsHtml += '<div class="news-content">';
+                cardsHtml += '<span class="news-date">' + article.publishDate + '</span>';
+                cardsHtml += '<h3>' + article.title + '</h3>';
+                cardsHtml += '<p class="news-excerpt">' + (article.summary || 'Discover the latest happenings from Prima Academy.') + '</p>';
+                if (article.content) {
+                    cardsHtml += '<div class="news-full" id="news-full-' + article.id + '">' + article.content + '</div>';
+                    cardsHtml += '<button class="read-more" data-article="' + article.id + '">Read Full Story</button>';
+                }
+                cardsHtml += '</div></div>';
+            });
+            grid.innerHTML = cardsHtml;
+            attachReadMoreHandlers();
+            if (loadMoreBtn) {
+                loadMoreBtn.disabled = visibleNewsCount >= filteredNews.length;
+                loadMoreBtn.textContent = loadMoreBtn.disabled ? 'No More News' : 'Load More News';
+            }
+        }
+
+        function attachReadMoreHandlers() {
+            document.querySelectorAll('.read-more').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const target = document.getElementById('news-full-' + btn.dataset.article);
+                    if (!target) return;
+                    target.classList.toggle('active');
+                    btn.textContent = target.classList.contains('active') ? 'Show Less' : 'Read Full Story';
+                });
+            });
+        }
+
+        function renderNewsFallback(message) {
+            const grid = document.getElementById('newsGrid');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (grid) grid.innerHTML = '<p class="empty-state">' + message + '</p>';
+            if (loadMoreBtn) {
+                loadMoreBtn.disabled = true;
+                loadMoreBtn.textContent = 'No More News';
+            }
+        }
+
+        function formatCategoryLabel(slug) {
+            return slug.replace(/-/g, ' ').replace(/\b\w/g, function(char) { return char.toUpperCase(); });
+        }
+
+        function formatDate(dateValue) {
+            if (!dateValue) return '';
+            if (dateValue.toDate) {
+                const d = dateValue.toDate();
+                return d.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+            }
+            const date = new Date(dateValue);
+            if (Number.isNaN(date.getTime())) return dateValue;
+            return date.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+        }
+    </script>
+</body>
+</html>
