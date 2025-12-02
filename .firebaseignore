@@ -1,66 +1,64 @@
-# Firebase ignore file
-# Files and folders to ignore during deployment
+# Firebase ignore file - excludes files from hosting deployment
 
-# Documentation
+# Documentation files
 *.md
-!README.md
 docs/
-ANALYSIS_REPORT.md
-ACTION_PLAN.md
-FIREBASE_*.md
-PROJECT_STRUCTURE.md
-STRUCTURE_CREATED.md
+**/*.md
 
-# Development files
+# Configuration files
+firebase.json
+.firebaserc
 .git/
 .gitignore
-.vscode/
-.idea/
-*.log
-*.tmp
-*.temp
-*.bak
-*.backup
+.gitattributes
 
 # Node modules
 node_modules/
 package-lock.json
-yarn.lock
+package.json
 
-# Build files
-dist/
-build/
-*.min.js
-*.min.css
+# Development files
+*.log
+pglite-debug.log
+.vscode/
+.idea/
 
-# Environment files
-.env
-.env.local
-.env.production
+# Downloads and temp files
+Downloads/
+*.tmp
+*.temp
 
-# Firebase config (keep structure, but sensitive data)
-# Note: firebase-config.js should be updated with actual values
-
-# Original media folder (if we keep images in images/)
-media/
-
-# Files to review
-app.js
-main.html
+# Documentation folders
+docs/
+**/docs/
 
 # Word documents
 *.docx
+*.doc
 
-# Excel files
-*.xlsx
+# Backup folders
+media_backup/
+**/media_backup/**
 
-# Downloads folder
-Downloads/
+# Large RAW image files (not needed for web)
+*.CR2
+*.cr2
+*.RAW
+*.raw
+*.NEF
+*.nef
+*.ARW
+*.arw
 
-# Other
-.DS_Store
-Thumbs.db
-desktop.ini
-pglite-debug.log
-.expo/
+# Other unnecessary files
+*.ps1
+*.sh
+*.bat
 
+# Keep essential files:
+# !index.html
+# !*.html
+# !js/**
+# !css/**
+# !images/**
+# !PRIMA ACADEMY PROSPECTUS.pdf

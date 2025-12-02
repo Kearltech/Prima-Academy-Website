@@ -81,3 +81,21 @@ docs/_build/
 !pages/.gitkeep
 !docs/.gitkeep
 
+# Firebase cache and build files
+.firebase/
+.firebase/hosting.*.cache
+
+# Large media files (use Cloudinary instead)
+media/
+media_temp_backup/
+*.CR2
+*.cr2
+*.RAW
+*.raw
+*.NEF
+*.nef
+*.ARW
+*.arw
+
+# Large backup files
+**/media_backup/**
